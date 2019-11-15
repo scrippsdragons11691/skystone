@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -12,6 +13,10 @@ public class AutonDrive11691  {
     static final double DRIVE_GEAR_REDUTION =       2.2; // This is < 1.0 if geared UP
     static final double WHEEL_DIAMETER_INCHES =     3.0; // For figuring circumference
     static final double COUNTS_PER_INCH =(COUNTS_PER_MOTOR_REV / DRIVE_GEAR_REDUTION)/(WHEEL_DIAMETER_INCHES*3.1415);
+
+    double minimumMotorSpeed = 0.1;
+    double maximumMotorSpeed = 1;
+    double rampTimeInSec = 0.3;
     boolean is_moving = false;
 
     HardwareMap11691 theHardwareMap11691;
@@ -20,8 +25,7 @@ public class AutonDrive11691  {
     // Constructor
     public AutonDrive11691(HardwareMap11691 HMap){
         theHardwareMap11691 = HMap;
-        
-      
+
       //set direction for each motor
         theHardwareMap11691.LR.setDirection(DcMotor.Direction.REVERSE);
         theHardwareMap11691.LF.setDirection(DcMotor.Direction.REVERSE);
@@ -70,8 +74,8 @@ public class AutonDrive11691  {
         theHardwareMap11691.LF.setPower(speed_Straff);
         theHardwareMap11691.RF.setPower(speed_Straff);
         theHardwareMap11691.LR.setPower(speed_Straff);
-        theHardwareMap11691.RR.setPower(speed_Straff); 
-        
+        theHardwareMap11691.RR.setPower(speed_Straff);
+
         runtime.reset();
         while ((runtime.seconds() < timeoutS) && (theHardwareMap11691.LR.isBusy())){
             tele.addData("is_moving drive", is_moving);
@@ -138,20 +142,20 @@ public class AutonDrive11691  {
         theHardwareMap11691.RF.setTargetPosition(newRightFTarget);
         theHardwareMap11691.LR.setTargetPosition(newLeftBTarget);
         theHardwareMap11691.RR.setTargetPosition(newRightBTarget);
-        
 
-
-        
-        //Set the motor speed
-        theHardwareMap11691.LF.setPower(motorspeed);
-        theHardwareMap11691.RF.setPower(motorspeed);
-        theHardwareMap11691.LR.setPower(motorspeed);
-        theHardwareMap11691.RR.setPower(motorspeed); 
-        
+        ElapsedTime rampTimer     = new ElapsedTime();
+        rampTimer.reset();
         runtime.reset();
         while ((runtime.seconds() < timeoutT) &&
                    (theHardwareMap11691.LR.isBusy())) {
-            
+
+            double rampedSpeed = Range.clip(speed * (rampTimer.seconds()/rampTimeInSec), minimumMotorSpeed, maximumMotorSpeed);
+            //Set the motor speed
+            theHardwareMap11691.LF.setPower(rampedSpeed);
+            theHardwareMap11691.RF.setPower(rampedSpeed);
+            theHardwareMap11691.LR.setPower(rampedSpeed);
+            theHardwareMap11691.RR.setPower(rampedSpeed);
+
             tele.addData("is_moving drive", is_moving);
             tele.addData("LF encoder","position= %d", theHardwareMap11691.LF.getCurrentPosition());
             tele.addData("RF encoder","position= %d", theHardwareMap11691.RF.getCurrentPosition());
@@ -160,8 +164,8 @@ public class AutonDrive11691  {
             tele.addData("Runtime",runtime.time()); 
             tele.addData("Timeout", timeoutT);
             tele.update();   
-            
-             }
+        }
+
         theHardwareMap11691.LF.setPower(0);
         theHardwareMap11691.RF.setPower(0);
         theHardwareMap11691.LR.setPower(0);

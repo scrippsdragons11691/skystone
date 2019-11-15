@@ -8,8 +8,7 @@ public class Auton_Blue_Foundation_FWD_11691 extends BaseAuton {
     @Override
     public void runOpMode() {
 
-      initialize();
-        
+        initialize();
         waitForStart();
 
         while (opModeIsActive()) {

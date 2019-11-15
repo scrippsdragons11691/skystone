@@ -11,7 +11,6 @@ public class AUTON_Blue_Foundation11691 extends BaseAuton {
     public void runOpMode() {
 
         initialize();
-
         waitForStart();
 
         while (opModeIsActive()) {

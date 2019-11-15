@@ -10,34 +10,12 @@ public class AUTON_Blue_Skystone11691 extends BaseAuton {
 
     @Override
     public void runOpMode() {
-        
+
+        initialize();
         waitForStart();
 
         while (opModeIsActive()) {
-            
-            /*
-            core functions
-                passed variables
-                    drive - distance, power, timeout, telemetry pass
-                    straff - distance, power, timeout,telemetry pass(left = postitive, right = negative)
-                    delay - timeout - used to display information to phone
-                    foundationUP - foundation servo up
-                    foundationDN - foundation servo down - grabs the foundation
-                    grabOPEN - graber to open position
-                    grabCLOSE - grabber to close position
-                    TapeMeasure - encoder count target, telemetry pass - extends tapemeasure.
-                    get_SK - timeout - boolean that will change to true when SK is detected.
-                    wait_step - time in seconds
-                no passed variables
-                    intakeIN - pull blocks in
-                    intakeOUT - push blocks out
-                    movearmHOME - moves arm to home posiiton
-                    movearmNINETY - moves arm to 90 deg position
-                    movearmONEEIGHTY - moves arm to 180 position
-                    pusherHOME - moves arm to HOME position
-                    pusherPUSH - moves arm to block in position.
-                    
-            */  
+
             drive       (-7,0.5,2,telemetry);
             straff      (23,0.5,3, telemetry);
             turn        (0,0.5,4, telemetry);

@@ -11,6 +11,7 @@ public class AUTON_Blue_Skystone11691_Full extends BaseAuton {
     @Override
     public void runOpMode() {
 
+        initialize();
         waitForStart();
 
         while (opModeIsActive())   {              

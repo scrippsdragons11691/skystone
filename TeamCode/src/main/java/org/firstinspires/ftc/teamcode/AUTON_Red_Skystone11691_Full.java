@@ -14,7 +14,6 @@ public class AUTON_Red_Skystone11691_Full extends BaseAuton {
     public void runOpMode() {
 
         initialize();
-
         waitForStart();
 
         while (opModeIsActive()) {

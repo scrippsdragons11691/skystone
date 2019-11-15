@@ -108,3 +108,7 @@ public class BaseAuton extends LinearOpMode{
 
 
     }
+
+    //todo In BaseAuton, create driveForward and driveBackward
+    //todo In BaseAuton, create turnCW and turnCCW
+    //todo Pass the LinearOpMode instance to autonDrive and to autonTurn so that we can call opModeIsActive() and isStopRequested() from within

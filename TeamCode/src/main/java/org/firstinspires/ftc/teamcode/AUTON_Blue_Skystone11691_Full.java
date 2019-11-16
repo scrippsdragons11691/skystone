@@ -40,7 +40,7 @@ public class AUTON_Blue_Skystone11691_Full extends BaseAuton {
             waitStep(0.8);
             driveForward   (6,0.75,2, telemetry);
             turn_HighPowerAtEnd      (0,1,1, telemetry);
-            SK.SK_ARM(GlobalSettings11691.skhome);
+            //SK.SK_ARM(GlobalSettings11691.skhome);
             straff    (-18,0.75,1.5, telemetry);
             turn_HighPowerAtEnd      (0,.5,2, telemetry);
             waitStep(0.2);
@@ -87,7 +87,7 @@ public class AUTON_Blue_Skystone11691_Full extends BaseAuton {
         found = ColorSensor.StoneCheck(tele);
         driveBackward (distanceToCenter,0.5,10, telemetry);
         totalDistanceMoved += distanceToCenter;
-        SK.SK_ARM(GlobalSettings11691.skdown);
+        //SK.SK_ARM(GlobalSettings11691.skdown);
         
         return totalDistanceMoved *-1;
     }

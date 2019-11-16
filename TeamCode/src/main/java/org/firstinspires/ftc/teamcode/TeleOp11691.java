@@ -39,7 +39,7 @@ public class TeleOp11691 extends LinearOpMode{
         TeleOp_InT              = new Intake_11691(TeleOp_HM);
         Spush                   = new Pusher11691(TeleOp_HM);
         grabpos                 = new GrabBlock11691(TeleOp_HM);
-        SK                      = new SK_Block11691(TeleOp_HM);
+        SK                      = new SK_Block11691(TeleOp_HM, SK_Block11691.ARM_LOCATION.Right);
         ColorSensor             = new AutonColorSensor11691(TeleOp_HM);
         TapeMeasure             = new TapeMeasure11691(TeleOp_HM);
         BC                      = new Block_Check11691(TeleOp_HM);

@@ -26,7 +26,8 @@ public class BaseAuton extends LinearOpMode{
         Foundation11691         autonFoundation;
         LIFT11691               lift;
         Pusher11691             pusher;
-        SK_Block11691           SK;
+        public SK_Block11691           SK_Grab_Right;
+        public SK_Block11691           SK_Grab_Left;
         AutonColorSensor11691   ColorSensor;
         TapeMeasure11691        TapeMea;
         AutonColorSensor11691   AutonSKDetect;
@@ -43,7 +44,8 @@ public class BaseAuton extends LinearOpMode{
             grab            = new GrabBlock11691 (hMap);
             lift            = new LIFT11691(hMap);
             pusher          = new Pusher11691(hMap);
-            SK              = new SK_Block11691(hMap);
+            SK_Grab_Right   = new SK_Block11691(hMap, SK_Block11691.ARM_LOCATION.Right);
+            SK_Grab_Left   = new SK_Block11691(hMap, SK_Block11691.ARM_LOCATION.Left);
             ColorSensor     = new AutonColorSensor11691(hMap);
             autonFoundation = new Foundation11691(hMap);
             TapeMea         = new TapeMeasure11691(hMap);

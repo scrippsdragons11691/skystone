@@ -44,7 +44,7 @@ public class AutonColorCheck11691 extends LinearOpMode {
         grab            = new GrabBlock11691 (hMap);
         lift            = new LIFT11691(hMap);
         pusher          = new Pusher11691(hMap);
-        SK              = new SK_Block11691(hMap);
+        SK              = new SK_Block11691(hMap, SK_Block11691.ARM_LOCATION.Right);
         ColorSensor     = new AutonColorSensor11691(hMap);
         autonFoundation = new Foundation11691(hMap);
         TapeMea         = new TapeMeasure11691(hMap);

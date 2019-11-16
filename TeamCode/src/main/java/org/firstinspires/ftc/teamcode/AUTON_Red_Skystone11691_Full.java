@@ -33,7 +33,7 @@ public class AUTON_Red_Skystone11691_Full extends BaseAuton {
                 turnRight(90, 0.25, 1, telemetry);
                 double totalDistToMove = 57 + totalDistanceMoved;
                 straff(totalDistToMove, 0.85, 4.5, telemetry);
-                SK.SK_ARM(GlobalSettings11691.skhome);
+                //SK.SK_ARM(GlobalSettings11691.skhome);
                 turnRight(90, 0.25, 1, telemetry);
 
                 //grab foundation
@@ -84,7 +84,7 @@ public class AUTON_Red_Skystone11691_Full extends BaseAuton {
             found = ColorSensor.StoneCheck(tele);
             driveForward(distanceToCenter, 0.5, 10, telemetry);
             totalDistanceMoved += distanceToCenter;
-            SK.SK_ARM(GlobalSettings11691.skdown);
+            //SK.SK_ARM(GlobalSettings11691.skdown);
 
             return totalDistanceMoved * -1;
         }

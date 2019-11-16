@@ -24,11 +24,18 @@ public class Auton11691 extends BaseAuton {
         initialize();
         waitForStart();
 
+
+
         while (opModeIsActive()) {
-            
-            //driveForward  (6,1.0,10, telemetry);
-            turnLeft     (45,0.5,10, telemetry);
-            
+
+            SK_Grab_Right.GrabSkystone();
+            SK_Grab_Left.GrabSkystone();
+
+            //driveBackward  (6,0.5,10, telemetry);
+            //turnLeft(0,0.5, 1, telemetry);
+
+
+
             if(true)
             {
                 //turn (-90,0.75,5, telemetry);

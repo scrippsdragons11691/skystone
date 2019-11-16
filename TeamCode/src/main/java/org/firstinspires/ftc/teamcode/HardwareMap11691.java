@@ -87,7 +87,7 @@ public class HardwareMap11691 {
         RHFoundBumper   = (TouchSensor)hMap.get("LHFoundSW");
         LHFoundBumper   = (TouchSensor)hMap.get("RHFoundSW");
         SK_Block        = hMap.get(Servo.class,"sk_servoL");
-        SK_BlockRight        = hMap.get(Servo.class,"sk_servoR");
+        SK_BlockRight    = hMap.get(Servo.class,"sk_servoR");
         imu             = hMap.get(BNO055IMU.class, "imu");
 
         final BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -100,6 +100,7 @@ public class HardwareMap11691 {
         Foundation.setPosition(0.70);
         MoveArm.setPosition(0.05);
         SK_Block.setPosition(0);
+        SK_BlockRight.setPosition(1);
     }
 
 }

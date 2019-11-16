@@ -39,7 +39,7 @@ public class TeleOp11691 extends LinearOpMode{
         TeleOp_InT              = new Intake_11691(TeleOp_HM);
         Spush                   = new Pusher11691(TeleOp_HM);
         grabpos                 = new GrabBlock11691(TeleOp_HM);
-        SK                      = new SK_Block11691(TeleOp_HM, SK_Block11691.ARM_LOCATION.Right);
+        SK                      = new SK_Block11691(TeleOp_HM, SK_Block11691.SKYSTONE_ARM_LOCATION.Right);
         ColorSensor             = new AutonColorSensor11691(TeleOp_HM);
         TapeMeasure             = new TapeMeasure11691(TeleOp_HM);
         BC                      = new Block_Check11691(TeleOp_HM);
@@ -132,17 +132,18 @@ public class TeleOp11691 extends LinearOpMode{
                 }
             }
 
+            //todo which buttons will we use for the skystone grabber?
             if (gamepad2.a){
                 if((runtime.time() - aLastTime) > 0.5)
                 {
                     if(SKgrab){
                         SKgrab = false;
-                        SK.SK_ARM(GlobalSettings11691.skdown);   // moves SK servo to down position
+                        SK.GrabSkystone();
                         aLastTime = runtime.time();
                     }
                     else {
                         SKgrab = true;
-                        SK.SK_ARM(GlobalSettings11691.skhome);   // moves SK servo to home position
+                        SK.goToHomePosition();
                         aLastTime = runtime.time();
                     }
                 }

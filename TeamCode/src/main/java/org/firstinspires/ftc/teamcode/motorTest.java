@@ -1,17 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.ColorSensor;
+
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name="Basic: motorTest", group="Linear Opmode")
@@ -45,7 +40,7 @@ public class motorTest extends LinearOpMode {
         grab            = new GrabBlock11691 (hMap);
         lift            = new LIFT11691(hMap);
         pusher          = new Pusher11691(hMap);
-        SK              = new SK_Block11691(hMap, SK_Block11691.ARM_LOCATION.Right);
+        SK              = new SK_Block11691(hMap, SK_Block11691.SKYSTONE_ARM_LOCATION.Right);
         ColorSensor     = new AutonColorSensor11691(hMap);
         autonFoundation = new Foundation11691(hMap);
         TapeMea         = new TapeMeasure11691(hMap);

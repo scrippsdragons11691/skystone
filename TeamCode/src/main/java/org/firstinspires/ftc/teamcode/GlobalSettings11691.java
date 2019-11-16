@@ -16,7 +16,13 @@ public class GlobalSettings11691 {
     static double intakeStop = 0;
     static double grabRelease = 0.95;
     static double grabBlock = 0.4;
-    static double skhome  = 0;
-    static double skdown = 0.45;
+
+
+    static double RightSKGrabber_homePosition = 1;
+    static double RightSKGrabber_GrabPosition = 0.75;
+    static double RightSKGrabber_InitPosition = RightSKGrabber_homePosition;
+    static double LeftSKGrabber_homePosition = 0.5;
+    static double LeftSKGrabber_GrabPosition = 0.65;
+    static double LeftSKGrabber_InitPosition = 0;
     
 }

@@ -2,23 +2,16 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import com.qualcomm.robotcore.hardware.TouchSensor;
-import org.firstinspires.ftc.robotcore.external.navigation.Position;
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.util.Hardware;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.AnalogInput;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 
 
@@ -38,7 +31,7 @@ public class HardwareMap11691 {
     public Servo MoveArm = null;
     public Servo Grabber = null;
     public Servo Foundation = null;
-    public Servo SK_Block = null;
+    public Servo SK_BlockLeft = null;
     public Servo SK_BlockRight = null;
     public AnalogInput pot;
     public Servo Pusher;
@@ -86,12 +79,11 @@ public class HardwareMap11691 {
         Lift_TS         = (TouchSensor)hMap.get("Lift_TS");
         RHFoundBumper   = (TouchSensor)hMap.get("LHFoundSW");
         LHFoundBumper   = (TouchSensor)hMap.get("RHFoundSW");
-        SK_Block        = hMap.get(Servo.class,"sk_servoL");
+        SK_BlockLeft = hMap.get(Servo.class,"sk_servoL");
         SK_BlockRight    = hMap.get(Servo.class,"sk_servoR");
         imu             = hMap.get(BNO055IMU.class, "imu");
 
         final BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        //parameters.calibrationDataFile = "BNO055IMUCalibration.json";
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         imu.initialize(parameters);
 
@@ -99,8 +91,9 @@ public class HardwareMap11691 {
         Pusher.setPosition(.75);
         Foundation.setPosition(0.70);
         MoveArm.setPosition(0.05);
-        SK_Block.setPosition(0);
-        SK_BlockRight.setPosition(1);
+
+        SK_BlockLeft.setPosition(GlobalSettings11691.LeftSKGrabber_InitPosition);
+        SK_BlockRight.setPosition(GlobalSettings11691.RightSKGrabber_InitPosition);
     }
 
 }

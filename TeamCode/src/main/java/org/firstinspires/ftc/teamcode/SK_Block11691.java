@@ -18,4 +18,7 @@ public SK_Block11691(HardwareMap11691 HMap){
         public void SK_ARM (double ArmPos){
         theHardwareMap.SK_Block.setPosition(ArmPos);
         }
+        public void SK_ARM_Right (double ArmPos){
+                theHardwareMap.SK_BlockRight.setPosition(ArmPos);
+        }
 }

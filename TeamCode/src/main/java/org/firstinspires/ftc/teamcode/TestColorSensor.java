@@ -23,10 +23,10 @@ public class TestColorSensor {
     public TestColorSensor (HardwareMap11691 HMap){
         float hsvValues[] = {0F, 0F, 0F};
         theHardwareMap11691 = HMap;
-        AlphaValue = theHardwareMap11691.autonSensorC.alpha();
-        RedValue = theHardwareMap11691.autonSensorC.red();
-        GreenValue = theHardwareMap11691.autonSensorC.green();
-        BlueValue = theHardwareMap11691.autonSensorC.blue();
+        AlphaValue = theHardwareMap11691.autonSensorCLH.alpha();
+        RedValue = theHardwareMap11691.autonSensorCLH.red();
+        GreenValue = theHardwareMap11691.autonSensorCLH.green();
+        BlueValue = theHardwareMap11691.autonSensorCLH.blue();
         HueValue = hsvValues[0];     
         
         Color.RGBToHSV((int) (RedValue * 255),

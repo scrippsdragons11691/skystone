@@ -34,29 +34,33 @@ public class HardwareMap11691 {
     public DcMotor IntakeR;
     public DcMotor LIFT;
     public DcMotor TapeM;
-    
+
     public Servo MoveArm = null;
     public Servo Grabber = null;
     public Servo Foundation = null;
     public Servo SK_Block = null;
+    public Servo SK_BlockRight = null;
     public AnalogInput pot;
     public Servo Pusher;
     public TouchSensor Lift_TS;
+    public TouchSensor RHFoundBumper;
+    public TouchSensor LHFoundBumper;
 
-    
     public DistanceSensor Sensor2M = null;
     public DistanceSensor left2MSensor = null;
     public DistanceSensor right2MSensor = null;
     public ModernRoboticsI2cRangeSensor rangeSensor = null;
-    public DistanceSensor autonSensorD = null;
+    public DistanceSensor autonSensorDLH = null;
+    public DistanceSensor autonSensorDRH = null;
     public DistanceSensor clrSensorD = null;
-    
+
     public ColorSensor leftColorSensor = null;
     public ColorSensor rightColorSensor = null;
-    public ColorSensor autonSensorC = null;
+    public ColorSensor autonSensorCLH = null;
+    public ColorSensor autonSensorCRH = null;
     public ColorSensor clrSensorC = null;
     public BNO055IMU imu;          // The IMU sensor object
-   
+
 
 
     public HardwareMap11691(HardwareMap hMap){
@@ -73,12 +77,17 @@ public class HardwareMap11691 {
         pot             = (AnalogInput) hMap.get ("Lpot");
         Pusher          = hMap.get(Servo.class,"Push");
         Grabber         = hMap.get(Servo.class,"Grab");
-        autonSensorD    = (DistanceSensor)hMap.get("autonSensor");
-        autonSensorC    = (ColorSensor)hMap.get("autonSensor");
+        autonSensorDLH    = (DistanceSensor)hMap.get("autonSensorLH");
+        autonSensorCLH    = (ColorSensor)hMap.get("autonSensorLH");
+        autonSensorDRH    = (DistanceSensor)hMap.get("autonSensorRH");
+        autonSensorCRH    = (ColorSensor)hMap.get("autonSensorRH");
         clrSensorC      = (ColorSensor)hMap.get("ClrSensor");
         clrSensorD      = (DistanceSensor)hMap.get("ClrSensor");
         Lift_TS         = (TouchSensor)hMap.get("Lift_TS");
-        SK_Block        = hMap.get(Servo.class,"sk_servo");
+        RHFoundBumper   = (TouchSensor)hMap.get("LHFoundSW");
+        LHFoundBumper   = (TouchSensor)hMap.get("RHFoundSW");
+        SK_Block        = hMap.get(Servo.class,"sk_servoL");
+        SK_BlockRight        = hMap.get(Servo.class,"sk_servoR");
         imu             = hMap.get(BNO055IMU.class, "imu");
 
         final BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -91,6 +100,6 @@ public class HardwareMap11691 {
         Foundation.setPosition(0.70);
         MoveArm.setPosition(0.05);
         SK_Block.setPosition(0);
-        }
-        
+    }
+
 }

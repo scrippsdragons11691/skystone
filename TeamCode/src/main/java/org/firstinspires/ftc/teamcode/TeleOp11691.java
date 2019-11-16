@@ -215,7 +215,7 @@ public class TeleOp11691 extends LinearOpMode{
                 TeleOp_DC.straff(straff_power);
             }
             //Telemetry
-            telemetry.addData("Distance","%.2f",TeleOp_HM.autonSensorD.getDistance(DistanceUnit.INCH));
+            telemetry.addData("Distance","%.2f",TeleOp_HM.autonSensorDLH.getDistance(DistanceUnit.INCH));
             telemetry.addData("DR4BPOT","Voltage= %.2f",TeleOp_HM.pot.getVoltage());
             telemetry.addData("target position","Voltage= %.2f",lift.targetPosition);
             telemetry.addData("lift power","Voltage= %.2f", lift_power);

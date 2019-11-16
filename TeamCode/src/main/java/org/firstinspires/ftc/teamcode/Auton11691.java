@@ -26,7 +26,7 @@ public class Auton11691 extends BaseAuton {
 
         while (opModeIsActive()) {
             
-            drive  (6,1.0,10, telemetry);
+            driveForward  (6,1.0,10, telemetry);
             turn     (180,0.5,10, telemetry);
             
             if(true)

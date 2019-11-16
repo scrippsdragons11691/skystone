@@ -80,9 +80,13 @@ public class BaseAuton extends LinearOpMode{
 
 
 
-        protected void drive (double dist, double power, double timeouta, Telemetry tele){
+        protected void driveForward (double dist, double power, double timeouta, Telemetry tele){
             autonDrive.encoderDriveAuton (dist, power,timeouta, tele);
         }
+
+        protected void driveBackward (double dist, double power, double timeouta, Telemetry tele){
+            autonDrive.encoderDriveAuton (dist * -1, power,timeouta, tele);
+    }
 
         protected void turn_HighPowerAtEnd (double angle, double powerturn, double timeoutc, Telemetry tele){
             autonTurn.AutonTurn_HighPowerAtEnd (angle, powerturn, timeoutc, tele);

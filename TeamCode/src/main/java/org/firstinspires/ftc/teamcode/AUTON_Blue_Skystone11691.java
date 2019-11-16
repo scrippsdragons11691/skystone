@@ -16,7 +16,7 @@ public class AUTON_Blue_Skystone11691 extends BaseAuton {
 
         while (opModeIsActive()) {
 
-            drive       (-7,0.5,2,telemetry);
+            driveBackward       (7,0.5,2,telemetry);
             straff      (23,0.5,3, telemetry);
             turn        (0,0.5,4, telemetry);
             waitStep(0.1);
@@ -47,7 +47,7 @@ public class AUTON_Blue_Skystone11691 extends BaseAuton {
         }
         else {
             waitStep(0.2);
-         drive (distanceToNextStone,0.5,10, telemetry);
+         driveForward (distanceToNextStone,0.5,10, telemetry);
          totalDistanceMoved += distanceToNextStone;
          found = ColorSensor.StoneCheck(tele);
          if (found){ 
@@ -55,13 +55,13 @@ public class AUTON_Blue_Skystone11691 extends BaseAuton {
          }
          else {
              waitStep(0.2);
-            drive (distanceToNextStone,0.5,10, telemetry);
+            driveForward (distanceToNextStone,0.5,10, telemetry);
             totalDistanceMoved += distanceToNextStone;
             //SK.SK_ARM(GlobalSettings11691.skdown);
          }
          }
         found = ColorSensor.StoneCheck(tele);
-        drive (distanceToCenter * -1,0.5,10, telemetry);
+        driveBackward (distanceToCenter,0.5,10, telemetry);
         totalDistanceMoved += distanceToCenter;
         SK.SK_ARM(GlobalSettings11691.skdown);
         

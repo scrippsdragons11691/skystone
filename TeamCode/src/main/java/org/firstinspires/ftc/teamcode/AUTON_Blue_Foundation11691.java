@@ -17,7 +17,7 @@ public class AUTON_Blue_Foundation11691 extends BaseAuton {
             
 
             //get off wall
-                drive     (-30,0.75,3, telemetry); 
+                driveBackward     (30,0.75,3, telemetry);
                 foundationDN();
                 waitStep(0.5);
                 
@@ -25,13 +25,13 @@ public class AUTON_Blue_Foundation11691 extends BaseAuton {
                 straff    (-14,0.75,3, telemetry);
                 turn_HighPowerAtEnd      (90,1,3, telemetry);
                 turn_HighPowerAtEnd      (90,1,1, telemetry);
-                drive     (-20,0.75,2, telemetry);
+                driveBackward     (20,0.75,2, telemetry);
                 foundationUP();
                 waitStep(0.5);
                 turn      (90,.25,5, telemetry);
                 straff    (-18,0.75,2, telemetry);
                 turn      (90,.25,5, telemetry);
-                drive     (40,1,3, telemetry);
+                driveForward     (40,1,3, telemetry);
 
             sleep(200000);
         }

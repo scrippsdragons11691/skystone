@@ -19,20 +19,20 @@ public class AUTON_Blue_Skystone11691_Full extends BaseAuton {
         // Get Skystone
             driveBackward       (6,0.5,2,telemetry);
             straff      (23,0.5,3, telemetry);
-            turn        (0,0.5,4, telemetry);
+            turnLeft        (0,0.5,4, telemetry);
             waitStep(0.1);
             double totalDistanceMoved = get_SK      (20, telemetry);
             waitStep(0.8);
         
         //deliver skystone
             straff      (-6,0.5,2, telemetry);
-            turn      (-90,0.5,3, telemetry);
+            turnRight      (90,0.5,3, telemetry);
             waitStep(0.5);
-            turn      (-90,0.25,1.5, telemetry);
+            turnRight      (90,0.25,1.5, telemetry);
             straff       (-52 + totalDistanceMoved,1,6, telemetry);
             
             waitStep(0.8);
-            turn (-90,0.5,4, telemetry);
+            turnRight (90,0.5,4, telemetry);
             
         // Move Foundation
             driveBackward     (8,0.75,3, telemetry);
@@ -49,9 +49,9 @@ public class AUTON_Blue_Skystone11691_Full extends BaseAuton {
     
         // drive under bridge
             waitStep(0.2);
-            turn      (0,.25,1, telemetry);
+            turnLeft      (0,.25,1, telemetry);
             driveForward     (2,1,1, telemetry);
-            turn      (0,.25,1, telemetry);
+            turnLeft      (0,.25,1, telemetry);
             straff    (-8,0.75,1.5, telemetry);
             driveForward     (40,1,3, telemetry);
 

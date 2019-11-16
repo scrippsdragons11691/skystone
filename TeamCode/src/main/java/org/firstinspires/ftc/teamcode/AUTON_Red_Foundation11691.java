@@ -31,13 +31,13 @@ public class AUTON_Red_Foundation11691 extends BaseAuton {
                 turn_HighPowerAtEnd      (-90,1,5, telemetry);
                 driveBackward     (18,1,3, telemetry);
                 foundationUP();
-                turn      (-90,1,5, telemetry);
+                turnRight      (90,1,5, telemetry);
                 waitStep(0.5);
                 driveForward     (2,0.5,3, telemetry);
-                turn      (-90,1,5, telemetry);
+                turnRight      (90,1,5, telemetry);
                 straff    (25,0.5,3, telemetry);
                 waitStep(0.5);
-                turn      (-90,0.25,2, telemetry);
+                turnRight      (90,0.25,2, telemetry);
                 waitStep(8.5);
                 driveForward     (38,1,3.5, telemetry);
                 

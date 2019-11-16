@@ -23,18 +23,18 @@ public class AUTON_Red_Skystone11691_Full extends BaseAuton {
 
                 driveForward(4, .5, 1, telemetry);
                 straff(23, .75, 3, telemetry);
-                turn(0, 0.3, 1, telemetry);
+                turnLeft(0, 0.3, 1, telemetry);
                 waitStep(0.1);
                 double totalDistanceMoved = get_SK(20, telemetry);
                 waitStep(0.8);
                 straff(-5, 0.7, 1.5, telemetry);
-                turn(-90, 0.75, 1.5, telemetry);
+                turnRight(90, 0.75, 1.5, telemetry);
                 waitStep(0.2);
-                turn(-90, 0.25, 1, telemetry);
+                turnRight(90, 0.25, 1, telemetry);
                 double totalDistToMove = 57 + totalDistanceMoved;
                 straff(totalDistToMove, 0.85, 4.5, telemetry);
                 SK.SK_ARM(GlobalSettings11691.skhome);
-                turn(-90, 0.25, 1, telemetry);
+                turnRight(90, 0.25, 1, telemetry);
 
                 //grab foundation
                 driveBackward(11.5, .5, 1, telemetry);
@@ -51,9 +51,9 @@ public class AUTON_Red_Skystone11691_Full extends BaseAuton {
                 waitStep(0.5);
 
                 // Drive under the bridge
-                turn(-180, 0.25, 1, telemetry);
+                turnRight(-180, 0.25, 1, telemetry);
                 straff(-6, 1, 2, telemetry);
-                turn(-180, 0.25, 1, telemetry);
+                turnRight(-180, 0.25, 1, telemetry);
                 waitStep(0.5);
                 driveForward(38, 1, 3.5, telemetry);
                 sleep(200000);

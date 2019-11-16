@@ -28,9 +28,9 @@ public class AUTON_Blue_Foundation11691 extends BaseAuton {
                 driveBackward     (20,0.75,2, telemetry);
                 foundationUP();
                 waitStep(0.5);
-                turn      (90,.25,5, telemetry);
+                turnLeft      (90,.25,5, telemetry);
                 straff    (-18,0.75,2, telemetry);
-                turn      (90,.25,5, telemetry);
+                turnLeft      (90,.25,5, telemetry);
                 driveForward     (40,1,3, telemetry);
 
             sleep(200000);

@@ -74,11 +74,13 @@ public class BaseAuton extends LinearOpMode{
             }
         }
 
-        protected void turn (double angle, double powerturn, double timeoutc, Telemetry tele){
+        protected void turnLeft (double angle, double powerturn, double timeoutc, Telemetry tele){
             autonTurn.AutonTurn (angle, powerturn, timeoutc, tele);
-        }
+    }
 
-
+        protected void turnRight (double angle, double powerturn, double timeoutc, Telemetry tele){
+            autonTurn.AutonTurn (angle * -1, powerturn, timeoutc, tele);
+    }
 
         protected void driveForward (double dist, double power, double timeouta, Telemetry tele){
             autonDrive.encoderDriveAuton (dist, power,timeouta, tele);

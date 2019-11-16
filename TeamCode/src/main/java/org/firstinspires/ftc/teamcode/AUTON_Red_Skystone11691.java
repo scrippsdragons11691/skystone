@@ -21,17 +21,17 @@ public class AUTON_Red_Skystone11691 extends BaseAuton {
             
 
             straff    (23,.75,6, telemetry);
-            turn      (0,0.5,1, telemetry);
+            turnLeft      (0,0.5,1, telemetry);
             waitStep(0.1);
             double totalDistanceMoved = get_SK      (20, telemetry);
             waitStep(0.8);
             straff      (-6,1,3, telemetry);
-            turn      (-90,0.75,4, telemetry);
+            turnRight      (90,0.75,4, telemetry);
             waitStep(0.2);
-            turn      (-90,0.25,1, telemetry);
+            turnRight      (90,0.25,1, telemetry);
             straff       (45 + totalDistanceMoved,1,4.5, telemetry);
             SK.SK_ARM(GlobalSettings11691.skhome);
-            turn      (-90,0.5,1, telemetry);
+            turnRight      (90,0.5,1, telemetry);
             waitStep(0.8);
             straff      (-20,1,3, telemetry);
            

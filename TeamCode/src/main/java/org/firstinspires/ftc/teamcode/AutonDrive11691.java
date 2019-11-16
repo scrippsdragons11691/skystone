@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class AutonDrive11691  {
+public class AutonDrive11691 extends MyIMU11691 {
     //Rev Hex HD Motor 2240 counts per rotation
     static final double COUNTS_PER_MOTOR_REV =      1120; //20 - 537.6, 40 - 1120, 60- 1680 (cpr) Gear Neverest Motor Encoder
     static final double DRIVE_GEAR_REDUTION =       2.2; // This is < 1.0 if geared UP
@@ -19,6 +19,10 @@ public class AutonDrive11691  {
     
     // Constructor
     public AutonDrive11691(HardwareMap11691 HMap){
+
+        // Initializing the base class
+        super(HMap);
+
         theHardwareMap11691 = HMap;
         
       
@@ -139,9 +143,6 @@ public class AutonDrive11691  {
         theHardwareMap11691.LR.setTargetPosition(newLeftBTarget);
         theHardwareMap11691.RR.setTargetPosition(newRightBTarget);
         
-
-
-        
         //Set the motor speed
         theHardwareMap11691.LF.setPower(motorspeed);
         theHardwareMap11691.RF.setPower(motorspeed);
@@ -149,9 +150,35 @@ public class AutonDrive11691  {
         theHardwareMap11691.RR.setPower(motorspeed); 
         
         runtime.reset();
+        double DrivingAngle = globalAngle;
+
+
         while ((runtime.seconds() < timeoutT) &&
                    (theHardwareMap11691.LR.isBusy())) {
-            
+
+            // Use gyro to drive in a straight line.
+            correction = checkDirection(DrivingAngle);
+
+
+            tele.addData("1 imu heading", lastAngles.firstAngle);
+            tele.addData("2 global heading", globalAngle);
+            tele.addData("3 correction", correction);
+            tele.update();
+
+
+
+            //Set the motor speed
+            theHardwareMap11691.LF.setPower(motorspeed + correction);
+            theHardwareMap11691.LR.setPower(motorspeed + correction);
+            theHardwareMap11691.RF.setPower(motorspeed - correction);
+            theHardwareMap11691.RR.setPower(motorspeed - correction);
+
+
+            tele.addData("1 imu heading", lastAngles.firstAngle);
+            tele.addData("2 global heading", globalAngle);
+            tele.addData("3 correction", correction);
+
+
             tele.addData("is_moving drive", is_moving);
             tele.addData("LF encoder","position= %d", theHardwareMap11691.LF.getCurrentPosition());
             tele.addData("RF encoder","position= %d", theHardwareMap11691.RF.getCurrentPosition());
@@ -171,7 +198,6 @@ public class AutonDrive11691  {
         theHardwareMap11691.RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
         theHardwareMap11691.LR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
         theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
-        
 
     }
     
@@ -212,7 +238,26 @@ public void displayPositionTolerance(Telemetry tele)
         ((DcMotorEx)(theHardwareMap11691.RF)).setTargetPositionTolerance(tolerance);
         ((DcMotorEx)(theHardwareMap11691.LR)).setTargetPositionTolerance(tolerance);
         ((DcMotorEx)(theHardwareMap11691.RR)).setTargetPositionTolerance(tolerance);
-    }      
+    }
+
+    private double checkDirection(double angle)
+    {
+        // The gain value determines how sensitive the correction is to direction changes.
+        // You will have to experiment with your robot to get small smooth direction changes
+        // to stay on a straight line.
+        double correction, gain = .075;
+
+        angle = angle - getAngle();
+
+        if (angle == 0)
+            correction = 0;             // no adjustment.
+        else
+            correction = -angle;        // reverse sign of angle for correction.
+
+        correction = correction * gain;
+
+        return correction;
+    }
     
 
 }

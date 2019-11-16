@@ -1,17 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name="Basic: autontest", group="Linear Opmode")
 //@Disabled
@@ -26,10 +15,10 @@ public class Auton11691 extends BaseAuton {
 
         while (opModeIsActive()) {
             
-            drive  (6,1.0,10, telemetry);
-            turn     (180,0.5,10, telemetry);
+            drive  (90,1,10, telemetry);
+            //turn     (180,0.5,10, telemetry);
             
-            if(true)
+            if(false)
             {
                 //turn (-90,0.75,5, telemetry);
                 /*

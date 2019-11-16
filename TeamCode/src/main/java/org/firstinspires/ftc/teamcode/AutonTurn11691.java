@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 
-public class AutonTurn11691 {
+public class AutonTurn11691 extends MyIMU11691 {
 
     static double   ANGLE_TOL           = 0.5;
     public boolean  is_moving           = false;
@@ -22,13 +22,17 @@ public class AutonTurn11691 {
     public double   targetAngle;
     public double   targetSpeed;
     public double   timeout;
-    double  globalAngle, power = .30, correction;
+    //double  globalAngle;
+    double power = .30, correction;
     Telemetry telemetry;
-    Orientation             lastAngles = new Orientation();
+    //Orientation             lastAngles = new Orientation();
     
     HardwareMap11691 HMap11691;
         
     public AutonTurn11691(HardwareMap11691 HMap/*, LinearOpMode opMode*/){
+        // Initializing base class
+        super(HMap);
+
         HMap11691       = HMap;
         runtime         = new ElapsedTime();
         initialangle     = getAbsoluteHeading();
@@ -129,7 +133,7 @@ public class AutonTurn11691 {
     public double getAbsoluteHeading() {
        // return HMap11691.imu.getAngularOrientation(AxesReference.INTRINSIC , AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
         
-        Orientation angles = HMap11691.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
 
@@ -152,10 +156,5 @@ public class AutonTurn11691 {
             HMap11691.RR.setPower(-motorSetPoint);
     }
     
-        private void resetAngle()
-    {
-        lastAngles = HMap11691.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        globalAngle = 0;
-    }
 }        

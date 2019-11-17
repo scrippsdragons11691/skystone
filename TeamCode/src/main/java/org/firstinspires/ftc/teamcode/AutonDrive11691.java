@@ -36,9 +36,9 @@ public class AutonDrive11691 extends MyIMU11691 {
      }
     
     // Straffing Auton 
-    public void Auton_Straff (double dist_Straff_In, double speed_Straff, double timeoutS, Telemetry tele){
-      
-          
+    public void Auton_Straff (double dist_Straff_In, double speed_Straff, double timeoutS, Telemetry tele)
+    {
+
         int newStraffLeftFTarget;
         int newStraffRightFTarget;
         int newStraffLeftBTarget;
@@ -77,7 +77,24 @@ public class AutonDrive11691 extends MyIMU11691 {
         theHardwareMap11691.RR.setPower(speed_Straff); 
         
         runtime.reset();
-        while ((runtime.seconds() < timeoutS) && (theHardwareMap11691.LR.isBusy())){
+        double DrivingAngle = globalAngle;
+
+        while (runtime.seconds() < timeoutS && theHardwareMap11691.LF.isBusy() &&
+                theHardwareMap11691.LR.isBusy() &&
+                theHardwareMap11691.RF.isBusy() &&
+                theHardwareMap11691.RR.isBusy())
+        {
+
+            // Use gyro to drive in a straight line.
+            correction = checkDirectionStraff(DrivingAngle);
+
+            //Set the motor speed
+            runtime.reset();
+            theHardwareMap11691.LF.setPower(speed_Straff + correction);
+            theHardwareMap11691.LR.setPower(speed_Straff + correction);
+            theHardwareMap11691.RF.setPower(speed_Straff - correction);
+            theHardwareMap11691.RR.setPower(speed_Straff - correction);
+
             tele.addData("is_moving drive", is_moving);
             tele.addData("LF encoder","position= %d", theHardwareMap11691.LF.getCurrentPosition());
             tele.addData("RF encoder","position= %d", theHardwareMap11691.RF.getCurrentPosition());
@@ -153,19 +170,20 @@ public class AutonDrive11691 extends MyIMU11691 {
         double DrivingAngle = globalAngle;
 
 
-        while ((runtime.seconds() < timeoutT) &&
-                   (theHardwareMap11691.LR.isBusy())) {
+        while (runtime.seconds() < timeoutT &&
+                theHardwareMap11691.LF.isBusy() &&
+                theHardwareMap11691.LR.isBusy() &&
+                theHardwareMap11691.RF.isBusy() &&
+                theHardwareMap11691.RR.isBusy())
+        {
 
             // Use gyro to drive in a straight line.
             correction = checkDirection(DrivingAngle);
-
 
             tele.addData("1 imu heading", lastAngles.firstAngle);
             tele.addData("2 global heading", globalAngle);
             tele.addData("3 correction", correction);
             tele.update();
-
-
 
             //Set the motor speed
             theHardwareMap11691.LF.setPower(motorspeed + correction);
@@ -258,6 +276,24 @@ public void displayPositionTolerance(Telemetry tele)
 
         return correction;
     }
-    
+
+    private double checkDirectionStraff(double angle)
+    {
+        // The gain value determines how sensitive the correction is to direction changes.
+        // You will have to experiment with your robot to get small smooth direction changes
+        // to stay on a straight line.
+        double correction, gain = .075;
+
+        angle = angle - getAngle();
+
+        if (angle == 0)
+            correction = 0;             // no adjustment.
+        else
+            correction = -angle;        // reverse sign of angle for correction.
+
+        correction = correction * gain;
+
+        return correction;
+    }
 
 }

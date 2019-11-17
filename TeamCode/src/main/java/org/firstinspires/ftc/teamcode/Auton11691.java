@@ -1,17 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name="Basic: autontest", group="Linear Opmode")
 //@Disabled
@@ -27,11 +16,27 @@ public class Auton11691 extends BaseAuton {
 
 
         while (opModeIsActive()) {
+//            driveBackward  (60,1,5, telemetry);
 
-            SK_Grab_Right.GrabSkystone();
-            SK_Grab_Left.GrabSkystone();
+            driveBackward  (1,1,0.5, telemetry);
+            waitStep(0.2);
 
-            //driveBackward  (6,0.5,10, telemetry);
+            straff(16,0.75,2,telemetry);
+            waitStep(0.2);
+
+            autonTurn.AutonTurn (0, 0.25, 0.5, telemetry);
+            waitStep(0.2);
+
+
+            driveBackward  (27,1,2.5, telemetry);
+            autonDrive.DriveByBumperSwitches(0.25, 1);
+
+
+            foundationDN();
+            driveBackward  (4,1,0.5, telemetry);
+            //waitStep(0.8);
+            autonTurn.AutonTurn_HighPowerAtEnd(-90,0.5,0.25,3,telemetry);
+            driveBackward  (18,1,2, telemetry);
             //turnLeft(0,0.5, 1, telemetry);
 
 

@@ -17,7 +17,7 @@ public class AutonDrive11691 extends BaseAutonIMU {
 
     double minimumMotorSpeed = 0;
     double maximumMotorSpeed = 1;
-    double rampTimeInSec = 0.3;
+    double rampTimeInSec = 1;
 
     ElapsedTime runtime     = new ElapsedTime();
 
@@ -156,7 +156,7 @@ public class AutonDrive11691 extends BaseAutonIMU {
                 (theHardwareMap11691.LR.isBusy())) {
 
             double rampedSpeed = speed;
-            int remainingEncoderCounts = newLeftFTarget - theHardwareMap11691.LF.getCurrentPosition();
+            int remainingEncoderCounts = Math.abs(newLeftFTarget - theHardwareMap11691.LF.getCurrentPosition());
 
             if(rampTimer.seconds() <= rampTimeInSec) {
                 // Spinning the wheels introduces an error when driving using encoders. Therefore ramp the wheel power up so that the wheels do not spin.
@@ -172,10 +172,13 @@ public class AutonDrive11691 extends BaseAutonIMU {
             double correction = checkDirection(DrivingAngle);
 
             //Set the motor speed
-            theHardwareMap11691.LF.setPower(rampedSpeed + correction);
-            theHardwareMap11691.LR.setPower(rampedSpeed + correction);
-            theHardwareMap11691.RF.setPower(rampedSpeed - correction);
-            theHardwareMap11691.RR.setPower(rampedSpeed - correction);
+            if (speed > 0){
+                correction *= -1;
+            }
+            theHardwareMap11691.LF.setPower(rampedSpeed - correction);
+            theHardwareMap11691.LR.setPower(rampedSpeed - correction);
+            theHardwareMap11691.RF.setPower(rampedSpeed + correction);
+            theHardwareMap11691.RR.setPower(rampedSpeed + correction);
 
             tele.addData("1 imu heading", lastAngles.firstAngle);
             tele.addData("2 global heading", globalAngle);
@@ -216,6 +219,31 @@ public class AutonDrive11691 extends BaseAutonIMU {
         theHardwareMap11691.RR.setPower(speeda);
     }
 
+    public void DriveByBumperSwitches (double speeda, double timeout)    {
+
+        theHardwareMap11691.LF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
+        theHardwareMap11691.RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
+        theHardwareMap11691.LR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
+        theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
+
+        theHardwareMap11691.LF.setPower(-speeda);
+        theHardwareMap11691.RF.setPower(-speeda);
+        theHardwareMap11691.LR.setPower(-speeda);
+        theHardwareMap11691.RR.setPower(-speeda);
+
+        ElapsedTime timeoutTimer = new ElapsedTime();
+        timeoutTimer.reset();
+
+        while((timeoutTimer.seconds() < timeout) &&
+                (theHardwareMap11691.LHFoundBumper.isPressed() == false) &&
+                (theHardwareMap11691.RHFoundBumper.isPressed() == false)) {
+
+        }
+        theHardwareMap11691.LF.setPower(0);
+        theHardwareMap11691.RF.setPower(0);
+        theHardwareMap11691.LR.setPower(0);
+        theHardwareMap11691.RR.setPower(0);
+    }
 
     public void displayPositionTolerance(Telemetry tele)
     {

@@ -21,6 +21,7 @@ public class AutonTurn11691 extends BaseAutonIMU{
     public double initialangle;
     public double   targetAngle;
     public double   targetSpeed;
+    public double   targetDeltaSpeed;
     public double   timeout;
     double  power = .30, correction;
     Telemetry telemetry;
@@ -51,17 +52,21 @@ public class AutonTurn11691 extends BaseAutonIMU{
         gotoPosition(0.15);
    }
    public void AutonTurn_HighPowerAtEnd (double Angle, double speed, double timeoute, Telemetry tele) {
+       AutonTurn_HighPowerAtEnd (Angle,  speed, 0,  timeoute,  tele);
+   }
+
+    public void AutonTurn_HighPowerAtEnd (double Angle, double speed, double deltaSpeed, double timeoute, Telemetry tele) {
         is_moving=true;
         targetAngle = Angle;
         targetSpeed = speed;
+        targetDeltaSpeed = deltaSpeed;
         timeout = timeoute;
         telemetry = tele;
         telemetry.addData("T_angle;",targetAngle);
         telemetry.update();
         gotoPosition(0.25);
-   }
-       
-    
+    }
+
     public void gotoPosition(double powerForFinalAdjust) {
         actualangle     = getAbsoluteHeading();
 
@@ -81,15 +86,15 @@ public class AutonTurn11691 extends BaseAutonIMU{
 
             if(error < 0) 
             {
-                rotate( targetSpeed ); //clockwise
+                rotate( targetSpeed, targetDeltaSpeed ); //clockwise
             } else if(error > 0) 
             {
-                rotate( -targetSpeed); //counterclockwise
+                rotate( -targetSpeed, targetDeltaSpeed); //counterclockwise
             }
              
         } 
         
-        rotate(0);
+        rotate(0,0);
         
         //waitStep(0.5);
         
@@ -105,15 +110,15 @@ public class AutonTurn11691 extends BaseAutonIMU{
 
             if(error < 0) 
             {
-                rotate(  powerForFinalAdjust); //clockwise
+                rotate(  powerForFinalAdjust, 0); //clockwise
             } else if(error > 0) 
             {
-                rotate( -1 * powerForFinalAdjust); //counterclockwise
+                rotate( -1 * powerForFinalAdjust, 0); //counterclockwise
             }
              
         } 
 
-        rotate(0);
+        rotate(0,0);
 
     }
     
@@ -143,10 +148,18 @@ public class AutonTurn11691 extends BaseAutonIMU{
         return globalAngle;
     }
 
-    void rotate(double motorSetPoint){
+    void rotate(double motorSetPoint, double deltaPower){
+        if(deltaPower < 0.0001) {
             theHardwareMap11691.LF.setPower(motorSetPoint);
-            theHardwareMap11691.RF.setPower(-motorSetPoint);
             theHardwareMap11691.LR.setPower(motorSetPoint);
+            theHardwareMap11691.RF.setPower(-motorSetPoint);
             theHardwareMap11691.RR.setPower(-motorSetPoint);
+        }
+        else {
+            theHardwareMap11691.LF.setPower(motorSetPoint + deltaPower);
+            theHardwareMap11691.LR.setPower(motorSetPoint + deltaPower);
+            theHardwareMap11691.RF.setPower(motorSetPoint - deltaPower);
+            theHardwareMap11691.RR.setPower(motorSetPoint - deltaPower);
+        }
     }
 }

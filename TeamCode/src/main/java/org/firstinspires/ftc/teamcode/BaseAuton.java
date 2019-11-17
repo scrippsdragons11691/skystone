@@ -96,6 +96,10 @@ public class BaseAuton extends LinearOpMode{
             autonTurn.AutonTurn_HighPowerAtEnd (angle, powerturn, timeoutc, tele);
         }
 
+    protected void turn_HighPowerAtEnd (double angle, double powerturn, double deltaPower, double timeoutc, Telemetry tele){
+        autonTurn.AutonTurn_HighPowerAtEnd (angle, powerturn, deltaPower, timeoutc, tele);
+    }
+
         protected void straff (double dist, double power, double timeoutb,Telemetry tele){
             autonDrive.Auton_Straff (dist,power,timeoutb, tele);
         }

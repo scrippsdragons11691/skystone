@@ -31,6 +31,6 @@ public class GlobalSettings11691 {
     // to stay on a straight line.
     static double ImuCorrectionFactor = 0.075;
 
-    static int EncoderCountRampDownThreshold = 1120;
+    static int EncoderCountRampDownThreshold = 1120/2;
     static double MinimumRampDownSpeed = 0.25; // Do not ramp down speed to a smaller value so as to not get stuck due to friction
 }

@@ -33,57 +33,25 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.view.View;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+@Autonomous(name="color sensoer test", group="Autons")
 
-import java.util.Locale;
+public class ColorSensorTest extends BaseAuton {
 
-/*
- * This is an example LinearOpMode that shows how to use
- * the REV Robotics Color-Distance Sensor.
- *
- * It assumes the sensor is configured with the name "sensor_color_distance".
- *
- * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.
- */
-
-@Disabled                            // Comment this out to add to the opmode list
-public class ColorSensorTest extends LinearOpMode {
-
-    /**
-     * Note that the REV Robotics Color-Distance incorporates two sensors into one device.
-     * It has a light/distance (range) sensor.  It also has an RGB color sensor.
-     * The light/distance sensor saturates at around 2" (5cm).  This means that targets that are 2"
-     * or closer will display the same value for distance/light detected.
-     *
-     * Although you configure a single REV Robotics Color-Distance sensor in your configuration file,
-     * you can treat the sensor as two separate sensors that share the same name in your op mode.
-     *
-     * In this example, we represent the detected color by a hue, saturation, and value color
-     * model (see https://en.wikipedia.org/wiki/HSL_and_HSV).  We change the background
-     * color of the screen to match the detected color.
-     *
-     * In this example, we  also use the distance sensor to display the distance
-     * to the target object.  Note that the distance sensor saturates at around 2" (5 cm).
-     *
-     */
     ColorSensor sensorColor;
     DistanceSensor sensorDistance;
 
     @Override
     public void runOpMode() {
 
-        // get a reference to the color sensor.
-        sensorColor = hardwareMap.get(ColorSensor.class, "sensor_color_distance");
+        initialize();
+
 
         // get a reference to the distance sensor that shares the same name.
-        sensorDistance = hardwareMap.get(DistanceSensor.class, "sensor_color_distance");
+        //sensorDistance = hardwareMap.get(DistanceSensor.class, "sensor_color_distance");
 
         // hsvValues is an array that will hold the hue, saturation, and value information.
         float hsvValues[] = {0F, 0F, 0F};
@@ -109,19 +77,20 @@ public class ColorSensorTest extends LinearOpMode {
             // convert the RGB values to HSV values.
             // multiply by the SCALE_FACTOR.
             // then cast it back to int (SCALE_FACTOR is a double)
-            Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
-                    (int) (sensorColor.green() * SCALE_FACTOR),
-                    (int) (sensorColor.blue() * SCALE_FACTOR),
+            Color.RGBToHSV((int) (leftColorSensor.theSensor.red() * SCALE_FACTOR),
+                    (int) (leftColorSensor.theSensor.green() * SCALE_FACTOR),
+                    (int) (leftColorSensor.theSensor.blue() * SCALE_FACTOR),
                     hsvValues);
 
             // send the info back to driver station using telemetry function.
-            telemetry.addData("Distance (cm)",
-                    String.format(Locale.US, "%.02f", sensorDistance.getDistance(DistanceUnit.CM)));
-            telemetry.addData("Alpha", sensorColor.alpha());
-            telemetry.addData("Red  ", sensorColor.red());
-            telemetry.addData("Green", sensorColor.green());
-            telemetry.addData("Blue ", sensorColor.blue());
+            //telemetry.addData("Distance (cm)",
+                   // String.format(Locale.US, "%.02f", sensorDistance.getDistance(DistanceUnit.CM)));
+            telemetry.addData("Alpha", leftColorSensor.theSensor.alpha());
+            telemetry.addData("Red  ", leftColorSensor.theSensor.red());
+            telemetry.addData("Green", leftColorSensor.theSensor.green());
+            telemetry.addData("Blue ", leftColorSensor.theSensor.blue());
             telemetry.addData("Hue", hsvValues[0]);
+            telemetry.addData("Saturation", hsvValues[1]);
 
             // change the background color to match the color detected by the RGB sensor.
             // pass a reference to the hue, saturation, and value array as an argument

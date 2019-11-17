@@ -1,11 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.app.Activity;
 import android.graphics.Color;
-import android.view.View;
-
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 
 
 public class TestColorSensor {
@@ -23,10 +18,10 @@ public class TestColorSensor {
     public TestColorSensor (HardwareMap11691 HMap){
         float hsvValues[] = {0F, 0F, 0F};
         theHardwareMap11691 = HMap;
-        AlphaValue = theHardwareMap11691.autonSensorCLH.alpha();
-        RedValue = theHardwareMap11691.autonSensorCLH.red();
-        GreenValue = theHardwareMap11691.autonSensorCLH.green();
-        BlueValue = theHardwareMap11691.autonSensorCLH.blue();
+        AlphaValue = theHardwareMap11691.leftColorSensor.alpha();
+        RedValue = theHardwareMap11691.leftColorSensor.red();
+        GreenValue = theHardwareMap11691.leftColorSensor.green();
+        BlueValue = theHardwareMap11691.leftColorSensor.blue();
         HueValue = hsvValues[0];     
         
         Color.RGBToHSV((int) (RedValue * 255),

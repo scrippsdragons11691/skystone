@@ -20,7 +20,7 @@ public class TeleOp11691 extends LinearOpMode{
     LIFT11691 lift;
     Pusher11691 Spush;
     SK_Block11691 SK;
-    AutonColorSensor11691 ColorSensor;
+    //AutonColorSensor11691 ColorSensor;
     TapeMeasure11691 TapeMeasure;
     Block_Check11691 BC;
     ElapsedTime runtime;
@@ -40,7 +40,7 @@ public class TeleOp11691 extends LinearOpMode{
         Spush                   = new Pusher11691(TeleOp_HM);
         grabpos                 = new GrabBlock11691(TeleOp_HM);
         SK                      = new SK_Block11691(TeleOp_HM, SK_Block11691.SKYSTONE_ARM_LOCATION.Right);
-        ColorSensor             = new AutonColorSensor11691(TeleOp_HM);
+        //ColorSensor             = new AutonColorSensor11691(TeleOp_HM);
         TapeMeasure             = new TapeMeasure11691(TeleOp_HM);
         BC                      = new Block_Check11691(TeleOp_HM);
 

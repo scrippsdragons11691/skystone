@@ -28,9 +28,10 @@ public class BaseAuton extends LinearOpMode{
         Pusher11691             pusher;
         public SK_Block11691           SK_Grab_Right;
         public SK_Block11691           SK_Grab_Left;
-        AutonColorSensor11691   ColorSensor;
+        ColorSensor11691   leftColorSensor;
+        ColorSensor11691   rightColorSensor;
         TapeMeasure11691        TapeMea;
-        AutonColorSensor11691   AutonSKDetect;
+        //AutonColorSensor11691   AutonSKDetect;
         public void BaseAuton() {
         }
 
@@ -46,10 +47,11 @@ public class BaseAuton extends LinearOpMode{
             pusher          = new Pusher11691(hMap);
             SK_Grab_Right   = new SK_Block11691(hMap, SK_Block11691.SKYSTONE_ARM_LOCATION.Right);
             SK_Grab_Left    = new SK_Block11691(hMap, SK_Block11691.SKYSTONE_ARM_LOCATION.Left);
-            ColorSensor     = new AutonColorSensor11691(hMap);
+            leftColorSensor     = new ColorSensor11691(hMap, ColorSensor11691.SKYSTONE_COLOR_SENSOR_LOCATION.Left);
+            rightColorSensor     = new ColorSensor11691(hMap, ColorSensor11691.SKYSTONE_COLOR_SENSOR_LOCATION.Right);
             autonFoundation = new Foundation11691(hMap);
             TapeMea         = new TapeMeasure11691(hMap);
-            AutonSKDetect   = new AutonColorSensor11691(hMap);
+            //AutonSKDetect   = new AutonColorSensor11691(hMap);
         }
 
         protected void delay (double timeoutc) {
@@ -77,11 +79,11 @@ public class BaseAuton extends LinearOpMode{
         }
 
         protected void turnLeft (double angle, double powerturn, double timeoutc, Telemetry tele){
-            autonTurn.AutonTurn (angle, powerturn, timeoutc, tele);
+            autonTurn.AutonTurn (angle * -1, powerturn, timeoutc, tele);
     }
 
         protected void turnRight (double angle, double powerturn, double timeoutc, Telemetry tele){
-            autonTurn.AutonTurn (angle * -1, powerturn, timeoutc, tele);
+            autonTurn.AutonTurn (angle, powerturn, timeoutc, tele);
     }
 
         protected void driveForward (double dist, double power, double timeouta, Telemetry tele){
@@ -120,6 +122,33 @@ public class BaseAuton extends LinearOpMode{
         protected void pusherHOME()       { pusher.Pusher     (GlobalSettings11691.pushHome);}
         protected void pusherPUSH()       { pusher.Pusher     (GlobalSettings11691.pushBlock);}
 
+
+    double get_SkyStone (double timeout,Telemetry tele){
+        double distanceToNextStone = 7;
+        double distanceToCenter = -1;
+        double totalDistanceMoved = 0;
+
+            leftColorSensor.StoneCheck();
+            if (leftColorSensor.StoneCheck()){
+                SK_Grab_Left.GrabSkystone();
+            }
+            else if(rightColorSensor.StoneCheck()){
+
+                SK_Grab_Right.GrabSkystone();
+               /* waitStep(0.2);
+                driveForward (distanceToNextStone,0.75,2, telemetry);
+                totalDistanceMoved += distanceToNextStone;
+                //SK.SK_ARM(GlobalSettings11691.skdown);*/
+            }else {
+                straff(distanceToNextStone,0.5,1, tele);
+                waitStep(0.5);
+                SK_Grab_Right.GrabSkystone();
+                totalDistanceMoved += distanceToNextStone;
+            }
+
+
+        return totalDistanceMoved * -1;
+    }
 
     }
 

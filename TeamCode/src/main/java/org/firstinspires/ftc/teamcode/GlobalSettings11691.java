@@ -16,15 +16,16 @@ public class GlobalSettings11691 {
     static double intakeStop = 0;
     static double grabRelease = 0.95;
     static double grabBlock = 0.4;
+    static double skystoneSaturationValue = 0.5;
 
 
     static double RightSKGrabber_homePosition = 1;
-    static double RightSKGrabber_GrabPosition = 0.75;
+    static double RightSKGrabber_GrabPosition = 0.65;
     static double RightSKGrabber_InitPosition = RightSKGrabber_homePosition;
 
-    static double LeftSKGrabber_homePosition = 0.5;
-    static double LeftSKGrabber_GrabPosition = 0.65;
-    static double LeftSKGrabber_InitPosition = 0;
+    static double LeftSKGrabber_homePosition = 0;
+    static double LeftSKGrabber_GrabPosition = 0.77;
+    static double LeftSKGrabber_InitPosition = LeftSKGrabber_homePosition;
 
     // The gain value determines how sensitive the correction is to direction changes.
     // You will have to experiment with your robot to get small smooth direction changes

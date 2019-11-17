@@ -49,8 +49,8 @@ public class HardwareMap11691 {
 
     public ColorSensor leftColorSensor = null;
     public ColorSensor rightColorSensor = null;
-    public ColorSensor autonSensorCLH = null;
-    public ColorSensor autonSensorCRH = null;
+    //public ColorSensor autonSensorCLH = null;
+    //public ColorSensor autonSensorCRH = null;
     public ColorSensor clrSensorC = null;
     public BNO055IMU imu;          // The IMU sensor object
 
@@ -71,9 +71,9 @@ public class HardwareMap11691 {
         Pusher          = hMap.get(Servo.class,"Push");
         Grabber         = hMap.get(Servo.class,"Grab");
         autonSensorDLH    = (DistanceSensor)hMap.get("autonSensorLH");
-        autonSensorCLH    = (ColorSensor)hMap.get("autonSensorLH");
+        leftColorSensor    = (ColorSensor)hMap.get("autonSensorLH");
         autonSensorDRH    = (DistanceSensor)hMap.get("autonSensorRH");
-        autonSensorCRH    = (ColorSensor)hMap.get("autonSensorRH");
+        rightColorSensor    = (ColorSensor)hMap.get("autonSensorRH");
         clrSensorC      = (ColorSensor)hMap.get("ClrSensor");
         clrSensorD      = (DistanceSensor)hMap.get("ClrSensor");
         Lift_TS         = (TouchSensor)hMap.get("Lift_TS");

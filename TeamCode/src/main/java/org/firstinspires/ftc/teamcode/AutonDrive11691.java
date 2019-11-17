@@ -172,7 +172,7 @@ public class AutonDrive11691 extends BaseAutonIMU {
             double correction = checkDirection(DrivingAngle);
 
             //Set the motor speed
-            if (speed > 0){
+            if (distanceInches > 0){
                 correction *= -1;
             }
             theHardwareMap11691.LF.setPower(rampedSpeed - correction);

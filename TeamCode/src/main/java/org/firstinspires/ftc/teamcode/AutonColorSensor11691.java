@@ -1,13 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.app.Activity;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import android.graphics.Color;
-import android.view.View;
-
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
-
 
 public class AutonColorSensor11691 {
 
@@ -32,7 +25,7 @@ public class AutonColorSensor11691 {
         float hsvValues[] = {0F, 0F, 0F};
         float hsvValues2[] = {0F, 0F, 0F};
         theHardwareMap11691 = HMap;
-        AlphaValue = theHardwareMap11691.autonSensorCLH.alpha();
+    /*    AlphaValue = theHardwareMap11691.autonSensorCLH.alpha();
         RedValue = theHardwareMap11691.autonSensorCLH.red();
         GreenValue = theHardwareMap11691.autonSensorCLH.green();
         BlueValue = theHardwareMap11691.autonSensorCLH.blue();
@@ -53,12 +46,13 @@ public class AutonColorSensor11691 {
                 hsvValues2);
         HueValue2 = hsvValues2[0];
         
-
+*/
     }   
         //checks for stone/skystone
     public boolean StoneCheck(Telemetry tele){
-        float hsvValues[] = {0F, 0F, 0F};
-        AlphaValue = theHardwareMap11691.autonSensorCLH.alpha();
+        return false;
+        //float hsvValues[] = {0F, 0F, 0F};
+        /*AlphaValue = theHardwareMap11691.autonSensorCLH.alpha();
         RedValue = theHardwareMap11691.autonSensorCLH.red();
         GreenValue = theHardwareMap11691.autonSensorCLH.green();
         BlueValue = theHardwareMap11691.autonSensorCLH.blue();
@@ -88,7 +82,7 @@ public class AutonColorSensor11691 {
                 Stone = false;
             }
             return SkyStone;
-
+*/
         /*if(HueValue2 >= 29){
             SkyStone2 = true;
         }else if(HueValue2 <= 29){

@@ -16,9 +16,10 @@ public class Auton11691 extends BaseAuton {
 
 
         while (opModeIsActive()) {
-//            driveBackward  (60,1,5, telemetry);
+            driveForward  (60,1,5, telemetry);
+            driveBackward  (60,1,5, telemetry);
 
-            driveBackward  (1,1,0.5, telemetry);
+/*            driveBackward  (1,1,0.5, telemetry);
             waitStep(0.2);
 
             straff(16,0.75,2,telemetry);
@@ -38,7 +39,7 @@ public class Auton11691 extends BaseAuton {
             autonTurn.AutonTurn_HighPowerAtEnd(-90,0.5,0.25,3,telemetry);
             driveBackward  (18,1,2, telemetry);
             //turnLeft(0,0.5, 1, telemetry);
-
+*/
 
 
             if(true)

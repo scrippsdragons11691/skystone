@@ -29,12 +29,9 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
+import android.graphics.Color;
+
+import com.qualcomm.robotcore.hardware.ColorSensor;
 
 
 /**
@@ -53,19 +50,54 @@ import com.qualcomm.robotcore.util.Range;
 
 public class ColorSensor11691  {
 
- HardwareMap11691 theHardwareMap11691;
- 
- /*
- public ColorSensor11691 (HardwareMap11691 hmap){
- theHardwareMap11691 = hmap;
+ public ColorSensor theSensor;
+
+ public enum SKYSTONE_COLOR_SENSOR_LOCATION {Left,Right}
+
+ public ColorSensor11691  (HardwareMap11691 HMap, SKYSTONE_COLOR_SENSOR_LOCATION sensor){
+
+  if(sensor == SKYSTONE_COLOR_SENSOR_LOCATION.Right)
+  {
+   theSensor = HMap.rightColorSensor;
+  }
+  else
+  {
+   theSensor = HMap.leftColorSensor;
+  }
  }
- public int ClrSensor2 (){
-     int ColorSensor2 = theHardwareMap11691.leftColorSensor.alpha();
-     return ColorSensor2;
+
+ public boolean StoneCheck()
+ {
+  //double AlphaValue;
+  double RedValue;
+  double GreenValue;
+  double BlueValue;
+  double HueValue;
+  double SaturationValue;
+  boolean stone_present;
+  boolean Stone;
+
+  float hsvValues[] = {0F, 0F, 0F};
+  //AlphaValue = theSensor.alpha();
+  RedValue = theSensor.red();
+  GreenValue = theSensor.green();
+  BlueValue = theSensor.blue();
+
+
+  Color.RGBToHSV((int) (RedValue * 255),
+          (int) (GreenValue * 255),
+          (int) (BlueValue * 255),
+          hsvValues);
+  HueValue = hsvValues[0];
+  SaturationValue = hsvValues[1];
+
+  if(SaturationValue <= GlobalSettings11691.skystoneSaturationValue){
+   return true;
+  }else {
+   return false;
+  }
+
+ }
+
 }
 
-public int ClrSensor3(){
-     int ColorSensor3 = theHardwareMap11691.rightColorSensor.alpha();
-     return ColorSensor3;
-}*/
-}

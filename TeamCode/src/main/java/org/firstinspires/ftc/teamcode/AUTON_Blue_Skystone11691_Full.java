@@ -2,8 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-
 @Autonomous(name="Blue Skystone Full", group="Autons")
 
 public class AUTON_Blue_Skystone11691_Full extends BaseAuton {
@@ -21,7 +19,7 @@ public class AUTON_Blue_Skystone11691_Full extends BaseAuton {
             straff      (23,0.5,3, telemetry);
             turnLeft        (0,0.5,4, telemetry);
             waitStep(0.1);
-            double totalDistanceMoved = get_SK      (20, telemetry);
+            double totalDistanceMoved = get_SkyStone      (20, telemetry);
             waitStep(0.8);
         
         //deliver skystone
@@ -61,35 +59,6 @@ public class AUTON_Blue_Skystone11691_Full extends BaseAuton {
             
     }
 
-    double get_SK (double timeout,Telemetry tele){
-        boolean found = ColorSensor.StoneCheck(tele);
-        double distanceToNextStone = 8;
-        double distanceToCenter = 2;
-        double totalDistanceMoved = 0;
-        if (found) { 
-         //SK.SK_ARM(GlobalSettings11691.skdown);
-        }
-        else {
-            waitStep(0.2);
-         driveForward (distanceToNextStone,0.5,10, telemetry);
-         totalDistanceMoved += distanceToNextStone;
-         found = ColorSensor.StoneCheck(tele);
-         if (found){ 
-           // SK.SK_ARM(GlobalSettings11691.skdown);
-         }
-         else {
-             waitStep(0.2);
-            driveForward (distanceToNextStone,0.5,10, telemetry);
-            totalDistanceMoved += distanceToNextStone;
-            //SK.SK_ARM(GlobalSettings11691.skdown);
-         }
-         }
-        found = ColorSensor.StoneCheck(tele);
-        driveBackward (distanceToCenter,0.5,10, telemetry);
-        totalDistanceMoved += distanceToCenter;
-        //SK.SK_ARM(GlobalSettings11691.skdown);
-        
-        return totalDistanceMoved *-1;
-    }
+
 }
 

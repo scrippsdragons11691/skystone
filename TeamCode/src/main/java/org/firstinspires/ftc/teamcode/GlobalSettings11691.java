@@ -30,4 +30,7 @@ public class GlobalSettings11691 {
     // You will have to experiment with your robot to get small smooth direction changes
     // to stay on a straight line.
     static double ImuCorrectionFactor = 0.075;
+
+    static int EncoderCountRampDownThreshold = 1120;
+    static double MinimumRampDownSpeed = 0.25; // Do not ramp down speed to a smaller value so as to not get stuck due to friction
 }

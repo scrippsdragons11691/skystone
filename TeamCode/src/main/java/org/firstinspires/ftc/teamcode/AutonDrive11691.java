@@ -155,8 +155,18 @@ public class AutonDrive11691 extends BaseAutonIMU {
         while ((runtime.seconds() < timeoutT) &&
                 (theHardwareMap11691.LR.isBusy())) {
 
-            // Spinning the wheels introduces an error when driving using encoders. Therefore ramp the wheel power up so that the wheels do not spin.
-            double rampedSpeed = Range.clip(speed * (rampTimer.seconds()/rampTimeInSec), minimumMotorSpeed, maximumMotorSpeed);
+            double rampedSpeed = speed;
+            int remainingEncoderCounts = newLeftFTarget - theHardwareMap11691.LF.getCurrentPosition();
+
+            if(rampTimer.seconds() <= rampTimeInSec) {
+                // Spinning the wheels introduces an error when driving using encoders. Therefore ramp the wheel power up so that the wheels do not spin.
+                rampedSpeed = Range.clip(speed * (rampTimer.seconds() / rampTimeInSec), minimumMotorSpeed, speed);
+            }
+            else if(remainingEncoderCounts < GlobalSettings11691.EncoderCountRampDownThreshold)
+            {
+                // If we shut down motor power suddenly, the robot will slide. Therefore ramp power down
+                rampedSpeed = Range.clip(speed * (remainingEncoderCounts / GlobalSettings11691.EncoderCountRampDownThreshold), GlobalSettings11691.MinimumRampDownSpeed, speed);
+            }
 
             // Use gyro to drive in a straight line.
             double correction = checkDirection(DrivingAngle);

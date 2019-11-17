@@ -190,8 +190,6 @@ public class AutonDrive11691 extends BaseAutonIMU {
         theHardwareMap11691.RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
         theHardwareMap11691.LR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
         theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
-
-
     }
 
     // Basic Drive - turns motors to a set speed
@@ -235,10 +233,7 @@ public class AutonDrive11691 extends BaseAutonIMU {
 
     private double checkDirection(double angle)
     {
-        // The gain value determines how sensitive the correction is to direction changes.
-        // You will have to experiment with your robot to get small smooth direction changes
-        // to stay on a straight line.
-        double correction, gain = .075;
+        double correction;
 
         angle = angle - getAngle();
 
@@ -247,7 +242,7 @@ public class AutonDrive11691 extends BaseAutonIMU {
         else
             correction = -angle;        // reverse sign of angle for correction.
 
-        correction = correction * gain;
+        correction = correction * GlobalSettings11691.ImuCorrectionFactor;
 
         return correction;
     }

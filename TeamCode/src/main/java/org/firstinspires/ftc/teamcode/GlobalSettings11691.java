@@ -21,8 +21,13 @@ public class GlobalSettings11691 {
     static double RightSKGrabber_homePosition = 1;
     static double RightSKGrabber_GrabPosition = 0.75;
     static double RightSKGrabber_InitPosition = RightSKGrabber_homePosition;
+
     static double LeftSKGrabber_homePosition = 0.5;
     static double LeftSKGrabber_GrabPosition = 0.65;
     static double LeftSKGrabber_InitPosition = 0;
-    
+
+    // The gain value determines how sensitive the correction is to direction changes.
+    // You will have to experiment with your robot to get small smooth direction changes
+    // to stay on a straight line.
+    static double ImuCorrectionFactor = 0.075;
 }

@@ -84,8 +84,20 @@ public class HardwareMap11691 {
         imu             = hMap.get(BNO055IMU.class, "imu");
 
         final BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.mode                = BNO055IMU.SensorMode.IMU;
+        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.loggingEnabled      = false;
         imu.initialize(parameters);
+
+        //todo check that we should not exit
+        // make sure the imu gyro is calibrated before continuing.
+        // while (!isStopRequested() && !imu.isGyroCalibrated())
+        while (!imu.isGyroCalibrated())
+        {
+            //sleep(50);
+            //idle();
+        }
 
         Grabber.setPosition(0);
         Pusher.setPosition(.75);

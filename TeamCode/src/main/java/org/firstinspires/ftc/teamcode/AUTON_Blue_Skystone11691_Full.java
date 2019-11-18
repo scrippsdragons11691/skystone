@@ -12,51 +12,51 @@ public class AUTON_Blue_Skystone11691_Full extends BaseAuton {
         initialize();
         waitForStart();
 
-        while (opModeIsActive())   {              
-            
-        // Get Skystone
-            driveBackward       (6,0.5,2,telemetry);
-            straff      (23,0.5,3, telemetry);
-            turnLeft        (0,0.5,4, telemetry);
+        while (opModeIsActive())   {
+
+            runFirstPartOfBlueSkystone();
+
+/*
+            driveBackward    (30,.75,6, telemetry);
             waitStep(0.1);
             double totalDistanceMoved = get_SkyStone      (20, telemetry);
             waitStep(0.8);
-        
-        //deliver skystone
-            straff      (-6,0.5,2, telemetry);
-            turnRight      (90,0.5,3, telemetry);
-            waitStep(0.5);
-            turnRight      (90,0.25,1.5, telemetry);
-            straff       (-52 + totalDistanceMoved,1,6, telemetry);
-            
-            waitStep(0.8);
-            turnRight (90,0.5,4, telemetry);
-            
-        // Move Foundation
-            driveBackward     (8,0.75,3, telemetry);
-            foundationDN();
-            waitStep(0.8);
-            driveForward   (6,0.75,2, telemetry);
-            turn_HighPowerAtEnd      (0,1,1, telemetry);
-            //SK.SK_ARM(GlobalSettings11691.skhome);
-            straff    (-18,0.75,1.5, telemetry);
-            turn_HighPowerAtEnd      (0,.5,2, telemetry);
-            waitStep(0.2);
-            driveBackward     (24,1.0,2.5, telemetry);
-            foundationUP();
-    
-        // drive under bridge
-            waitStep(0.2);
-            turnLeft      (0,.25,1, telemetry);
-            driveForward     (2,1,1, telemetry);
-            turnLeft      (0,.25,1, telemetry);
-            straff    (-8,0.75,1.5, telemetry);
-            driveForward     (40,1,3, telemetry);
 
-        
-        sleep (200000);
-        }    
-            
+            autonTurn.AutonTurn_HighPowerAtEnd(90,-0.25,0.35,6,telemetry);
+            waitStep(0.2);
+            autonTurn.AutonTurn_HighPowerAtEnd(90,-0.25,0,3,telemetry);
+            waitStep(0.1);
+
+            straff(4, 0.5, 2,telemetry);
+            driveBackward       (60 + totalDistanceMoved,1,5.5, telemetry);
+            SK_Grab_Left.goToHomePosition();
+            SK_Grab_Right.goToHomePosition();
+*/
+            driveBackward       (35,1,5.5, telemetry);
+
+            autonTurn.AutonTurn_HighPowerAtEnd(0,-0.75,0,4,telemetry);
+            waitStep(0.1);
+            autonTurn.AutonTurn_HighPowerAtEnd(0,-0.25,0,0.5,telemetry);
+
+/*
+            autonDrive.DriveByBumperSwitches(0.25, 2);
+
+
+            foundationDN();
+            driveBackward  (6,1,1.0, telemetry);
+            autonTurn.AutonTurn_HighPowerAtEnd(90,-0.5,0.25,3,telemetry);
+            driveBackward  (30,0.75,1.5, telemetry);
+
+            // Drive under the bridge
+            foundationUP();
+            waitStep(0.8);
+            straff(10,0.75,1,telemetry);
+            autonTurn.AutonTurn_HighPowerAtEnd(90,-0.75,0,1.5,telemetry);
+
+            driveForward(45,0.75,1.5,telemetry);
+*/
+            sleep (200000);
+        }
     }
 
 

@@ -4,7 +4,7 @@ package org.firstinspires.ftc.teamcode;
 public class GlobalSettings11691 {
     
     static double pushHome = 1;
-    static double pushBlock = 0.3;
+    static double pushBlock = 0.6;
     static double pushEject = 0;
     static double armHome = 0.03;
     static double armNinety = 0.38;

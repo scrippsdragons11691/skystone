@@ -27,7 +27,7 @@ public class AUTON_Blue_Skystone11691_Full extends BaseAuton {
 
 
             foundationDN();
-/*            driveBackward  (6,1,1.0, telemetry);
+            driveBackward  (6,1,1.0, telemetry);
             autonTurn.AutonTurn_HighPowerAtEnd(90,-0.5,0.25,3,telemetry);
             driveBackward  (30,0.75,1.5, telemetry);
 
@@ -35,10 +35,10 @@ public class AUTON_Blue_Skystone11691_Full extends BaseAuton {
             foundationUP();
             waitStep(0.8);
             straff(10,0.75,1,telemetry);
-            autonTurn.AutonTurn_HighPowerAtEnd(90,-0.75,0,1.5,telemetry);
+            autonTurn.AutonTurn_HighPowerAtEnd(90,0.75,0,1.5,telemetry);
 
             driveForward(45,0.75,1.5,telemetry);
-*/
+
             sleep (200000);
         }
     }

@@ -13,20 +13,7 @@ public class Auton_Blue_Foundation_FWD_11691 extends BaseAuton {
 
         while (opModeIsActive()) {
 
-                //get off wall
-                driveBackward     (30,0.75,3, telemetry);
-                foundationDN();
-                waitStep(0.5);
-                
-                turn_HighPowerAtEnd      (90,1,3, telemetry);
-                straff    (-14,0.75,3, telemetry);
-                turn_HighPowerAtEnd      (90,1,3, telemetry);
-                turn_HighPowerAtEnd      (90,1,1, telemetry);
-                driveBackward     (18,0.75,2, telemetry);
-                foundationUP();
-                waitStep(0.5);
-                turnLeft      (90,.25,5, telemetry);
-                driveForward     (40,1,3, telemetry);
+            runFoundationRoutine( COMPETITION_SIDE.BLUE, PARK_POSITION.NEXT_TO_CENTER_BRIDGE);
 
             sleep(200000);
         }

@@ -10,6 +10,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
 public class BaseAuton extends LinearOpMode{
 
+    public enum PARK_POSITION {NEXT_TO_WALL, NEXT_TO_CENTER_BRIDGE}
+    public enum COMPETITION_SIDE {RED, BLUE}
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -162,7 +164,7 @@ public class BaseAuton extends LinearOpMode{
         waitStep(0.1);
 
         straff(4, 0.5, 2,telemetry);
-        driveBackward       (65 + totalDistanceMoved,1,5.5, telemetry);
+        driveBackward       (65 - totalDistanceMoved,1,5.5, telemetry);
         SK_Grab_Left.goToHomePosition();
         SK_Grab_Right.goToHomePosition();
     }
@@ -183,6 +185,65 @@ public class BaseAuton extends LinearOpMode{
         driveBackward(65 + totalDistanceMoved, 1, 5.5, telemetry);
         SK_Grab_Left.goToHomePosition();
         SK_Grab_Right.goToHomePosition();
+    }
+
+    protected void runFoundationRoutine(COMPETITION_SIDE competitionSide, PARK_POSITION parkPosition)
+    {
+        /*====================================== Settings section start */
+        double initialStraffDistance = 16;
+        double initialStraffDirection = 1;
+        double foundationPullEndAngle = 90;
+        double foundationPullSPeed = 0.5;
+        double beforeParkingStraff = 0;
+
+        if(competitionSide == COMPETITION_SIDE.RED) {
+            initialStraffDirection = 1;
+            foundationPullEndAngle = -90;
+            foundationPullSPeed = 0.5;
+        }
+        else {
+            initialStraffDirection = -1;
+            foundationPullEndAngle = 90;
+            foundationPullSPeed = -0.5;
+        }
+
+        if(parkPosition == PARK_POSITION.NEXT_TO_CENTER_BRIDGE){
+            beforeParkingStraff = -14;
+        } else {
+            beforeParkingStraff = 10;
+        }
+        /*====================================== Settings section end */
+
+        double initialStraff = initialStraffDistance * initialStraffDirection;
+
+        driveBackward  (1,1,0.5, telemetry);
+        waitStep(0.2);
+
+        straff(initialStraff, 0.75, 2, telemetry);
+        waitStep(0.2);
+
+        autonTurn.AutonTurn (0, 0.25, 0.5, telemetry);
+        waitStep(0.2);
+
+        driveBackward  (27,1,2.5, telemetry);
+        autonDrive.DriveByBumperSwitches(0.25, 1);
+
+        foundationDN();
+        driveBackward  (4,1,0.5, telemetry);
+        //waitStep(0.8);
+        autonTurn.AutonTurn_HighPowerAtEnd(foundationPullEndAngle, foundationPullSPeed, 0.25, 3, telemetry);
+        driveBackward  (18,1,2, telemetry);
+
+        foundationUP();
+        waitStep(0.8);
+
+        straff(beforeParkingStraff,0.75,2,telemetry);
+
+        waitStep(0.8);
+        autonTurn.AutonTurn_HighPowerAtEnd(foundationPullEndAngle, 0.5, 0, 3, telemetry);
+        waitStep(0.8);
+
+        driveForward(45,0.8,4,telemetry);
     }
 
 }

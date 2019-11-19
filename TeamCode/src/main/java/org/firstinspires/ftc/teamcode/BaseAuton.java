@@ -158,11 +158,11 @@ public class BaseAuton extends LinearOpMode{
 
         autonTurn.AutonTurn_HighPowerAtEnd(90,-0.25,0.35,6,telemetry);
         waitStep(0.2);
-        autonTurn.AutonTurn_HighPowerAtEnd(90,-0.25,0,3,telemetry);
+        autonTurn.AutonTurn_HighPowerAtEnd(90,0.25,0,3,telemetry);
         waitStep(0.1);
 
         straff(4, 0.5, 2,telemetry);
-        driveBackward       (60 + totalDistanceMoved,1,5.5, telemetry);
+        driveBackward       (65 + totalDistanceMoved,1,5.5, telemetry);
         SK_Grab_Left.goToHomePosition();
         SK_Grab_Right.goToHomePosition();
     }
@@ -171,7 +171,8 @@ public class BaseAuton extends LinearOpMode{
         driveBackward(30, .75, 6, telemetry);
         waitStep(0.1);
         double totalDistanceMoved = get_SkyStone(20, telemetry);
-        waitStep(0.8);
+        //todo get_skystone needs to return if the left or right arm was used. Then adjust the waitstep ...longer for the left arm since it needs to travel 180deg
+		waitStep(1.4);
 
         autonTurn.AutonTurn_HighPowerAtEnd(-90, 0.25, 0.35, 3, telemetry);
         waitStep(0.2);
@@ -179,7 +180,7 @@ public class BaseAuton extends LinearOpMode{
         waitStep(0.1);
 
         straff(-4, 0.5, 2, telemetry);
-        driveBackward(60 + totalDistanceMoved, 1, 5.5, telemetry);
+        driveBackward(65 + totalDistanceMoved, 1, 5.5, telemetry);
         SK_Grab_Left.goToHomePosition();
         SK_Grab_Right.goToHomePosition();
     }

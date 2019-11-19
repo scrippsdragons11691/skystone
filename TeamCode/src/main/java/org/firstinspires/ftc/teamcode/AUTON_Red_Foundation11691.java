@@ -36,6 +36,15 @@ public class AUTON_Red_Foundation11691 extends BaseAuton {
             autonTurn.AutonTurn_HighPowerAtEnd(-90,0.5,0.25,3,telemetry);
             driveBackward  (18,1,2, telemetry);
 
+            foundationUP();
+            waitStep(0.8);
+            straff(10,0.75,2,telemetry);
+            waitStep(0.8);
+            autonTurn.AutonTurn_HighPowerAtEnd(-90,0.5,0.25,3,telemetry);
+            waitStep(0.8);
+
+            driveForward(45,0.8,4,telemetry);
+
             sleep(200000);
         }
     }

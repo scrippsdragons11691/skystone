@@ -14,24 +14,35 @@ public class AUTON_Blue_Foundation11691 extends BaseAuton {
         waitForStart();
 
         while (opModeIsActive()) {
-            
 
-            //get off wall
-                driveBackward     (30,0.75,3, telemetry);
-                foundationDN();
-                waitStep(0.5);
-                
-                turn_HighPowerAtEnd      (90,1,3, telemetry);
-                straff    (-14,0.75,3, telemetry);
-                turn_HighPowerAtEnd      (90,1,3, telemetry);
-                turn_HighPowerAtEnd      (90,1,1, telemetry);
-                driveBackward     (20,0.75,2, telemetry);
-                foundationUP();
-                waitStep(0.5);
-                turnLeft      (90,.25,5, telemetry);
-                straff    (-18,0.75,2, telemetry);
-                turnLeft      (90,.25,5, telemetry);
-                driveForward     (40,1,3, telemetry);
+            driveBackward  (1,1,0.5, telemetry);
+            waitStep(0.2);
+
+            straff(-16,0.75,2,telemetry);
+            waitStep(0.2);
+
+            autonTurn.AutonTurn (0, 0.25, 0.5, telemetry);
+            waitStep(0.2);
+
+
+            driveBackward  (27,1,2.5, telemetry);
+            autonDrive.DriveByBumperSwitches(0.25, 1);
+
+
+            foundationDN();
+            driveBackward  (4,1,0.5, telemetry);
+            //waitStep(0.8);
+            autonTurn.AutonTurn_HighPowerAtEnd(90,-0.5,0.25,3,telemetry);
+            driveBackward  (18,1,2, telemetry);
+
+            foundationUP();
+            waitStep(0.8);
+            straff(10,0.75,2,telemetry);
+            waitStep(0.8);
+            autonTurn.AutonTurn_HighPowerAtEnd(90,0.5,0,3,telemetry);
+            waitStep(0.8);
+
+            driveForward(45,0.8,4,telemetry);
 
             sleep(200000);
         }

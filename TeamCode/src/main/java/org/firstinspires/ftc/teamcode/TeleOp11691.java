@@ -85,7 +85,7 @@ public class TeleOp11691 extends LinearOpMode{
             if (gamepad2.left_stick_y<-0.5)     { lift.down();  }                           //down - almost to home position
             if (gamepad2.left_stick_x<-0.5)     { lift.LiftLevel(-1); /*level-1*/}                          //left - ready to rotate
             if (gamepad2.left_stick_x>0.5)      { lift.LiftLevel(1);  /*level+1*/}                         //right - movs almost up
-            if(gamepad1.left_bumper)            { slow  = 0.6;} else { slow = 1;}        //Intake In Position
+            if(gamepad1.left_bumper)            { slow  = 0.4;} else { slow = 1;}        //Intake In Position
 
             if(gamepad2.dpad_up)
                 if((runtime.time() - dpadUpLastTime) > 0.5){

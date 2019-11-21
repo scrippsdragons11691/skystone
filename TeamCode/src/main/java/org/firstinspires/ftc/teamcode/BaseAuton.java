@@ -12,6 +12,7 @@ public class BaseAuton extends LinearOpMode{
 
     public enum PARK_POSITION {NEXT_TO_WALL, NEXT_TO_CENTER_BRIDGE}
     public enum COMPETITION_SIDE {RED, BLUE}
+    public enum SKYSTONE_FULL {YES, NO}
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -33,7 +34,9 @@ public class BaseAuton extends LinearOpMode{
     ColorSensor11691   leftColorSensor;
     ColorSensor11691   rightColorSensor;
     TapeMeasure11691        TapeMea;
-    //AutonColorSensor11691   AutonSKDetect;
+
+    public SK_Block11691.SKYSTONE_ARM_LOCATION  usedSkystoneArm;
+
     public void BaseAuton() {
     }
 
@@ -127,62 +130,79 @@ public class BaseAuton extends LinearOpMode{
 
     double get_SkyStone (double timeout,Telemetry tele){
         double distanceToNextStone = 7;
-        double distanceToCenter = -1;
         double totalDistanceMoved = 0;
+
+        usedSkystoneArm = SK_Block11691.SKYSTONE_ARM_LOCATION.Right;
 
         leftColorSensor.StoneCheck();
         if (leftColorSensor.StoneCheck()){
             SK_Grab_Left.GrabSkystone();
+            usedSkystoneArm = SK_Block11691.SKYSTONE_ARM_LOCATION.Left;
         }
         else if(rightColorSensor.StoneCheck()){
-
             SK_Grab_Right.GrabSkystone();
-               /* waitStep(0.2);
-                driveForward (distanceToNextStone,0.75,2, telemetry);
-                totalDistanceMoved += distanceToNextStone;
-                //SK.SK_ARM(GlobalSettings11691.skdown);*/
-        }else {
+        }
+        else {
             straff(distanceToNextStone,0.5,1, tele);
             waitStep(0.5);
             SK_Grab_Right.GrabSkystone();
             totalDistanceMoved += distanceToNextStone;
         }
 
-
         return totalDistanceMoved * -1;
     }
 
-    protected  void runFirstPartOfBlueSkystone(){
-        driveBackward    (30,.75,6, telemetry);
-        waitStep(0.1);
-        double totalDistanceMoved = get_SkyStone      (20, telemetry);
-        waitStep(0.8);
 
-        autonTurn.AutonTurn_HighPowerAtEnd(90,-0.25,0.35,6,telemetry);
-        waitStep(0.2);
-        autonTurn.AutonTurn_HighPowerAtEnd(90,0.25,0,3,telemetry);
-        waitStep(0.1);
+    protected void runFirstPartOfSkystone(COMPETITION_SIDE competitionSide, SKYSTONE_FULL isFull) {
+        double turnAngle;
+        double speed;
+        double straffLeft;
+        double straffRight;
+        if( competitionSide == COMPETITION_SIDE.RED)
+        {
+            turnAngle = -90;
+            speed = 0.25;
+            straffLeft = -2;
+            straffRight = -8;
+        }
+        else
+        {
+            turnAngle = 90;
+            speed = -0.25;
+            straffLeft = 8;
+            straffRight = 2;
+        }
 
-        straff(4, 0.5, 2,telemetry);
-        driveBackward       (65 - totalDistanceMoved,1,5.5, telemetry);
-        SK_Grab_Left.goToHomePosition();
-        SK_Grab_Right.goToHomePosition();
-    }
-
-    protected void runFirstPartOfRedSkystone() {
         driveBackward(30, .75, 6, telemetry);
         waitStep(0.1);
         double totalDistanceMoved = get_SkyStone(20, telemetry);
-        //todo get_skystone needs to return if the left or right arm was used. Then adjust the waitstep ...longer for the left arm since it needs to travel 180deg
-		waitStep(1.4);
+        if(usedSkystoneArm == SK_Block11691.SKYSTONE_ARM_LOCATION.Left) {
+            waitStep(1.4);
+        }
+        else {
+            waitStep(0.8);
+        }
 
-        autonTurn.AutonTurn_HighPowerAtEnd(-90, 0.25, 0.35, 3, telemetry);
+
+        autonTurn.AutonTurn_HighPowerAtEnd(turnAngle, speed, 0.35, 3, telemetry);
         waitStep(0.2);
-        autonTurn.AutonTurn_HighPowerAtEnd(-90, 0.25, 0, 3, telemetry);
+        autonTurn.AutonTurn_HighPowerAtEnd(turnAngle, 0.25, 0, 3, telemetry);
         waitStep(0.1);
 
-        straff(-4, 0.5, 2, telemetry);
-        driveBackward(65 + totalDistanceMoved, 1, 5.5, telemetry);
+        if(usedSkystoneArm == SK_Block11691.SKYSTONE_ARM_LOCATION.Right) {
+            straff(straffLeft, 0.5, 2, telemetry);
+        }
+        else
+        {
+            straff(straffRight, 0.5, 2, telemetry);
+        }
+
+        if( isFull == SKYSTONE_FULL.YES) {
+            driveBackward(65 + totalDistanceMoved, 1, 5.5, telemetry);
+        }
+        else {
+            driveBackward(70 + totalDistanceMoved, 1, 5.5, telemetry);
+        }
         SK_Grab_Left.goToHomePosition();
         SK_Grab_Right.goToHomePosition();
     }

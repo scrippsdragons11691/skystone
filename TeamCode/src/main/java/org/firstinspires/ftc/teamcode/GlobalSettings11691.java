@@ -32,6 +32,10 @@ public class GlobalSettings11691 {
     // to stay on a straight line.
     static double ImuCorrectionFactor = 0.075;
 
+    // Settings for driving in a straight line
     static int EncoderCountRampDownThreshold = 1120/2;
     static double MinimumRampDownSpeed = 0.25; // Do not ramp down speed to a smaller value so as to not get stuck due to friction
+
+    // Settings for rotating
+    static double rotationRampTimeInSec = 0.75;
 }

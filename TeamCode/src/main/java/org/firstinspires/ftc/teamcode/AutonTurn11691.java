@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -72,6 +73,8 @@ public class AutonTurn11691 extends BaseAutonIMU{
 
         error = targetAngle - actualangle;
 
+        ElapsedTime rampTimer = new ElapsedTime();
+        rampTimer.reset();
         double time = runtime.time();
         while((Math.abs(error) > 3) && (runtime.time() - time < timeout)) 
         {
@@ -83,11 +86,21 @@ public class AutonTurn11691 extends BaseAutonIMU{
             telemetry.addData("Actual Angle","value= %.2f", actualangle);
             telemetry.update();
 
+            double rampedTargetSpeed = targetSpeed;
+            double rampedTargetDeltaSpeed = targetDeltaSpeed;
+
+            if(rampTimer.seconds() <= GlobalSettings11691.rotationRampTimeInSec) {
+                rampedTargetSpeed = targetSpeed * (rampTimer.seconds() / GlobalSettings11691.rotationRampTimeInSec);
+                rampedTargetSpeed = Range.clip(rampedTargetSpeed,rampedTargetSpeed,targetSpeed);
+
+                rampedTargetDeltaSpeed = targetDeltaSpeed * (rampTimer.seconds() / GlobalSettings11691.rotationRampTimeInSec);
+                rampedTargetDeltaSpeed = Range.clip(rampedTargetDeltaSpeed,rampedTargetDeltaSpeed,targetDeltaSpeed);
+            }
 
             if (error < 0) {
-                rotate(targetSpeed, targetDeltaSpeed); //clockwise
+                rotate(rampedTargetSpeed, rampedTargetDeltaSpeed); //clockwise
             } else if (error > 0) {
-                rotate(-targetSpeed, -targetDeltaSpeed); //counterclockwise
+                rotate(-rampedTargetSpeed, -rampedTargetDeltaSpeed); //counterclockwise
             }
         }
         
@@ -95,14 +108,14 @@ public class AutonTurn11691 extends BaseAutonIMU{
         
         //waitStep(0.5);
 
-        while((Math.abs(error) > ANGLE_TOL) && (runtime.time() - time < timeout))
-        {
+        //todo with ramping speed into a turn, do we still need this?
+        while ((Math.abs(error) > ANGLE_TOL) && (runtime.time() - time < timeout)) {
             actualangle = getAbsoluteHeading();
             error = targetAngle - actualangle;
 
-            telemetry.addData("Target Angle","error= %.2f", error);
-            telemetry.addData("Target Angle","value= %.2f", targetAngle);
-            telemetry.addData("Actual Angle","value= %.2f", actualangle);
+            telemetry.addData("Target Angle", "error= %.2f", error);
+            telemetry.addData("Target Angle", "value= %.2f", targetAngle);
+            telemetry.addData("Actual Angle", "value= %.2f", actualangle);
             telemetry.update();
 
 

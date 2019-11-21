@@ -71,8 +71,7 @@ public class AutonTurn11691 extends BaseAutonIMU{
         actualangle     = getAbsoluteHeading();
 
         error = targetAngle - actualangle;
-        
-        
+
         double time = runtime.time();
         while((Math.abs(error) > 3) && (runtime.time() - time < timeout)) 
         {
@@ -90,15 +89,13 @@ public class AutonTurn11691 extends BaseAutonIMU{
             } else if (error > 0) {
                 rotate(-targetSpeed, -targetDeltaSpeed); //counterclockwise
             }
-
-             
-        } 
+        }
         
         rotate(0,0);
         
         //waitStep(0.5);
 
-        while((Math.abs(error) > ANGLE_TOL) && (runtime.time() - time < timeout)) 
+        while((Math.abs(error) > ANGLE_TOL) && (runtime.time() - time < timeout))
         {
             actualangle = getAbsoluteHeading();
             error = targetAngle - actualangle;
@@ -106,26 +103,15 @@ public class AutonTurn11691 extends BaseAutonIMU{
             telemetry.addData("Target Angle","error= %.2f", error);
             telemetry.addData("Target Angle","value= %.2f", targetAngle);
             telemetry.addData("Actual Angle","value= %.2f", actualangle);
-            telemetry.update();        
+            telemetry.update();
 
-           // if(false) {
-                if (error < 0) {
-                    rotate(powerForFinalAdjust, 0); //clockwise
-                } else if (error > 0) {
-                    rotate(-1 * powerForFinalAdjust, 0); //counterclockwise
-                }
-           /* }
-            else
-            {
-                //blue side
-                if (error < 0) {
-                    rotate(-1 * powerForFinalAdjust, 0); //clockwise
-                } else if (error > 0) {
-                    rotate(powerForFinalAdjust, 0); //counterclockwise
-                }
-            }*/
-             
-        } 
+
+            if (error < 0) {
+                rotate(powerForFinalAdjust, 0); //clockwise
+            } else if (error > 0) {
+                rotate(-1 * powerForFinalAdjust, 0); //counterclockwise
+            }
+        }
 
         rotate(0,0);
 

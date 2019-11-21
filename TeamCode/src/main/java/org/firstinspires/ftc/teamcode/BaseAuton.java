@@ -20,8 +20,8 @@ public class BaseAuton extends LinearOpMode{
     }
 
     HardwareMap11691        hMap;
-    AutonDrive11691         autonDrive;
-    AutonTurn11691          autonTurn;
+    private AutonDrive11691         autonDrive;
+    private AutonTurn11691          autonTurn;
     ElapsedTime runtime;
     Intake_11691            intake;
     MoveArm11691            movearm;
@@ -78,37 +78,34 @@ public class BaseAuton extends LinearOpMode{
     protected void waitStep(double wait_in_sec)
     {
         double timer = runtime.time();
-        while (opModeIsActive() && (runtime.time() - timer < wait_in_sec))
+        while (opModeIsActive() && !isStopRequested() && (runtime.time() - timer < wait_in_sec))
         {
         }
     }
 
-    protected void turnLeft (double angle, double powerturn, double timeoutc, Telemetry tele){
-        autonTurn.AutonTurn (angle * -1, powerturn, timeoutc, tele);
+    protected void DriveByBumperSwitches(double speeda, double timeout)
+    {
+        autonDrive.DriveByBumperSwitches( speeda, timeout, this);
     }
 
-    protected void turnRight (double angle, double powerturn, double timeoutc, Telemetry tele){
-        autonTurn.AutonTurn (angle, powerturn, timeoutc, tele);
+    protected void driveForward (double dist, double power, double timeouta){
+        autonDrive.encoderDriveAuton (dist, power,timeouta, this);
     }
 
-    protected void driveForward (double dist, double power, double timeouta, Telemetry tele){
-        autonDrive.encoderDriveAuton (dist, power,timeouta, tele);
+    protected void driveBackward (double dist, double power, double timeouta){
+        autonDrive.encoderDriveAuton (dist * -1, power,timeouta, this);
     }
 
-    protected void driveBackward (double dist, double power, double timeouta, Telemetry tele){
-        autonDrive.encoderDriveAuton (dist * -1, power,timeouta, tele);
+    protected void turn_HighPowerAtEnd (double angle, double powerturn, double timeoutc){
+        autonTurn.AutonTurn_HighPowerAtEnd (angle, powerturn, timeoutc, this);
     }
 
-    protected void turn_HighPowerAtEnd (double angle, double powerturn, double timeoutc, Telemetry tele){
-        autonTurn.AutonTurn_HighPowerAtEnd (angle, powerturn, timeoutc, tele);
+    protected void turn_HighPowerAtEnd (double angle, double powerturn, double deltaPower, double timeoutc){
+        autonTurn.AutonTurn_HighPowerAtEnd (angle, powerturn, deltaPower, timeoutc, this);
     }
 
-    protected void turn_HighPowerAtEnd (double angle, double powerturn, double deltaPower, double timeoutc, Telemetry tele){
-        autonTurn.AutonTurn_HighPowerAtEnd (angle, powerturn, deltaPower, timeoutc, tele);
-    }
-
-    protected void straff (double dist, double power, double timeoutb,Telemetry tele){
-        autonDrive.Auton_Straff (dist,power,timeoutb, tele);
+    protected void straff (double dist, double power, double timeoutb){
+        autonDrive.Auton_Straff (dist,power,timeoutb, this);
     }
 
     protected void Move_Tape (int target, double timeout, Telemetry tele){
@@ -143,7 +140,7 @@ public class BaseAuton extends LinearOpMode{
             SK_Grab_Right.GrabSkystone();
         }
         else {
-            straff(distanceToNextStone,0.5,1, tele);
+            straff(distanceToNextStone,0.5,1);
             waitStep(0.5);
             SK_Grab_Right.GrabSkystone();
             totalDistanceMoved += distanceToNextStone;
@@ -173,7 +170,7 @@ public class BaseAuton extends LinearOpMode{
             straffRight = 2;
         }
 
-        driveBackward(30, .75, 6, telemetry);
+        driveBackward(30, .75, 6);
         waitStep(0.1);
         double totalDistanceMoved = get_SkyStone(20, telemetry);
         if(usedSkystoneArm == SK_Block11691.SKYSTONE_ARM_LOCATION.Left) {
@@ -184,24 +181,24 @@ public class BaseAuton extends LinearOpMode{
         }
 
 
-        autonTurn.AutonTurn_HighPowerAtEnd(turnAngle, speed, 0.35, 3, telemetry);
+        turn_HighPowerAtEnd(turnAngle, speed, 0.35, 3);
         waitStep(0.2);
-        autonTurn.AutonTurn_HighPowerAtEnd(turnAngle, 0.25, 0, 3, telemetry);
+        turn_HighPowerAtEnd(turnAngle, 0.25, 0, 3);
         waitStep(0.1);
 
         if(usedSkystoneArm == SK_Block11691.SKYSTONE_ARM_LOCATION.Right) {
-            straff(straffLeft, 0.5, 2, telemetry);
+            straff(straffLeft, 0.5, 2);
         }
         else
         {
-            straff(straffRight, 0.5, 2, telemetry);
+            straff(straffRight, 0.5, 2);
         }
 
         if( isFull == SKYSTONE_FULL.YES) {
-            driveBackward(65 + totalDistanceMoved, 1, 5.5, telemetry);
+            driveBackward(65 + totalDistanceMoved, 1, 5.5);
         }
         else {
-            driveBackward(70 + totalDistanceMoved, 1, 5.5, telemetry);
+            driveBackward(70 + totalDistanceMoved, 1, 5.5);
         }
         SK_Grab_Left.goToHomePosition();
         SK_Grab_Right.goToHomePosition();
@@ -236,37 +233,34 @@ public class BaseAuton extends LinearOpMode{
 
         double initialStraff = initialStraffDistance * initialStraffDirection;
 
-        driveBackward  (1,1,0.5, telemetry);
+        driveBackward  (1,1,0.5);
         waitStep(0.2);
 
-        straff(initialStraff, 0.75, 2, telemetry);
+        straff(initialStraff, 0.75, 2);
         waitStep(0.2);
 
-        autonTurn.AutonTurn (0, 0.25, 0.5, telemetry);
+        autonTurn.AutonTurn (0, 0.25, 0.5,  this);
         waitStep(0.2);
 
-        driveBackward  (27,1,2.5, telemetry);
-        autonDrive.DriveByBumperSwitches(0.25, 1);
+        driveBackward  (27,1,2.5);
+        DriveByBumperSwitches(0.25, 1);
 
         foundationDN();
-        driveBackward  (4,1,0.5, telemetry);
+        driveBackward  (4,1,0.5);
         //waitStep(0.8);
-        autonTurn.AutonTurn_HighPowerAtEnd(foundationPullEndAngle, foundationPullSPeed, 0.25, 3, telemetry);
-        driveBackward  (18,1,2, telemetry);
+        turn_HighPowerAtEnd(foundationPullEndAngle, foundationPullSPeed, 0.25, 3);
+        driveBackward  (18,1,2);
 
         foundationUP();
         waitStep(0.8);
 
-        straff(beforeParkingStraff,0.75,2,telemetry);
+        straff(beforeParkingStraff,0.75,2);
 
         waitStep(0.8);
-        autonTurn.AutonTurn_HighPowerAtEnd(foundationPullEndAngle, 0.5, 0, 3, telemetry);
+        turn_HighPowerAtEnd(foundationPullEndAngle, 0.5, 0, 3);
         waitStep(0.8);
 
-        driveForward(45,0.8,4,telemetry);
+        driveForward(45,0.8,4);
     }
 
 }
-
-
-//todo Pass the LinearOpMode instance to autonDrive and to autonTurn so that we can call opModeIsActive() and isStopRequested() from within

@@ -16,8 +16,8 @@ public class Auton11691 extends BaseAuton {
 
 
         while (opModeIsActive()) {
-            driveForward  (60,1,5, telemetry);
-            driveBackward  (60,1,5, telemetry);
+            driveForward  (60,1,5);
+            driveBackward  (60,1,5);
 
 /*            driveBackward  (1,1,0.5, telemetry);
             waitStep(0.2);

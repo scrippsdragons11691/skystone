@@ -18,27 +18,28 @@ public class AUTON_Red_Skystone11691_Full extends BaseAuton {
 
             runFirstPartOfSkystone(COMPETITION_SIDE.RED, SKYSTONE_FULL.YES);
 
-            driveBackward       (35,1,5.5, telemetry);
+            driveBackward       (35,1,5.5);
 
-            autonTurn.AutonTurn_HighPowerAtEnd(0,0.75,0,4,telemetry);
+            turn_HighPowerAtEnd(0,0.75,0,4);
+
             waitStep(0.1);
-            autonTurn.AutonTurn_HighPowerAtEnd(0,0.25,0,0.5,telemetry);
+            turn_HighPowerAtEnd(0,0.25,0,0.5);
             waitStep(0.1);
 
-            autonDrive.DriveByBumperSwitches(0.25, 2);
+            DriveByBumperSwitches(0.25, 2);
 
             foundationDN();
-            driveBackward  (6,1,1.0, telemetry);
-            autonTurn.AutonTurn_HighPowerAtEnd(-90,0.5,0.25,3,telemetry);
-            driveBackward  (30,0.75,1.5, telemetry);
+            driveBackward  (6,1,1.0);
+            turn_HighPowerAtEnd(-90,0.5,0.25,3);
+            driveBackward  (30,0.75,1.5);
 
             // Drive under the bridge
             foundationUP();
             waitStep(0.8);
-            straff(-10,0.75,1,telemetry);
-            autonTurn.AutonTurn_HighPowerAtEnd(-90,0.75,0,1.5,telemetry);
+            straff(-10,0.75,1);
+            turn_HighPowerAtEnd(-90,0.75,0,1.5);
 
-            driveForward(45,0.75,1.5,telemetry);
+            driveForward(45,0.75,1.5);
 
             sleep(200000);
         }

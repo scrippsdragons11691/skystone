@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -33,42 +34,42 @@ public class AutonTurn11691 extends BaseAutonIMU{
 
         runtime         = new ElapsedTime();
         initialangle     = getAbsoluteHeading();
-       // telemetry=opMode.telemetry;
-        
+        // telemetry=opMode.telemetry;
+
         //set direction for each motor
         theHardwareMap11691.LR.setDirection(DcMotor.Direction.REVERSE);
         theHardwareMap11691.LF.setDirection(DcMotor.Direction.REVERSE);
         theHardwareMap11691.RR.setDirection(DcMotor.Direction.FORWARD);
         theHardwareMap11691.RF.setDirection(DcMotor.Direction.FORWARD);
-     }
-    
-   public void AutonTurn (double Angle, double speed, double timeoute, Telemetry tele) {
+    }
+
+    public void AutonTurn (double Angle, double speed, double timeoute, LinearOpMode theOpMode) {
         is_moving=true;
         targetAngle = Angle;
         targetSpeed = speed;
         timeout = timeoute;
-        telemetry = tele;
+        telemetry = theOpMode.telemetry;
         telemetry.addData("T_angle;",targetAngle);
         telemetry.update();
-        gotoPosition(0.15);
-   }
-   public void AutonTurn_HighPowerAtEnd (double Angle, double speed, double timeoute, Telemetry tele) {
-       AutonTurn_HighPowerAtEnd (Angle,  speed, 0,  timeoute,  tele);
-   }
+        gotoPosition(0.15,theOpMode);
+    }
+    public void AutonTurn_HighPowerAtEnd (double Angle, double speed, double timeoute, LinearOpMode theOpMode) {
+        AutonTurn_HighPowerAtEnd (Angle,  speed, 0,  timeoute,  theOpMode);
+    }
 
-    public void AutonTurn_HighPowerAtEnd (double Angle, double speed, double deltaSpeed, double timeoute, Telemetry tele) {
+    public void AutonTurn_HighPowerAtEnd (double Angle, double speed, double deltaSpeed, double timeoute, LinearOpMode theOpMode) {
         is_moving=true;
         targetAngle = Angle;
         targetSpeed = speed;
         targetDeltaSpeed = deltaSpeed;
         timeout = timeoute;
-        telemetry = tele;
+        telemetry = theOpMode.telemetry;
         telemetry.addData("T_angle;",targetAngle);
         telemetry.update();
-        gotoPosition(0.25);
+        gotoPosition(0.25,theOpMode);
     }
 
-    public void gotoPosition(double powerForFinalAdjust) {
+    public void gotoPosition(double powerForFinalAdjust, LinearOpMode theOpMode) {
         actualangle     = getAbsoluteHeading();
 
         error = targetAngle - actualangle;
@@ -76,7 +77,8 @@ public class AutonTurn11691 extends BaseAutonIMU{
         ElapsedTime rampTimer = new ElapsedTime();
         rampTimer.reset();
         double time = runtime.time();
-        while((Math.abs(error) > 3) && (runtime.time() - time < timeout)) 
+        while((Math.abs(error) > 3) && (runtime.time() - time < timeout)
+                && !theOpMode.isStopRequested() && theOpMode.opModeIsActive())
         {
             actualangle = getAbsoluteHeading();
             error = targetAngle - actualangle;
@@ -103,13 +105,15 @@ public class AutonTurn11691 extends BaseAutonIMU{
                 rotate(-rampedTargetSpeed, -rampedTargetDeltaSpeed); //counterclockwise
             }
         }
-        
+
         rotate(0,0);
-        
-        //waitStep(0.5);
+
+        //waitStep(0.5, theOpMode);
 
         //todo with ramping speed into a turn, do we still need this?
-        while ((Math.abs(error) > ANGLE_TOL) && (runtime.time() - time < timeout)) {
+        while ((Math.abs(error) > ANGLE_TOL) && (runtime.time() - time < timeout)
+                && !theOpMode.isStopRequested() && theOpMode.opModeIsActive()) {
+
             actualangle = getAbsoluteHeading();
             error = targetAngle - actualangle;
 
@@ -127,17 +131,18 @@ public class AutonTurn11691 extends BaseAutonIMU{
         }
 
         rotate(0,0);
-
     }
-    
-        void waitStep(double wait_in_sec)
+
+
+    private void waitStep(double wait_in_sec, LinearOpMode theOpMode)
     {
         double timer = runtime.time();
-        while (runtime.time() - timer < wait_in_sec)
+        while ((runtime.time() - timer < wait_in_sec)
+                && !theOpMode.isStopRequested() && theOpMode.opModeIsActive())
         {
         }
     }
-    
+
     public double getAbsoluteHeading() {
 
         Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);

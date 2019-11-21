@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -36,7 +37,7 @@ public class AutonDrive11691 extends BaseAutonIMU {
     }
 
     // Straffing Auton
-    public void Auton_Straff (double dist_Straff_In, double speed_Straff, double timeoutS, Telemetry tele){
+    public void Auton_Straff (double dist_Straff_In, double speed_Straff, double timeoutS, LinearOpMode theOpMode){
 
 
         int newStraffLeftFTarget;
@@ -77,18 +78,18 @@ public class AutonDrive11691 extends BaseAutonIMU {
         theHardwareMap11691.RR.setPower(speed_Straff);
 
         runtime.reset();
-        while ((runtime.seconds() < timeoutS) && (theHardwareMap11691.LR.isBusy())){
+        while ((runtime.seconds() < timeoutS)
+                && (theHardwareMap11691.LR.isBusy())
+                && !theOpMode.isStopRequested() && theOpMode.opModeIsActive()){
 
-
-
-            tele.addData("is_moving drive", is_moving);
-            tele.addData("LF encoder","position= %d", theHardwareMap11691.LF.getCurrentPosition());
-            tele.addData("RF encoder","position= %d", theHardwareMap11691.RF.getCurrentPosition());
-            tele.addData("LR encoder","position= %d", theHardwareMap11691.LR.getCurrentPosition());
-            tele.addData("RR encoder","position= %d", theHardwareMap11691.RR.getCurrentPosition());
-            tele.addData("Runtime",runtime.time());
-            tele.addData("Timeout", timeoutS);
-            tele.update();
+            theOpMode.telemetry.addData("is_moving drive", is_moving);
+            theOpMode.telemetry.addData("LF encoder","position= %d", theHardwareMap11691.LF.getCurrentPosition());
+            theOpMode.telemetry.addData("RF encoder","position= %d", theHardwareMap11691.RF.getCurrentPosition());
+            theOpMode.telemetry.addData("LR encoder","position= %d", theHardwareMap11691.LR.getCurrentPosition());
+            theOpMode.telemetry.addData("RR encoder","position= %d", theHardwareMap11691.RR.getCurrentPosition());
+            theOpMode.telemetry.addData("Runtime",runtime.time());
+            theOpMode.telemetry.addData("Timeout", timeoutS);
+            theOpMode.telemetry.update();
 
         }
 
@@ -104,7 +105,7 @@ public class AutonDrive11691 extends BaseAutonIMU {
     }
 
     // Drive Auton
-    public void encoderDriveAuton(double distanceInches, double speed, double timeoutT, Telemetry tele){
+    public void encoderDriveAuton(double distanceInches, double speed, double timeoutT, LinearOpMode theOpMode){
 
         double leftInches   = distanceInches;
         double rightInches  = distanceInches;
@@ -155,8 +156,9 @@ public class AutonDrive11691 extends BaseAutonIMU {
         // Therefore set the DrivingAngle to one of the above values which is closest to globalAngle
         double DrivingAngle = Math.round(globalAngle/90) *90;
 
-        while ((runtime.seconds() < timeoutT) &&
-                (theHardwareMap11691.LR.isBusy())) {
+        while ((runtime.seconds() < timeoutT)
+                && (theHardwareMap11691.LR.isBusy())
+                && !theOpMode.isStopRequested() && theOpMode.opModeIsActive()) {
 
             double rampedSpeed = speed;
             int remainingEncoderCounts = Math.abs(newLeftFTarget - theHardwareMap11691.LF.getCurrentPosition());
@@ -183,17 +185,17 @@ public class AutonDrive11691 extends BaseAutonIMU {
             theHardwareMap11691.RF.setPower(rampedSpeed + correction);
             theHardwareMap11691.RR.setPower(rampedSpeed + correction);
 
-            tele.addData("1 imu heading", lastAngles.firstAngle);
-            tele.addData("2 global heading", globalAngle);
-            tele.addData("3 correction", correction);
-            tele.addData("is_moving drive", is_moving);
-            tele.addData("LF encoder","position= %d", theHardwareMap11691.LF.getCurrentPosition());
-            tele.addData("RF encoder","position= %d", theHardwareMap11691.RF.getCurrentPosition());
-            tele.addData("LR encoder","position= %d", theHardwareMap11691.LR.getCurrentPosition());
-            tele.addData("RR encoder","position= %d", theHardwareMap11691.RR.getCurrentPosition());
-            tele.addData("Runtime",runtime.time());
-            tele.addData("Timeout", timeoutT);
-            tele.update();
+            theOpMode.telemetry.addData("1 imu heading", lastAngles.firstAngle);
+            theOpMode.telemetry.addData("2 global heading", globalAngle);
+            theOpMode.telemetry.addData("3 correction", correction);
+            theOpMode.telemetry.addData("is_moving drive", is_moving);
+            theOpMode.telemetry.addData("LF encoder","position= %d", theHardwareMap11691.LF.getCurrentPosition());
+            theOpMode.telemetry.addData("RF encoder","position= %d", theHardwareMap11691.RF.getCurrentPosition());
+            theOpMode.telemetry.addData("LR encoder","position= %d", theHardwareMap11691.LR.getCurrentPosition());
+            theOpMode.telemetry.addData("RR encoder","position= %d", theHardwareMap11691.RR.getCurrentPosition());
+            theOpMode.telemetry.addData("Runtime",runtime.time());
+            theOpMode.telemetry.addData("Timeout", timeoutT);
+            theOpMode.telemetry.update();
 
         }
 
@@ -222,7 +224,7 @@ public class AutonDrive11691 extends BaseAutonIMU {
         theHardwareMap11691.RR.setPower(speeda);
     }
 
-    public void DriveByBumperSwitches (double speeda, double timeout)    {
+    public void DriveByBumperSwitches (double speeda, double timeout, LinearOpMode theOpMode)    {
 
         theHardwareMap11691.LF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
         theHardwareMap11691.RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
@@ -237,9 +239,10 @@ public class AutonDrive11691 extends BaseAutonIMU {
         ElapsedTime timeoutTimer = new ElapsedTime();
         timeoutTimer.reset();
 
-        while((timeoutTimer.seconds() < timeout) &&
-                (theHardwareMap11691.LHFoundBumper.isPressed() == false) &&
-                (theHardwareMap11691.RHFoundBumper.isPressed() == false)) {
+        while((timeoutTimer.seconds() < timeout)
+                && (theHardwareMap11691.LHFoundBumper.isPressed() == false)
+                && (theHardwareMap11691.RHFoundBumper.isPressed() == false)
+                && !theOpMode.isStopRequested() && theOpMode.opModeIsActive()) {
 
         }
         theHardwareMap11691.LF.setPower(0);
@@ -289,3 +292,6 @@ public class AutonDrive11691 extends BaseAutonIMU {
     }
 
 }
+
+//todo implement heading correction for straffing
+

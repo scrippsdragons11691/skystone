@@ -150,7 +150,10 @@ public class AutonDrive11691 extends BaseAutonIMU {
         rampTimer.reset();
         runtime.reset();
 
-        double DrivingAngle = globalAngle;
+        // DrivingAngle is the angle at which we want to drive
+        // In all the autons, we only rotate to 90, 0 or -90.
+        // Therefore set the DrivingAngle to one of the above values which is closest to globalAngle
+        double DrivingAngle = Math.round(globalAngle/90) *90;
 
         while ((runtime.seconds() < timeoutT) &&
                 (theHardwareMap11691.LR.isBusy())) {

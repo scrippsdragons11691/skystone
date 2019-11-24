@@ -31,7 +31,7 @@ public class TeleOp11691 extends LinearOpMode{
     public void runOpMode() {
 
         runtime                 = new ElapsedTime();
-        TeleOp_HM               = new HardwareMap11691(hardwareMap);
+        TeleOp_HM               = new HardwareMap11691(hardwareMap, this);
         TeleOp_DC               = new  DriveChasis11691(TeleOp_HM);
         movearm                 = new MoveArm11691(TeleOp_HM);
         TeleOpfou               = new Foundation11691(TeleOp_HM);

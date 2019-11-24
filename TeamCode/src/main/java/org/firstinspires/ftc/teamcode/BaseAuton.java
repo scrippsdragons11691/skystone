@@ -41,7 +41,7 @@ public class BaseAuton extends LinearOpMode{
     }
 
     protected void initialize(){
-        hMap            = new HardwareMap11691(hardwareMap);
+        hMap            = new HardwareMap11691(hardwareMap, this);
         autonDrive      = new AutonDrive11691(hMap);
         autonTurn       = new AutonTurn11691(hMap);
         runtime         = new ElapsedTime();
@@ -159,15 +159,15 @@ public class BaseAuton extends LinearOpMode{
         {
             turnAngle = -90;
             speed = 0.25;
-            straffLeft = -2;
+            straffLeft = -4;
             straffRight = -8;
         }
         else
         {
             turnAngle = 90;
             speed = -0.25;
-            straffLeft = 8;
-            straffRight = 2;
+            straffLeft = 10;
+            straffRight = 4;
         }
 
         driveBackward(30, .75, 6);
@@ -187,15 +187,18 @@ public class BaseAuton extends LinearOpMode{
         waitStep(0.1);
 
         if(usedSkystoneArm == SK_Block11691.SKYSTONE_ARM_LOCATION.Right) {
-            straff(straffLeft, 0.5, 2);
+            straff(straffLeft, 0.65, 2);
         }
         else
         {
-            straff(straffRight, 0.5, 2);
+            straff(straffRight, 0.65, 2);
         }
 
+if( competitionSide == COMPETITION_SIDE.BLUE)
+                totalDistanceMoved *= -1;
+                
         if( isFull == SKYSTONE_FULL.YES) {
-            driveBackward(65 + totalDistanceMoved, 1, 5.5);
+            driveBackward(70 + totalDistanceMoved, 1, 5.5);
         }
         else {
             driveBackward(70 + totalDistanceMoved, 1, 5.5);
@@ -222,12 +225,23 @@ public class BaseAuton extends LinearOpMode{
             initialStraffDirection = -1;
             foundationPullEndAngle = 90;
             foundationPullSPeed = -0.5;
+            beforeParkingStraff = 20;
         }
 
+        if(competitionSide == COMPETITION_SIDE.RED) {
         if(parkPosition == PARK_POSITION.NEXT_TO_CENTER_BRIDGE){
-            beforeParkingStraff = -14;
+                beforeParkingStraff = -12;
         } else {
             beforeParkingStraff = 10;
+            }
+        }
+        else
+        {
+            if(parkPosition == PARK_POSITION.NEXT_TO_CENTER_BRIDGE){
+                beforeParkingStraff = 18;
+            } else {
+                beforeParkingStraff = -10;
+            }
         }
         /*====================================== Settings section end */
 

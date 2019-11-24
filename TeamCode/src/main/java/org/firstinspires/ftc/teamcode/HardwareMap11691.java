@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -56,7 +57,7 @@ public class HardwareMap11691 {
 
 
 
-    public HardwareMap11691(HardwareMap hMap){
+    public HardwareMap11691(HardwareMap hMap, LinearOpMode theOpMode){
         RR              = (DcMotor)hMap.get("RR");
         LR              = (DcMotor)hMap.get("LR");
         RF              = (DcMotor)hMap.get("RF");
@@ -93,14 +94,16 @@ public class HardwareMap11691 {
         //todo check that we should not exit
         // make sure the imu gyro is calibrated before continuing.
         // while (!isStopRequested() && !imu.isGyroCalibrated())
-        while (!imu.isGyroCalibrated())
+        while (!imu.isGyroCalibrated()
+                && theOpMode.opModeIsActive()
+                && !theOpMode.isStopRequested())
         {
             //sleep(50);
             //idle();
         }
 
         Grabber.setPosition(0);
-        Pusher.setPosition(.75);
+        Pusher.setPosition(GlobalSettings11691.pushBlock);
         Foundation.setPosition(0.70);
         MoveArm.setPosition(0.05);
 

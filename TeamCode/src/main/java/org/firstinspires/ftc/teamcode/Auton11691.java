@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name="Basic: autontest", group="Linear Opmode")
+@Autonomous(name="SelfTest: Drive Straight", group="Linear Opmode")
 //@Disabled
 public class Auton11691 extends BaseAuton {
 

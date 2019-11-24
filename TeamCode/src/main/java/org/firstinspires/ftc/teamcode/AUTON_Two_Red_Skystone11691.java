@@ -23,12 +23,12 @@ public class AUTON_Two_Red_Skystone11691 extends BaseAuton {
             turn_HighPowerAtEnd(-90,0.75,0,1.5);
 
             driveForward(87,1,4);
-            turn_HighPowerAtEnd(0,0.25,0,2);
+            turn_HighPowerAtEnd(0,0.35,0,2);
             waitStep(0.5);
-            turn_HighPowerAtEnd(0,0.25,0,2);
+            turn_HighPowerAtEnd(0,0.25,0,1.5);
             straff(2, 0.5, 2);
             waitStep(0.5);
-            turn_HighPowerAtEnd(0,0.25,0,2);
+            turn_HighPowerAtEnd(0,0.25,0,1);
             
             driveBackward(6,0.25,2);
             double totalDistanceMoved = get_SkyStone(20, telemetry);
@@ -36,9 +36,9 @@ public class AUTON_Two_Red_Skystone11691 extends BaseAuton {
             waitStep(0.5);
             driveForward(8,1,4);
             
-            turn_HighPowerAtEnd(-90,0.5,0,2);
+            turn_HighPowerAtEnd(-90,0.5,0,1);
             waitStep(0.5);
-            turn_HighPowerAtEnd(-90,0.25,0,2);
+            turn_HighPowerAtEnd(-90,0.25,0,1);
             driveBackward(80,1,4);
             SK_Grab_Left.goToHomePosition();
             SK_Grab_Right.goToHomePosition();

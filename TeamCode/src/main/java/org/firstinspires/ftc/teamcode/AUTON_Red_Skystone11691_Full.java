@@ -36,10 +36,11 @@ public class AUTON_Red_Skystone11691_Full extends BaseAuton {
             // Drive under the bridge
             foundationUP();
             waitStep(0.8);
-            straff(-10,0.75,1);
+            driveForward(10,0.75,1.5);
+            straff(-8,0.75,1);
             turn_HighPowerAtEnd(-90,0.75,0,1.5);
 
-            driveForward(45,0.75,1.5);
+            driveForward(35,0.75,1.5);
 
             sleep(200000);
         }

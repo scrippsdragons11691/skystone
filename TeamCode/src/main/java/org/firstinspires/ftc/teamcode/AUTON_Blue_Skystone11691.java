@@ -19,7 +19,7 @@ public class AUTON_Blue_Skystone11691 extends BaseAuton {
             waitStep(0.8);
             turn_HighPowerAtEnd(90,0.25,0,3);
 
-            driveForward(15,1,5.5);
+            driveForward(17,1,5.5);
 
             sleep(200000);
         }

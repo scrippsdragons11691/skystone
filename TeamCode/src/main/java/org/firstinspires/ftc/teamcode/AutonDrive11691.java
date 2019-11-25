@@ -185,6 +185,8 @@ public class AutonDrive11691 extends BaseAutonIMU {
             theHardwareMap11691.RF.setPower(rampedSpeed + correction);
             theHardwareMap11691.RR.setPower(rampedSpeed + correction);
 
+            BaseAuton.dataTracing.sendAllData();
+
             theOpMode.telemetry.addData("1 imu heading", lastAngles.firstAngle);
             theOpMode.telemetry.addData("2 global heading", globalAngle);
             theOpMode.telemetry.addData("3 correction", correction);

@@ -19,9 +19,10 @@ public class BaseAuton extends LinearOpMode{
 
     }
 
+    public static dataTracingSocket dataTracing = null;
     HardwareMap11691        hMap;
-    private AutonDrive11691         autonDrive;
-    private AutonTurn11691          autonTurn;
+    AutonDrive11691         autonDrive;
+    AutonTurn11691          autonTurn;
     ElapsedTime runtime;
     Intake_11691            intake;
     MoveArm11691            movearm;
@@ -41,10 +42,15 @@ public class BaseAuton extends LinearOpMode{
     }
 
     protected void initialize(){
+        if(dataTracing == null)
+            dataTracing     = new dataTracingSocket();
+
+        dataTracing.theAuton = this;
+
+        runtime         = new ElapsedTime();
         hMap            = new HardwareMap11691(hardwareMap, this);
         autonDrive      = new AutonDrive11691(hMap);
         autonTurn       = new AutonTurn11691(hMap);
-        runtime         = new ElapsedTime();
         intake          = new Intake_11691(hMap);
         movearm         = new MoveArm11691(hMap);
         grab            = new GrabBlock11691 (hMap);

@@ -83,6 +83,8 @@ public class AutonTurn11691 extends BaseAutonIMU{
             actualangle = getAbsoluteHeading();
             error = targetAngle - actualangle;
 
+            BaseAuton.dataTracing.sendAllData();
+
             telemetry.addData("Target Angle","error= %.2f", error);
             telemetry.addData("Target Angle","value= %.2f", targetAngle);
             telemetry.addData("Actual Angle","value= %.2f", actualangle);
@@ -116,6 +118,8 @@ public class AutonTurn11691 extends BaseAutonIMU{
 
             actualangle = getAbsoluteHeading();
             error = targetAngle - actualangle;
+
+            BaseAuton.dataTracing.sendAllData();
 
             telemetry.addData("Target Angle", "error= %.2f", error);
             telemetry.addData("Target Angle", "value= %.2f", targetAngle);

@@ -17,8 +17,8 @@ public class AutonDrive11691 extends BaseAutonIMU {
     static final double COUNTS_PER_INCH =(COUNTS_PER_MOTOR_REV / DRIVE_GEAR_REDUTION)/(WHEEL_DIAMETER_INCHES*3.1415);
     boolean is_moving = false;
 
-    double minimumMotorSpeed = 0;
-    double maximumMotorSpeed = 1;
+    double minimumMotorPower = 0;
+    double maximumMotorPower = 1;
     double rampTimeInSec = 1;
 
     ElapsedTime runtime     = new ElapsedTime();
@@ -38,7 +38,7 @@ public class AutonDrive11691 extends BaseAutonIMU {
     }
 
     // Straffing Auton
-    public void Auton_Straff (double dist_Straff_In, double speed_Straff, double timeoutS, LinearOpMode theOpMode){
+    public void Auton_Straff (double dist_Straff_In, double power, double timeoutS, LinearOpMode theOpMode){
 
 
         int newStraffLeftFTarget;
@@ -73,10 +73,10 @@ public class AutonDrive11691 extends BaseAutonIMU {
 
         //Set the motor speed
         runtime.reset();
-        theHardwareMap11691.LF.setPower(speed_Straff);
-        theHardwareMap11691.RF.setPower(speed_Straff);
-        theHardwareMap11691.LR.setPower(speed_Straff);
-        theHardwareMap11691.RR.setPower(speed_Straff);
+        theHardwareMap11691.LF.setPower(power);
+        theHardwareMap11691.RF.setPower(power);
+        theHardwareMap11691.LR.setPower(power);
+        theHardwareMap11691.RR.setPower(power);
 
         runtime.reset();
         while ((runtime.seconds() < timeoutS)
@@ -106,12 +106,10 @@ public class AutonDrive11691 extends BaseAutonIMU {
     }
 
     // Drive Auton
-    public void encoderDriveAuton(double distanceInches, double speed, double timeoutT, LinearOpMode theOpMode){
+    public void encoderDriveAuton(double distanceInches, double power, double timeoutT, LinearOpMode theOpMode){
 
         double leftInches   = distanceInches;
         double rightInches  = distanceInches;
-        double motorspeed = speed;
-        double timeoutS;
 
         int newLeftFTarget;
         int newRightFTarget;
@@ -161,17 +159,17 @@ public class AutonDrive11691 extends BaseAutonIMU {
                 && (theHardwareMap11691.LR.isBusy())
                 && !theOpMode.isStopRequested() && theOpMode.opModeIsActive()) {
 
-            double rampedSpeed = speed;
+            double rampedPower = power;
             int remainingEncoderCounts = Math.abs(newLeftFTarget - theHardwareMap11691.LF.getCurrentPosition());
 
             if(rampTimer.seconds() <= rampTimeInSec) {
                 // Spinning the wheels introduces an error when driving using encoders. Therefore ramp the wheel power up so that the wheels do not spin.
-                rampedSpeed = Range.clip(speed * (rampTimer.seconds() / rampTimeInSec), minimumMotorSpeed, speed);
+                rampedPower = Range.clip(power * (rampTimer.seconds() / rampTimeInSec), minimumMotorPower, power);
             }
             else if(remainingEncoderCounts < GlobalSettings11691.EncoderCountRampDownThreshold)
             {
                 // If we shut down motor power suddenly, the robot will slide. Therefore ramp power down
-                rampedSpeed = Range.clip(speed * (remainingEncoderCounts / GlobalSettings11691.EncoderCountRampDownThreshold), GlobalSettings11691.RampDownMinimumPower, speed);
+                rampedPower = Range.clip(power * (remainingEncoderCounts / GlobalSettings11691.EncoderCountRampDownThreshold), GlobalSettings11691.RampDownMinimumPower, power);
             }
 
             // Use gyro to drive in a straight line.
@@ -181,10 +179,10 @@ public class AutonDrive11691 extends BaseAutonIMU {
             if (distanceInches > 0){
                 correction *= -1;
             }
-            theHardwareMap11691.LF.setPower(rampedSpeed - correction);
-            theHardwareMap11691.LR.setPower(rampedSpeed - correction);
-            theHardwareMap11691.RF.setPower(rampedSpeed + correction);
-            theHardwareMap11691.RR.setPower(rampedSpeed + correction);
+            theHardwareMap11691.LF.setPower(rampedPower - correction);
+            theHardwareMap11691.LR.setPower(rampedPower - correction);
+            theHardwareMap11691.RF.setPower(rampedPower + correction);
+            theHardwareMap11691.RR.setPower(rampedPower + correction);
 
             BaseAuton.dataTracing.sendAllData();
 
@@ -213,17 +211,12 @@ public class AutonDrive11691 extends BaseAutonIMU {
         theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
     }
 
-    public void encoderDriveAutonNew(double distanceInches, double speed, double timeoutT, LinearOpMode theOpMode){
+    public void encoderDriveAutonNew(double distanceInches, double power, double timeoutT, LinearOpMode theOpMode){
 
         double leftInches   = distanceInches;
         double rightInches  = distanceInches;
-        double motorspeed = speed;
-        double timeoutS;
 
         int newLeftFTarget;
-        int newRightFTarget;
-        int newLeftBTarget;
-        int newRightBTarget;
 
         // Reset the encoders
         theHardwareMap11691.LF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -255,7 +248,7 @@ public class AutonDrive11691 extends BaseAutonIMU {
              //   && (theHardwareMap11691.LR.isBusy())
                 && !theOpMode.isStopRequested() && theOpMode.opModeIsActive()) {
 
-            double rampedSpeed = speed;
+            double rampedPower = power;
             int remainingEncoderCounts = newLeftFTarget - theHardwareMap11691.LF.getCurrentPosition();
             int remainingEncoderCountsAbsolute = Math.abs(newLeftFTarget - theHardwareMap11691.LF.getCurrentPosition());
 
@@ -268,16 +261,16 @@ public class AutonDrive11691 extends BaseAutonIMU {
             if(remainingEncoderCountsAbsolute < effectiveEncoderCountRampDownThreshold)
             {
                 // If we shut down motor power suddenly, the robot will slide. Therefore ramp power down
-                rampedSpeed = Range.clip(speed * (((double)remainingEncoderCountsAbsolute) / effectiveEncoderCountRampDownThreshold), GlobalSettings11691.RampDownMinimumPower, speed);
+                rampedPower = Range.clip(power * (((double)remainingEncoderCountsAbsolute) / effectiveEncoderCountRampDownThreshold), GlobalSettings11691.RampDownMinimumPower, power);
             }
             else {
-                // the slower the robot speed is, delay the start of the power ramp down so that we do not waste time
+                // For slower the robot speed is, delay the start of the power ramp down so that we do not waste time
                 double rampDownStartModifier = ((DcMotorEx)theHardwareMap11691.LF).getVelocity(AngleUnit.RADIANS)/GlobalSettings11691.topWheelAngularVelocity_radPerSec;
                 effectiveEncoderCountRampDownThreshold = GlobalSettings11691.EncoderCountRampDownThreshold * rampDownStartModifier;
 
                 if(rampTimer.seconds() <= rampTimeInSec) {
                     // Spinning the wheels introduces an error when driving using encoders. Therefore ramp the wheel power up so that the wheels do not spin.
-                    rampedSpeed = Range.clip(speed * (rampTimer.seconds() / rampTimeInSec), minimumMotorSpeed, speed);
+                    rampedPower = Range.clip(power * (rampTimer.seconds() / rampTimeInSec), minimumMotorPower, power);
                 }
             }
 
@@ -289,10 +282,10 @@ public class AutonDrive11691 extends BaseAutonIMU {
             if (distanceInches > 0){
                 correction *= -1;
             }
-            theHardwareMap11691.LF.setPower(rampedSpeed - correction);
-            theHardwareMap11691.LR.setPower(rampedSpeed - correction);
-            theHardwareMap11691.RF.setPower(rampedSpeed + correction);
-            theHardwareMap11691.RR.setPower(rampedSpeed + correction);
+            theHardwareMap11691.LF.setPower(rampedPower - correction);
+            theHardwareMap11691.LR.setPower(rampedPower - correction);
+            theHardwareMap11691.RF.setPower(rampedPower + correction);
+            theHardwareMap11691.RR.setPower(rampedPower + correction);
 
             BaseAuton.dataTracing.sendAllData();
 
@@ -324,30 +317,30 @@ public class AutonDrive11691 extends BaseAutonIMU {
     }
 
     // Basic Drive - turns motors to a set speed
-    public void basicDrive (double speeda)    {
+    public void basicDrive (double power)    {
 
         theHardwareMap11691.LF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         theHardwareMap11691.RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         theHardwareMap11691.LR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        theHardwareMap11691.LF.setPower(speeda);
-        theHardwareMap11691.RF.setPower(speeda);
-        theHardwareMap11691.LR.setPower(speeda);
-        theHardwareMap11691.RR.setPower(speeda);
+        theHardwareMap11691.LF.setPower(power);
+        theHardwareMap11691.RF.setPower(power);
+        theHardwareMap11691.LR.setPower(power);
+        theHardwareMap11691.RR.setPower(power);
     }
 
-    public void DriveByBumperSwitches (double speeda, double timeout, LinearOpMode theOpMode)    {
+    public void DriveByBumperSwitches (double power, double timeout, LinearOpMode theOpMode)    {
 
         theHardwareMap11691.LF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         theHardwareMap11691.RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         theHardwareMap11691.LR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        theHardwareMap11691.LF.setPower(-speeda);
-        theHardwareMap11691.RF.setPower(-speeda);
-        theHardwareMap11691.LR.setPower(-speeda);
-        theHardwareMap11691.RR.setPower(-speeda);
+        theHardwareMap11691.LF.setPower(-power);
+        theHardwareMap11691.RF.setPower(-power);
+        theHardwareMap11691.LR.setPower(-power);
+        theHardwareMap11691.RR.setPower(-power);
 
         ElapsedTime timeoutTimer = new ElapsedTime();
         timeoutTimer.reset();

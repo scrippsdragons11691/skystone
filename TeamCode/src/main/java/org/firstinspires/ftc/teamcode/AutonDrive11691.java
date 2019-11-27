@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 public class AutonDrive11691 extends BaseAutonIMU {
     //Rev Hex HD Motor 2240 counts per rotation
@@ -170,7 +171,7 @@ public class AutonDrive11691 extends BaseAutonIMU {
             else if(remainingEncoderCounts < GlobalSettings11691.EncoderCountRampDownThreshold)
             {
                 // If we shut down motor power suddenly, the robot will slide. Therefore ramp power down
-                rampedSpeed = Range.clip(speed * (remainingEncoderCounts / GlobalSettings11691.EncoderCountRampDownThreshold), GlobalSettings11691.MinimumRampDownSpeed, speed);
+                rampedSpeed = Range.clip(speed * (remainingEncoderCounts / GlobalSettings11691.EncoderCountRampDownThreshold), GlobalSettings11691.RampDownMinimumPower, speed);
             }
 
             // Use gyro to drive in a straight line.
@@ -212,13 +213,123 @@ public class AutonDrive11691 extends BaseAutonIMU {
         theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
     }
 
+    public void encoderDriveAutonNew(double distanceInches, double speed, double timeoutT, LinearOpMode theOpMode){
+
+        double leftInches   = distanceInches;
+        double rightInches  = distanceInches;
+        double motorspeed = speed;
+        double timeoutS;
+
+        int newLeftFTarget;
+        int newRightFTarget;
+        int newLeftBTarget;
+        int newRightBTarget;
+
+        // Reset the encoders
+        theHardwareMap11691.LF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        theHardwareMap11691.LR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        theHardwareMap11691.RR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        theHardwareMap11691.RF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        //Set the motors to run to encoder mode
+        theHardwareMap11691.LF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        theHardwareMap11691.RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        theHardwareMap11691.LR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        //Determine new target postition, and pass to motor controller
+        newLeftFTarget  = (int)(leftInches * COUNTS_PER_INCH);
+
+        ElapsedTime rampTimer = new ElapsedTime();
+        rampTimer.reset();
+        runtime.reset();
+
+        // DrivingAngle is the angle at which we want to drive
+        // In all the autons, we only rotate to 90, 0 or -90.
+        // Therefore set the DrivingAngle to one of the above values which is closest to globalAngle
+        double DrivingAngle = Math.round(globalAngle/90) *90;
+
+        double effectiveEncoderCountRampDownThreshold =0;
+
+        while ((runtime.seconds() < timeoutT)
+             //   && (theHardwareMap11691.LR.isBusy())
+                && !theOpMode.isStopRequested() && theOpMode.opModeIsActive()) {
+
+            double rampedSpeed = speed;
+            int remainingEncoderCounts = newLeftFTarget - theHardwareMap11691.LF.getCurrentPosition();
+            int remainingEncoderCountsAbsolute = Math.abs(newLeftFTarget - theHardwareMap11691.LF.getCurrentPosition());
+
+            if( distanceInches < 0 )
+                remainingEncoderCounts *= -1;
+
+            if(remainingEncoderCounts < 20)
+                break;
+
+            if(remainingEncoderCountsAbsolute < effectiveEncoderCountRampDownThreshold)
+            {
+                // If we shut down motor power suddenly, the robot will slide. Therefore ramp power down
+                rampedSpeed = Range.clip(speed * (((double)remainingEncoderCountsAbsolute) / effectiveEncoderCountRampDownThreshold), GlobalSettings11691.RampDownMinimumPower, speed);
+            }
+            else {
+                // the slower the robot speed is, delay the start of the power ramp down so that we do not waste time
+                double rampDownStartModifier = ((DcMotorEx)theHardwareMap11691.LF).getVelocity(AngleUnit.RADIANS)/GlobalSettings11691.topWheelAngularVelocity_radPerSec;
+                effectiveEncoderCountRampDownThreshold = GlobalSettings11691.EncoderCountRampDownThreshold * rampDownStartModifier;
+
+                if(rampTimer.seconds() <= rampTimeInSec) {
+                    // Spinning the wheels introduces an error when driving using encoders. Therefore ramp the wheel power up so that the wheels do not spin.
+                    rampedSpeed = Range.clip(speed * (rampTimer.seconds() / rampTimeInSec), minimumMotorSpeed, speed);
+                }
+            }
+
+
+            // Use gyro to drive in a straight line.
+            double correction = checkDirection(DrivingAngle);
+
+            //Set the motor speed
+            if (distanceInches > 0){
+                correction *= -1;
+            }
+            theHardwareMap11691.LF.setPower(rampedSpeed - correction);
+            theHardwareMap11691.LR.setPower(rampedSpeed - correction);
+            theHardwareMap11691.RF.setPower(rampedSpeed + correction);
+            theHardwareMap11691.RR.setPower(rampedSpeed + correction);
+
+            BaseAuton.dataTracing.sendAllData();
+
+            theOpMode.telemetry.addData("1 imu heading", lastAngles.firstAngle);
+            theOpMode.telemetry.addData("2 global heading", globalAngle);
+            theOpMode.telemetry.addData("3 correction", correction);
+            theOpMode.telemetry.addData("is_moving drive", is_moving);
+            theOpMode.telemetry.addData("LF encoder","position= %d", theHardwareMap11691.LF.getCurrentPosition());
+            theOpMode.telemetry.addData("RF encoder","position= %d", theHardwareMap11691.RF.getCurrentPosition());
+            theOpMode.telemetry.addData("LR encoder","position= %d", theHardwareMap11691.LR.getCurrentPosition());
+            theOpMode.telemetry.addData("RR encoder","position= %d", theHardwareMap11691.RR.getCurrentPosition());
+            theOpMode.telemetry.addData("Runtime",runtime.time());
+            theOpMode.telemetry.addData("Timeout", timeoutT);
+            theOpMode.telemetry.update();
+
+        }
+
+        theHardwareMap11691.LF.setPower(0);
+        theHardwareMap11691.RF.setPower(0);
+        theHardwareMap11691.LR.setPower(0);
+        theHardwareMap11691.RR.setPower(0);
+
+        BaseAuton.dataTracing.sendAllData();
+
+        theHardwareMap11691.LF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        theHardwareMap11691.RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        theHardwareMap11691.LR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
     // Basic Drive - turns motors to a set speed
     public void basicDrive (double speeda)    {
 
-        theHardwareMap11691.LF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
-        theHardwareMap11691.RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
-        theHardwareMap11691.LR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
-        theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
+        theHardwareMap11691.LF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        theHardwareMap11691.RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        theHardwareMap11691.LR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         theHardwareMap11691.LF.setPower(speeda);
         theHardwareMap11691.RF.setPower(speeda);
@@ -228,10 +339,10 @@ public class AutonDrive11691 extends BaseAutonIMU {
 
     public void DriveByBumperSwitches (double speeda, double timeout, LinearOpMode theOpMode)    {
 
-        theHardwareMap11691.LF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
-        theHardwareMap11691.RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
-        theHardwareMap11691.LR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
-        theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
+        theHardwareMap11691.LF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        theHardwareMap11691.RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        theHardwareMap11691.LR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         theHardwareMap11691.LF.setPower(-speeda);
         theHardwareMap11691.RF.setPower(-speeda);

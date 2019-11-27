@@ -25,5 +25,7 @@ public class StartDataServer extends BaseAuton {
                 telemetry.addData("exception", ex.toString());
                 telemetry.update();
         }
+
+        sleep(5000);
     }
 }

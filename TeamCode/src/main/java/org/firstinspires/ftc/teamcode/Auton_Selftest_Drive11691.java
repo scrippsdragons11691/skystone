@@ -15,5 +15,7 @@ public class Auton_Selftest_Drive11691 extends BaseAuton {
 
         driveForward  (60,1,5);
         driveBackward  (60,1,5);
+
+        sleep(5000);
     }
 }

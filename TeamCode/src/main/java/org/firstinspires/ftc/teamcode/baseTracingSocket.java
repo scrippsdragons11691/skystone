@@ -22,8 +22,11 @@ public class baseTracingSocket {
     public void stop() throws IOException
     {
         socketIsOpen = false;
-        output.close();
-        server.close();
+        if(output != null)
+            output.close();
+
+        if(server != null)
+            server.close();
     }
 }
 

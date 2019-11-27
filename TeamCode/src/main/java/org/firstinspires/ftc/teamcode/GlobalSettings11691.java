@@ -32,10 +32,25 @@ public class GlobalSettings11691 {
     // to stay on a straight line.
     static double ImuCorrectionFactor = 0.075;
 
-    // Settings for driving in a straight line
-    static int EncoderCountRampDownThreshold = 1120/2;
-    static double MinimumRampDownSpeed = 0.25; // Do not ramp down speed to a smaller value so as to not get stuck due to friction
+    // Robot linear speed ramp down settings
+    static int EncoderCountRampDownThreshold = (int)(35*54.016); // todo use COUNTS_PER_INCH instead of 55
+    static double topWheelAngularVelocity_radPerSec = 15; // the highest wheel ang velocity that the robot reaches at full power
+    static double RampDownMinimumPower = 0.2; // Do not ramp down speed to a smaller value so as to not get stuck due to friction
 
     // Settings for rotating
     static double rotationRampTimeInSec = 0.75;
+
+    static double OneTileLength_inch = 23 + (3.0/8.0);
 }
+
+/* ============================================ */
+//                   NOTES
+/* ============================================ */
+// 1) With power = 1 at each wheel, the top speed is 15 rad/s (11/27/2019)
+//
+//
+//
+//
+//
+//
+/* ============================================ */

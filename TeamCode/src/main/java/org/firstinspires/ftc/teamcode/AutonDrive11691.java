@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class AutonDrive11691 extends BaseAutonIMU {
 
@@ -365,6 +366,40 @@ public class AutonDrive11691 extends BaseAutonIMU {
         theHardwareMap11691.RR.setPower(0);
     }
 
+    double distanceSensorRH = 0;
+    double distanceSensorLH = 0;
+    public void DriveByDistanceSensors (double power, double distance, double timeout, LinearOpMode theOpMode)    {
+
+        // the minimum distance that the sensor can see is 2.15 inch
+        distance = Range.clip(distance, 2.3, 20);
+
+        theHardwareMap11691.LF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        theHardwareMap11691.RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        theHardwareMap11691.LR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        theHardwareMap11691.LF.setPower(-power);
+        theHardwareMap11691.RF.setPower(-power);
+        theHardwareMap11691.LR.setPower(-power);
+        theHardwareMap11691.RR.setPower(-power);
+
+        ElapsedTime timeoutTimer = new ElapsedTime();
+        timeoutTimer.reset();
+
+        do{
+            distanceSensorRH = getDistanceSensorValue_RH();
+            distanceSensorLH = getDistanceSensorValue_LH();
+            BaseAuton.dataTracing.sendAllData();
+        }while((timeoutTimer.seconds() < timeout)
+                && (distanceSensorRH >= distance)
+                && (distanceSensorLH >= distance)
+                && !theOpMode.isStopRequested() && theOpMode.opModeIsActive());
+
+        theHardwareMap11691.LF.setPower(0);
+        theHardwareMap11691.RF.setPower(0);
+        theHardwareMap11691.LR.setPower(0);
+        theHardwareMap11691.RR.setPower(0);
+    }
     public void displayPositionTolerance(Telemetry tele)
     {
         int tol = ((DcMotorEx)(theHardwareMap11691.LF)).getTargetPositionTolerance();
@@ -402,6 +437,23 @@ public class AutonDrive11691 extends BaseAutonIMU {
         return correction;
     }
 
+    private double getDistanceSensorValue_RH()
+    {
+        double distance = theHardwareMap11691.autonSensorDRH.getDistance(DistanceUnit.INCH);
+        if(distance < 12.0)
+            return distance;
+
+        return 1000.0;
+    }
+
+    private double getDistanceSensorValue_LH()
+    {
+        double distance = theHardwareMap11691.autonSensorDLH.getDistance(DistanceUnit.INCH);
+        if(distance < 12.0)
+            return distance;
+
+        return 1000.0;
+    }
 }
 
 //todo implement heading correction for straffing

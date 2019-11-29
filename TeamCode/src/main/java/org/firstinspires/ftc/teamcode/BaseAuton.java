@@ -113,9 +113,14 @@ public class BaseAuton extends LinearOpMode{
         }
     }
 
-    protected void DriveByBumperSwitches(double speeda, double timeout)
+    protected void DriveByBumperSwitches(double power, double timeout)
     {
-        autonDrive.DriveByBumperSwitches( speeda, timeout, this);
+        autonDrive.DriveByBumperSwitches( power, timeout, this);
+    }
+
+    protected void DriveByDistanceSensors(double power, double distance, double timeout)
+    {
+        autonDrive.DriveByDistanceSensors( power, distance, timeout, this);
     }
 
     protected void driveForward (double dist, double power, double timeouta){
@@ -200,7 +205,8 @@ public class BaseAuton extends LinearOpMode{
             straffRight = 4;
         }
 
-        driveBackward(30, .75, 6);
+        driveBackward(29, 1, 6);
+        DriveByDistanceSensors( 0.25, 2.5, 5);
         waitStep(0.1);
         double totalDistanceMoved = get_SkyStone(20, telemetry);
         if(usedSkystoneArm == SK_Block11691.SKYSTONE_ARM_LOCATION.Left) {

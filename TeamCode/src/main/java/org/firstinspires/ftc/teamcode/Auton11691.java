@@ -13,14 +13,18 @@ public class Auton11691 extends BaseAuton {
         initialize();
         waitForStart();
 
-        for(int i=0; i<5; i++) {
+       // turn_HighPowerAtEnd(-90, 0.5,  5.0);
+        /*driveForward(GlobalSettings11691.OneTileLength_inch * 2, 1, 10);
+        DriveByDistanceSensors( 0.25, 2.5, 20);
+
+        for(int i=0; i<0; i++) {
             driveBackward(GlobalSettings11691.OneTileLength_inch * 2, 1, 10);
             waitStep(0.1);
             driveForward(GlobalSettings11691.OneTileLength_inch * 2, 1, 10);
             waitStep(0.1);
-        }
+        }*/
 
-        for(int i=0; i<0; i++) {
+        for(int i=0; i<2; i++) {
             driveForward(GlobalSettings11691.OneTileLength_inch * 1, 1, 10);
             waitStep(0.1);
 

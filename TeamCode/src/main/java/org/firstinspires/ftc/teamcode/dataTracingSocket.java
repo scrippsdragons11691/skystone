@@ -17,10 +17,11 @@ public class dataTracingSocket extends baseTracingSocket {
     public void sendAllData()
     {
         if(socketIsOpen) {
-            sendWheelEncoders();
+            //sendWheelEncoders();
             //sendWheelAngularVelocity();
             //sendWheelPower();
             //sendAngularData();
+            sendDistanceSensorData();
         }
     }
     public void sendWheelEncoders()
@@ -72,6 +73,17 @@ public class dataTracingSocket extends baseTracingSocket {
         }
     }
 
+    public void sendDistanceSensorData()
+    {
+        if(socketIsOpen) {
+            PrintWriter writer = new PrintWriter(output, true);
+            writer.format("$$DistanceSensor:%.3f:%.2f:%.2f##",
+                    theAuton.runtime.time(),
+                    theAuton.autonDrive.distanceSensorLH,
+                    theAuton.autonDrive.distanceSensorRH
+            );
+        }
+    }
 
     public void sendAngularData()
     {

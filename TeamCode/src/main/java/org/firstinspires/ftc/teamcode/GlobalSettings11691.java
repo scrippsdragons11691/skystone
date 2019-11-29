@@ -42,16 +42,16 @@ public class GlobalSettings11691 {
     static double ImuCorrectionFactor = 0.075;
 
     // Robot linear speed ramp up settings
-    static double RampUpTime = 0.6;
+    static double RampUpTime = 0.8;
 
     // Robot linear speed ramp down settings
-    static int EncoderCountRampDownThreshold = (int)(35*COUNTS_PER_INCH);
+    static int EncoderCountRampDownThreshold = (int)(40*COUNTS_PER_INCH);
     static double topWheelAngularVelocity_radPerSec = 15; // the highest wheel ang velocity that the robot reaches at full power
     static double LinearRampDownMinimumPower = 0.2; // Do not ramp down speed to a smaller value so as to not get stuck due to friction
 
     // Settings for rotating
-    static double rotationRampTimeInSec = 0.5;
-    static double powerRampdownStartAngle = 20;
+    static double rotationRampTimeInSec = 0.8;
+    static double powerRampdownStartAngle = 30;
     static double RotationRampDownMinimumPower = 0.2; // Do not ramp down speed to a smaller value so as to not get stuck due to friction
 
     static double OneTileLength_inch = 23 + (3.0/8.0);

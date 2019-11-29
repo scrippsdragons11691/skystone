@@ -2,20 +2,18 @@ package org.firstinspires.ftc.teamcode;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 public class baseTracingSocket {
-    private ServerSocket server;
-    private int port = 9876;
+
     boolean socketIsOpen = false;
     OutputStream output;
+    Socket clientSocket;
 
     public void Start() throws IOException
     {
-        server = new ServerSocket(port);
-        Socket socket = server.accept();
-        output = socket.getOutputStream();
+        clientSocket = new Socket(GlobalSettings11691.dataServerHostIP, GlobalSettings11691.dataServerHostPort);
+        output = clientSocket.getOutputStream();
         socketIsOpen = true;
     }
 
@@ -25,8 +23,8 @@ public class baseTracingSocket {
         if(output != null)
             output.close();
 
-        if(server != null)
-            server.close();
+        if(clientSocket != null)
+            clientSocket.close();
     }
 }
 

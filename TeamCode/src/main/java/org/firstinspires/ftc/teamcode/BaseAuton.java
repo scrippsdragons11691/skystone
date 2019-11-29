@@ -41,11 +41,35 @@ public class BaseAuton extends LinearOpMode{
     public void BaseAuton() {
     }
 
+    protected void uninitialize()
+    {
+        telemetry.addData("Data server", "Stopping");
+        telemetry.update();
+        try {
+            dataTracing.stop();
+            telemetry.addData("Data server", "Stop completed");
+            telemetry.update();
+        }
+        catch (Exception ex) {
+            telemetry.addData("exception", ex.toString());
+            telemetry.update();
+        }
+    }
     protected void initialize(){
         if(dataTracing == null)
             dataTracing     = new dataTracingSocket();
 
         dataTracing.theAuton = this;
+
+        try {
+            dataTracing.Start();
+            telemetry.addData("Data server", "... Connected");
+            telemetry.update();
+        }
+        catch (Exception ex) {
+            telemetry.addData("exception", ex.toString());
+            telemetry.update();
+        }
 
         runtime         = new ElapsedTime();
         hMap            = new HardwareMap11691(hardwareMap, this);

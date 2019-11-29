@@ -13,34 +13,43 @@ public class Auton11691 extends BaseAuton {
         initialize();
         waitForStart();
 
-        for(int i=0; i<2; i++) {
+        for(int i=0; i<5; i++) {
+            driveBackward(GlobalSettings11691.OneTileLength_inch * 2, 1, 10);
+            waitStep(0.1);
+            driveForward(GlobalSettings11691.OneTileLength_inch * 2, 1, 10);
+            waitStep(0.1);
+        }
+
+        for(int i=0; i<0; i++) {
             driveForward(GlobalSettings11691.OneTileLength_inch * 1, 1, 10);
-            waitStep(0.25);
+            waitStep(0.1);
 
             turn_HighPowerAtEnd(-90, 0.5,  5.0);
-            waitStep(0.25);
+            waitStep(0.1);
 
             driveForward(GlobalSettings11691.OneTileLength_inch * 2, 1, 10);
-            waitStep(0.25);
+            waitStep(0.1);
             turn_HighPowerAtEnd(0, 0.5,  5.0);
-            waitStep(0.25);
+            waitStep(0.1);
 
             driveBackward(GlobalSettings11691.OneTileLength_inch * 1, 1, 10);
-            waitStep(0.25);
+            waitStep(0.1);
 
             turn_HighPowerAtEnd(90, 0.5,  5.0);
-            waitStep(0.25);
+            waitStep(0.1);
 
             driveForward(GlobalSettings11691.OneTileLength_inch * 2, 1, 10);
-            waitStep(0.25);
+            waitStep(0.1);
 
             turn_HighPowerAtEnd(0, 0.5,  5.0);
-            waitStep(0.25);
+            waitStep(0.1);
 
           //  turn_HighPowerAtEnd(0, 0.75,  5.0);
           //  waitStep(0.5);
             //driveForward(GlobalSettings11691.OneTileLength_inch * 3, 1, 10);
         }
+
+        uninitialize();
         sleep(5000);
     }
 }

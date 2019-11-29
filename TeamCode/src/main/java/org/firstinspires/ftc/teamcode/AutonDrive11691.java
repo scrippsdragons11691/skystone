@@ -10,16 +10,10 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 public class AutonDrive11691 extends BaseAutonIMU {
-    //Rev Hex HD Motor 2240 counts per rotation
-    static final double COUNTS_PER_MOTOR_REV =      1120; //20 - 537.6, 40 - 1120, 60- 1680 (cpr) Gear Neverest Motor Encoder
-    static final double DRIVE_GEAR_REDUTION =       2.2; // This is < 1.0 if geared UP
-    static final double WHEEL_DIAMETER_INCHES =     3.0; // For figuring circumference
-    static final double COUNTS_PER_INCH =(COUNTS_PER_MOTOR_REV / DRIVE_GEAR_REDUTION)/(WHEEL_DIAMETER_INCHES*3.1415);
+
     boolean is_moving = false;
 
     double minimumMotorPower = 0;
-    double maximumMotorPower = 1;
-    double rampTimeInSec = 1;
 
     ElapsedTime runtime     = new ElapsedTime();
 
@@ -34,7 +28,7 @@ public class AutonDrive11691 extends BaseAutonIMU {
         theHardwareMap11691.RR.setDirection(DcMotor.Direction.FORWARD);
         theHardwareMap11691.RF.setDirection(DcMotor.Direction.FORWARD);
 
-        setPositionTolerance(20);
+        setPositionTolerance(20); // todo not needed anymore if we do not use RUN_TO_POSITION
     }
 
     // Straffing Auton
@@ -53,10 +47,10 @@ public class AutonDrive11691 extends BaseAutonIMU {
         theHardwareMap11691.RF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //Determine new target postition, and pass to motor controller
-        newStraffLeftFTarget  = (int)(-1*dist_Straff_In * COUNTS_PER_INCH / 0.707);
-        newStraffRightFTarget = (int)(dist_Straff_In * COUNTS_PER_INCH / 0.707);
-        newStraffLeftBTarget  = (int)(dist_Straff_In * COUNTS_PER_INCH / 0.707);
-        newStraffRightBTarget = (int)(-1*dist_Straff_In * COUNTS_PER_INCH / 0.707);
+        newStraffLeftFTarget  = (int)(-1*dist_Straff_In * GlobalSettings11691.COUNTS_PER_INCH / 0.707);
+        newStraffRightFTarget = (int)(dist_Straff_In * GlobalSettings11691.COUNTS_PER_INCH / 0.707);
+        newStraffLeftBTarget  = (int)(dist_Straff_In * GlobalSettings11691.COUNTS_PER_INCH / 0.707);
+        newStraffRightBTarget = (int)(-1*dist_Straff_In * GlobalSettings11691.COUNTS_PER_INCH / 0.707);
 
         //Send the target position to the REV module
         theHardwareMap11691.LF.setTargetPosition(newStraffLeftFTarget);
@@ -108,6 +102,8 @@ public class AutonDrive11691 extends BaseAutonIMU {
     // Drive Auton
     public void encoderDriveAuton(double distanceInches, double power, double timeoutT, LinearOpMode theOpMode){
 
+        double rampTimeInSec = GlobalSettings11691.RampUpTime;
+
         double leftInches   = distanceInches;
         double rightInches  = distanceInches;
 
@@ -129,10 +125,10 @@ public class AutonDrive11691 extends BaseAutonIMU {
         theHardwareMap11691.RF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //Determine new target postition, and pass to motor controller
-        newLeftFTarget  = (int)(leftInches * COUNTS_PER_INCH);
-        newRightFTarget = (int)(rightInches * COUNTS_PER_INCH);
-        newLeftBTarget  = (int)(leftInches * COUNTS_PER_INCH);
-        newRightBTarget = (int)(rightInches * COUNTS_PER_INCH);
+        newLeftFTarget  = (int)(leftInches * GlobalSettings11691.COUNTS_PER_INCH);
+        newRightFTarget = (int)(rightInches * GlobalSettings11691.COUNTS_PER_INCH);
+        newLeftBTarget  = (int)(leftInches * GlobalSettings11691.COUNTS_PER_INCH);
+        newRightBTarget = (int)(rightInches * GlobalSettings11691.COUNTS_PER_INCH);
 
         //Set the motors to run to encoder mode
         theHardwareMap11691.LF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -169,7 +165,7 @@ public class AutonDrive11691 extends BaseAutonIMU {
             else if(remainingEncoderCounts < GlobalSettings11691.EncoderCountRampDownThreshold)
             {
                 // If we shut down motor power suddenly, the robot will slide. Therefore ramp power down
-                rampedPower = Range.clip(power * (remainingEncoderCounts / GlobalSettings11691.EncoderCountRampDownThreshold), GlobalSettings11691.RampDownMinimumPower, power);
+                rampedPower = Range.clip(power * (remainingEncoderCounts / GlobalSettings11691.EncoderCountRampDownThreshold), GlobalSettings11691.LinearRampDownMinimumPower, power);
             }
 
             // Use gyro to drive in a straight line.
@@ -205,20 +201,23 @@ public class AutonDrive11691 extends BaseAutonIMU {
         theHardwareMap11691.LR.setPower(0);
         theHardwareMap11691.RR.setPower(0);
 
-        theHardwareMap11691.LF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
-        theHardwareMap11691.RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
-        theHardwareMap11691.LR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
-        theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
+        theHardwareMap11691.LF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        theHardwareMap11691.RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        theHardwareMap11691.LR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public double correction=0;
     double DrivingAngle = 0;
+    int newLeftFTarget;
+    int remainingEncoderCountsAbsolute;
+    int minRemainingEncoderCountsAbsolute;
+
     public void encoderDriveAutonNew(double distanceInches, double power, double timeoutT, LinearOpMode theOpMode){
 
-        double leftInches   = distanceInches;
-        double rightInches  = distanceInches;
+        double rampTimeInSec = GlobalSettings11691.RampUpTime;
 
-        int newLeftFTarget;
+        double leftInches   = distanceInches;
 
         // Reset the encoders
         theHardwareMap11691.LF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -233,7 +232,7 @@ public class AutonDrive11691 extends BaseAutonIMU {
         theHardwareMap11691.LR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         //Determine new target postition, and pass to motor controller
-        newLeftFTarget  = (int)(leftInches * COUNTS_PER_INCH);
+        newLeftFTarget  = (int)(leftInches * GlobalSettings11691.COUNTS_PER_INCH);
 
         ElapsedTime rampTimer = new ElapsedTime();
         rampTimer.reset();
@@ -246,20 +245,33 @@ public class AutonDrive11691 extends BaseAutonIMU {
 
         double effectiveEncoderCountRampDownThreshold =0;
 
+        minRemainingEncoderCountsAbsolute = 100000; // assume that we will never reach this high count
+
+        BaseAuton.dataTracing.sendAllData();
+
+        int minEncoderValueLatch = 3;
         while ((runtime.seconds() < timeoutT)
              //   && (theHardwareMap11691.LR.isBusy())
                 && !theOpMode.isStopRequested() && theOpMode.opModeIsActive()) {
 
             double rampedPower = power;
             int remainingEncoderCounts = newLeftFTarget - theHardwareMap11691.LF.getCurrentPosition();
-            int remainingEncoderCountsAbsolute = Math.abs(remainingEncoderCounts);
+            remainingEncoderCountsAbsolute = Math.abs(remainingEncoderCounts);
 
-            if(remainingEncoderCountsAbsolute < 20)
+            if(remainingEncoderCountsAbsolute < minRemainingEncoderCountsAbsolute) {
+                minRemainingEncoderCountsAbsolute = remainingEncoderCountsAbsolute;
+                if(minEncoderValueLatch >0)
+                    minEncoderValueLatch--;
+            }
+
+            if((remainingEncoderCountsAbsolute < 20) ||
+                    ((minEncoderValueLatch == 0) && (remainingEncoderCountsAbsolute > minRemainingEncoderCountsAbsolute))) {
                 break;
+            }
 
             if (remainingEncoderCountsAbsolute < effectiveEncoderCountRampDownThreshold) {
                 // If we shut down motor power suddenly, the robot will slide. Therefore ramp power down
-                rampedPower = Range.clip(power * (((double) remainingEncoderCountsAbsolute) / effectiveEncoderCountRampDownThreshold), GlobalSettings11691.RampDownMinimumPower, power);
+                rampedPower = Range.clip(power * (((double) remainingEncoderCountsAbsolute) / effectiveEncoderCountRampDownThreshold), GlobalSettings11691.LinearRampDownMinimumPower, power);
             } else {
                 // For slower the robot speed is, delay the start of the power ramp down so that we do not waste time
                 double rampDownStartModifier = ((DcMotorEx) theHardwareMap11691.LF).getVelocity(AngleUnit.RADIANS) / GlobalSettings11691.topWheelAngularVelocity_radPerSec;

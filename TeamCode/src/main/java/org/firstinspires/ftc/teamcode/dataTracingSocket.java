@@ -18,22 +18,25 @@ public class dataTracingSocket extends baseTracingSocket {
     {
         if(socketIsOpen) {
             sendWheelEncoders();
-            sendWheelAngularVelocity();
-            sendWheelPower();
-            sendAngularData();
+            //sendWheelAngularVelocity();
+            //sendWheelPower();
+            //sendAngularData();
         }
     }
     public void sendWheelEncoders()
     {
         if( socketIsOpen) {
             PrintWriter writer = new PrintWriter(output, true);
-            writer.format("$$wheelEncoders:%.3f:%d:%d:%d:%d##",
+            writer.format("$$wheelEncoders:%.3f:%d:%d:%d:%d:%d:%d:%d##",
                     theAuton.runtime.time(),
                     /*i,i+1,i+2,i+3*/
                     theAuton.hMap.LF.getCurrentPosition(),
                     theAuton.hMap.RF.getCurrentPosition(),
                     theAuton.hMap.LR.getCurrentPosition(),
-                    theAuton.hMap.RR.getCurrentPosition()
+                    theAuton.hMap.RR.getCurrentPosition(),
+                    theAuton.autonDrive.newLeftFTarget,
+                    theAuton.autonDrive.remainingEncoderCountsAbsolute,
+                    theAuton.autonDrive.minRemainingEncoderCountsAbsolute
             );
         }
     }

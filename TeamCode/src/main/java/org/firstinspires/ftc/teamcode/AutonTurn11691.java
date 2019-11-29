@@ -162,10 +162,13 @@ public class AutonTurn11691 extends BaseAutonIMU{
             double rampedTargetSpeed = targetSpeed;
             double rampedTargetDeltaSpeed = targetDeltaSpeed;
 
-            if(Math.abs(error) < 20 ) //55
+            if(Math.abs(error) < GlobalSettings11691.powerRampdownStartAngle )
             {
-                rampedTargetSpeed = targetSpeed * (error / 20)/**0.8*/;
-                rampedTargetSpeed = Range.clip(rampedTargetSpeed,0.2,targetSpeed);
+                rampedTargetSpeed = targetSpeed * (error / GlobalSettings11691.powerRampdownStartAngle);
+                rampedTargetSpeed = Range.clip(rampedTargetSpeed,GlobalSettings11691.RotationRampDownMinimumPower,targetSpeed);
+
+                rampedTargetDeltaSpeed = targetSpeed * (error / GlobalSettings11691.powerRampdownStartAngle);
+                rampedTargetDeltaSpeed = Range.clip(rampedTargetDeltaSpeed,GlobalSettings11691.RotationRampDownMinimumPower,targetDeltaSpeed);
             }
             else if(rampTimer.seconds() <= GlobalSettings11691.rotationRampTimeInSec) {
                 rampedTargetSpeed = targetSpeed * (rampTimer.seconds() / GlobalSettings11691.rotationRampTimeInSec);

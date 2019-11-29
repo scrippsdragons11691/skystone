@@ -66,7 +66,7 @@ public class AutonTurn11691 extends BaseAutonIMU{
         telemetry = theOpMode.telemetry;
         telemetry.addData("T_angle;",targetAngle);
         telemetry.update();
-        gotoPosition(0.25,theOpMode);
+        gotoPosition_new(0.25,theOpMode);
     }
 
     public void gotoPosition(double powerForFinalAdjust, LinearOpMode theOpMode) {
@@ -135,6 +135,55 @@ public class AutonTurn11691 extends BaseAutonIMU{
         }
 
         rotate(0,0);
+    }
+
+    public void gotoPosition_new(double powerForFinalAdjust, LinearOpMode theOpMode) {
+        actualangle     = getAbsoluteHeading();
+        BaseAuton.dataTracing.sendAllData();
+
+        error = targetAngle - actualangle;
+
+        ElapsedTime rampTimer = new ElapsedTime();
+        rampTimer.reset();
+        double time = runtime.time();
+        while((Math.abs(error) > ANGLE_TOL) && (runtime.time() - time < timeout)
+                && !theOpMode.isStopRequested() && theOpMode.opModeIsActive())
+        {
+            actualangle = getAbsoluteHeading();
+            error = targetAngle - actualangle;
+
+            BaseAuton.dataTracing.sendAllData();
+
+            telemetry.addData("Target Angle","error= %.2f", error);
+            telemetry.addData("Target Angle","value= %.2f", targetAngle);
+            telemetry.addData("Actual Angle","value= %.2f", actualangle);
+            telemetry.update();
+
+            double rampedTargetSpeed = targetSpeed;
+            double rampedTargetDeltaSpeed = targetDeltaSpeed;
+
+            if(Math.abs(error) < 20 ) //55
+            {
+                rampedTargetSpeed = targetSpeed * (error / 20)/**0.8*/;
+                rampedTargetSpeed = Range.clip(rampedTargetSpeed,0.2,targetSpeed);
+            }
+            else if(rampTimer.seconds() <= GlobalSettings11691.rotationRampTimeInSec) {
+                rampedTargetSpeed = targetSpeed * (rampTimer.seconds() / GlobalSettings11691.rotationRampTimeInSec);
+                rampedTargetSpeed = Range.clip(rampedTargetSpeed,rampedTargetSpeed,targetSpeed);
+
+                rampedTargetDeltaSpeed = targetDeltaSpeed * (rampTimer.seconds() / GlobalSettings11691.rotationRampTimeInSec);
+                rampedTargetDeltaSpeed = Range.clip(rampedTargetDeltaSpeed,rampedTargetDeltaSpeed,targetDeltaSpeed);
+            }
+
+            if (error < 0) {
+                rotate(rampedTargetSpeed, rampedTargetDeltaSpeed); //clockwise
+            } else if (error > 0) {
+                rotate(-rampedTargetSpeed, -rampedTargetDeltaSpeed); //counterclockwise
+            }
+        }
+        BaseAuton.dataTracing.sendAllData();
+        rotate(0,0);
+
     }
 
 

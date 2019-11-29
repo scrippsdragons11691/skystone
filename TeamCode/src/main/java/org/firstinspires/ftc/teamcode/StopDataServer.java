@@ -17,7 +17,7 @@ public class StopDataServer extends BaseAuton {
         telemetry.update();
         try {
             dataTracing.stop();
-            telemetry.addData("Data server", "Stopped");
+            telemetry.addData("Data server", "Stop completed");
             telemetry.update();
         }
         catch (Exception ex) {
@@ -25,6 +25,6 @@ public class StopDataServer extends BaseAuton {
             telemetry.update();
         }
 
-        sleep(5000);
+        sleep(3000);
     }
 }

@@ -13,12 +13,12 @@ public class StartDataServer extends BaseAuton {
         initialize();
         waitForStart();
 
-        telemetry.addData("Data server", "Starting");
+        telemetry.addData("Data server", "Waiting for connection ...");
         telemetry.update();
 
         try {
             dataTracing.Start();
-            telemetry.addData("Data server", "Running");
+            telemetry.addData("Data server", "... Connected");
             telemetry.update();
         }
         catch (Exception ex) {
@@ -26,6 +26,6 @@ public class StartDataServer extends BaseAuton {
                 telemetry.update();
         }
 
-        sleep(5000);
+        sleep(3000);
     }
 }

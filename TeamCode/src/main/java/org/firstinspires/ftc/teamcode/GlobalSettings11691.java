@@ -38,7 +38,7 @@ public class GlobalSettings11691 {
     static double RampDownMinimumPower = 0.2; // Do not ramp down speed to a smaller value so as to not get stuck due to friction
 
     // Settings for rotating
-    static double rotationRampTimeInSec = 0.75;
+    static double rotationRampTimeInSec = 0.5;
 
     static double OneTileLength_inch = 23 + (3.0/8.0);
 }

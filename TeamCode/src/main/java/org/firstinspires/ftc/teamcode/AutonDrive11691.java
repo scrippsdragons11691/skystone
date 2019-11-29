@@ -176,7 +176,7 @@ public class AutonDrive11691 extends BaseAutonIMU {
             double correction = checkDirection(DrivingAngle);
 
             //Set the motor speed
-            if (distanceInches > 0){
+            if (distanceInches < 0){
                 correction *= -1;
             }
             theHardwareMap11691.LF.setPower(rampedPower - correction);
@@ -211,6 +211,8 @@ public class AutonDrive11691 extends BaseAutonIMU {
         theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
     }
 
+    public double correction=0;
+    double DrivingAngle = 0;
     public void encoderDriveAutonNew(double distanceInches, double power, double timeoutT, LinearOpMode theOpMode){
 
         double leftInches   = distanceInches;
@@ -240,7 +242,7 @@ public class AutonDrive11691 extends BaseAutonIMU {
         // DrivingAngle is the angle at which we want to drive
         // In all the autons, we only rotate to 90, 0 or -90.
         // Therefore set the DrivingAngle to one of the above values which is closest to globalAngle
-        double DrivingAngle = Math.round(globalAngle/90) *90;
+        DrivingAngle = Math.round(globalAngle/90) *90;
 
         double effectiveEncoderCountRampDownThreshold =0;
 
@@ -250,38 +252,31 @@ public class AutonDrive11691 extends BaseAutonIMU {
 
             double rampedPower = power;
             int remainingEncoderCounts = newLeftFTarget - theHardwareMap11691.LF.getCurrentPosition();
-            int remainingEncoderCountsAbsolute = Math.abs(newLeftFTarget - theHardwareMap11691.LF.getCurrentPosition());
+            int remainingEncoderCountsAbsolute = Math.abs(remainingEncoderCounts);
 
-            if( distanceInches < 0 )
-                remainingEncoderCounts *= -1;
-
-            if(remainingEncoderCounts < 20)
+            if(remainingEncoderCountsAbsolute < 20)
                 break;
 
-            if(remainingEncoderCountsAbsolute < effectiveEncoderCountRampDownThreshold)
-            {
+            if (remainingEncoderCountsAbsolute < effectiveEncoderCountRampDownThreshold) {
                 // If we shut down motor power suddenly, the robot will slide. Therefore ramp power down
-                rampedPower = Range.clip(power * (((double)remainingEncoderCountsAbsolute) / effectiveEncoderCountRampDownThreshold), GlobalSettings11691.RampDownMinimumPower, power);
-            }
-            else {
+                rampedPower = Range.clip(power * (((double) remainingEncoderCountsAbsolute) / effectiveEncoderCountRampDownThreshold), GlobalSettings11691.RampDownMinimumPower, power);
+            } else {
                 // For slower the robot speed is, delay the start of the power ramp down so that we do not waste time
-                double rampDownStartModifier = ((DcMotorEx)theHardwareMap11691.LF).getVelocity(AngleUnit.RADIANS)/GlobalSettings11691.topWheelAngularVelocity_radPerSec;
-                effectiveEncoderCountRampDownThreshold = GlobalSettings11691.EncoderCountRampDownThreshold * rampDownStartModifier;
+                double rampDownStartModifier = ((DcMotorEx) theHardwareMap11691.LF).getVelocity(AngleUnit.RADIANS) / GlobalSettings11691.topWheelAngularVelocity_radPerSec;
+                effectiveEncoderCountRampDownThreshold = Math.abs(GlobalSettings11691.EncoderCountRampDownThreshold * rampDownStartModifier);
 
-                if(rampTimer.seconds() <= rampTimeInSec) {
+                if (rampTimer.seconds() <= rampTimeInSec) {
                     // Spinning the wheels introduces an error when driving using encoders. Therefore ramp the wheel power up so that the wheels do not spin.
                     rampedPower = Range.clip(power * (rampTimer.seconds() / rampTimeInSec), minimumMotorPower, power);
                 }
             }
 
+            if( distanceInches < 0 )
+                rampedPower *= -1;
 
             // Use gyro to drive in a straight line.
-            double correction = checkDirection(DrivingAngle);
+            correction = checkDirection(DrivingAngle);
 
-            //Set the motor speed
-            if (distanceInches > 0){
-                correction *= -1;
-            }
             theHardwareMap11691.LF.setPower(rampedPower - correction);
             theHardwareMap11691.LR.setPower(rampedPower - correction);
             theHardwareMap11691.RF.setPower(rampedPower + correction);
@@ -289,6 +284,7 @@ public class AutonDrive11691 extends BaseAutonIMU {
 
             BaseAuton.dataTracing.sendAllData();
 
+            theOpMode.telemetry.addData("Rem encoder counts", "%d", remainingEncoderCounts);
             theOpMode.telemetry.addData("1 imu heading", lastAngles.firstAngle);
             theOpMode.telemetry.addData("2 global heading", globalAngle);
             theOpMode.telemetry.addData("3 correction", correction);
@@ -381,18 +377,15 @@ public class AutonDrive11691 extends BaseAutonIMU {
         ((DcMotorEx)(theHardwareMap11691.RR)).setTargetPositionTolerance(tolerance);
     }
 
+    double GlobalAngle;
     private double checkDirection(double angle)
     {
         double correction;
 
-        angle = angle - getAngle();
+        GlobalAngle = getAngle();
+        angle = angle - GlobalAngle;
 
-        if (angle == 0)
-            correction = 0;             // no adjustment.
-        else
-            correction = -angle;        // reverse sign of angle for correction.
-
-        correction = correction * GlobalSettings11691.ImuCorrectionFactor;
+        correction = angle * GlobalSettings11691.ImuCorrectionFactor;
 
         return correction;
     }

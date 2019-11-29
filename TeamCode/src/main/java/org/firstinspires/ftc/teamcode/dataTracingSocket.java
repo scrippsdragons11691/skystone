@@ -57,13 +57,14 @@ public class dataTracingSocket extends baseTracingSocket {
     {
         if(socketIsOpen) {
             PrintWriter writer = new PrintWriter(output, true);
-            writer.format("$$wheelPower:%.3f:%.2f:%.2f:%.2f:%.2f##",
+            writer.format("$$wheelPower:%.3f:%.2f:%.2f:%.2f:%.2f:%.2f##",
                     theAuton.runtime.time(),
                     /*i,i+1,i+2,i+3*/
                     theAuton.hMap.LF.getPower(),
                     theAuton.hMap.RF.getPower(),
                     theAuton.hMap.LR.getPower(),
-                    theAuton.hMap.RR.getPower()
+                    theAuton.hMap.RR.getPower(),
+                    theAuton.autonDrive.correction
             );
         }
     }
@@ -74,12 +75,14 @@ public class dataTracingSocket extends baseTracingSocket {
         if(socketIsOpen) {
             PrintWriter writer = new PrintWriter(output, true);
             //  writer.format("$$Angular:%.2f:%.2f:%.2f##", i,i+1,i+2);
-            writer.format("$$Angular:%.3f:%.2f:%.2f:%.2f##",
+            writer.format("$$Angular:%.3f:%.2f:%.2f:%.2f:%.2f:%.2f##",
                     theAuton.runtime.time(),
                     /*i,i+1,i+2*/
-                    theAuton.autonTurn.actualangle/90, // normalize to 90 == 1, -90 == -1
-                    theAuton.autonTurn.targetAngle/90,
-                    theAuton.autonTurn.error/90
+                    theAuton.autonTurn.actualangle,
+                    theAuton.autonTurn.targetAngle,
+                    theAuton.autonTurn.error,
+                    theAuton.autonDrive.DrivingAngle,
+                    theAuton.autonDrive.GlobalAngle
             );
         }
     }

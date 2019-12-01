@@ -15,6 +15,7 @@ public class Auton_Blue_Foundation_FWD_11691 extends BaseAuton {
 
             runFoundationRoutine( COMPETITION_SIDE.BLUE, PARK_POSITION.NEXT_TO_CENTER_BRIDGE);
 
+            uninitialize();
             sleep(200000);
         }
     }

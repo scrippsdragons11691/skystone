@@ -23,7 +23,8 @@ public class AUTON_Red_Skystone11691 extends BaseAuton {
             turn_HighPowerAtEnd(-90,0.75,0,1.5);
 
             driveForward(17,0.75,1.5);
-            
+
+            uninitialize();
             sleep(200000);
         }
     }

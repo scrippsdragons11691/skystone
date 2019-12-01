@@ -46,6 +46,7 @@ public class AUTON_Two_Red_Skystone11691 extends BaseAuton {
             
             driveForward(16,1,4);
 
+            uninitialize();
             sleep(200000);
         }
     }

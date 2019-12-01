@@ -85,6 +85,19 @@ public class dataTracingSocket extends baseTracingSocket {
         }
     }
 
+    public void sendColorSensorData(String leftORright, double hue, double sat, double val)
+    {
+        if(socketIsOpen) {
+            PrintWriter writer = new PrintWriter(output, true);
+            writer.format("$$ColorSensor:%.3f:%s:%.2f:%.2f:%.2f##",
+                    theAuton.runtime.time(),
+                    leftORright,
+                    hue,
+                    sat,
+                    val
+            );
+        }
+    }
     public void sendAngularData()
     {
         if(socketIsOpen) {

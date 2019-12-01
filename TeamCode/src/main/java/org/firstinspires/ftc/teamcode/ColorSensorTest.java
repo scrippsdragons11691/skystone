@@ -37,7 +37,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 
-@Autonomous(name="color sensoer test", group="Autons")
+@Autonomous(name="Color sensor test", group="Tests")
 
 public class ColorSensorTest extends BaseAuton {
 
@@ -77,10 +77,19 @@ public class ColorSensorTest extends BaseAuton {
             // convert the RGB values to HSV values.
             // multiply by the SCALE_FACTOR.
             // then cast it back to int (SCALE_FACTOR is a double)
+            Color.RGBToHSV((int) (rightColorSensor.theSensor.red() * SCALE_FACTOR),
+                    (int) (rightColorSensor.theSensor.green() * SCALE_FACTOR),
+                    (int) (rightColorSensor.theSensor.blue() * SCALE_FACTOR),
+                    hsvValues);
+
+            BaseAuton.dataTracing.sendColorSensorData("right", hsvValues[0], hsvValues[1], hsvValues[2]);
+
             Color.RGBToHSV((int) (leftColorSensor.theSensor.red() * SCALE_FACTOR),
                     (int) (leftColorSensor.theSensor.green() * SCALE_FACTOR),
                     (int) (leftColorSensor.theSensor.blue() * SCALE_FACTOR),
                     hsvValues);
+
+            BaseAuton.dataTracing.sendColorSensorData("left", hsvValues[0], hsvValues[1], hsvValues[2]);
 
             // send the info back to driver station using telemetry function.
             //telemetry.addData("Distance (cm)",
@@ -103,6 +112,8 @@ public class ColorSensorTest extends BaseAuton {
 
             telemetry.update();
         }
+
+        uninitialize();
 
         // Set the panel back to the default color
         relativeLayout.post(new Runnable() {

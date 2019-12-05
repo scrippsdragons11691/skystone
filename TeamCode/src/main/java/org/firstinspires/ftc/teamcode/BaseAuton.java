@@ -62,7 +62,7 @@ public class BaseAuton extends LinearOpMode{
         dataTracing.theAuton = this;
 
         try {
-         //   dataTracing.Start();
+            dataTracing.Start();
             telemetry.addData("Data server", "... Connected");
             telemetry.update();
         }
@@ -310,10 +310,10 @@ public class BaseAuton extends LinearOpMode{
         straff(initialStraff, 0.75, 2);
         waitStep(0.2);
 
-        autonTurn.AutonTurn (0, 0.25, 0.5,  this);
-        waitStep(0.2);
+       // turn_HighPowerAtEnd(0,0.25,0.5);
+       // waitStep(0.2);
 
-        driveBackward  (27,1,2.5);
+        driveBackward  (24,1,2.5);
         DriveByBumperSwitches(0.25, 1);
 
         foundationDN();

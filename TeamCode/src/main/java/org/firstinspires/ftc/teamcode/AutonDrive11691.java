@@ -41,6 +41,11 @@ public class AutonDrive11691 extends BaseAutonIMU {
         int newStraffLeftBTarget;
         int newStraffRightBTarget;
 
+        theHardwareMap11691.LF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        theHardwareMap11691.RF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        theHardwareMap11691.RR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        theHardwareMap11691.LR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
         // Reset the encoders
         theHardwareMap11691.LF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         theHardwareMap11691.LR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -112,6 +117,11 @@ public class AutonDrive11691 extends BaseAutonIMU {
         int newRightFTarget;
         int newLeftBTarget;
         int newRightBTarget;
+
+        theHardwareMap11691.LF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        theHardwareMap11691.RF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+       // theHardwareMap11691.RR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+       // theHardwareMap11691.LR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //Set the motors to run to encoder mode
         theHardwareMap11691.LF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -219,6 +229,11 @@ public class AutonDrive11691 extends BaseAutonIMU {
         double rampTimeInSec = GlobalSettings11691.RampUpTime;
 
         double leftInches   = distanceInches;
+
+        theHardwareMap11691.LF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        theHardwareMap11691.RF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        theHardwareMap11691.RR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        theHardwareMap11691.LR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         // Reset the encoders
         theHardwareMap11691.LF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -341,6 +356,11 @@ public class AutonDrive11691 extends BaseAutonIMU {
 
     public void DriveByBumperSwitches (double power, double timeout, LinearOpMode theOpMode)    {
 
+        theHardwareMap11691.LF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        theHardwareMap11691.RF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        theHardwareMap11691.RR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        theHardwareMap11691.LR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
         theHardwareMap11691.LF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         theHardwareMap11691.RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         theHardwareMap11691.LR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -372,6 +392,11 @@ public class AutonDrive11691 extends BaseAutonIMU {
 
         // the minimum distance that the sensor can see is 2.15 inch
         distance = Range.clip(distance, 2.3, 20);
+
+        theHardwareMap11691.LF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        theHardwareMap11691.RF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        theHardwareMap11691.RR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        theHardwareMap11691.LR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         theHardwareMap11691.LF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         theHardwareMap11691.RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

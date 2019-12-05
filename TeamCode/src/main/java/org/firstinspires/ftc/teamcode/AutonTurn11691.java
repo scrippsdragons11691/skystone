@@ -167,8 +167,8 @@ public class AutonTurn11691 extends BaseAutonIMU{
                 rampedTargetSpeed = targetSpeed * (error / GlobalSettings11691.powerRampdownStartAngle);
                 rampedTargetSpeed = Range.clip(rampedTargetSpeed,GlobalSettings11691.RotationRampDownMinimumPower,targetSpeed);
 
-               // rampedTargetDeltaSpeed = targetSpeed * (error / GlobalSettings11691.powerRampdownStartAngle);
-               // rampedTargetDeltaSpeed = Range.clip(rampedTargetDeltaSpeed,GlobalSettings11691.RotationRampDownMinimumPower,targetDeltaSpeed);
+                rampedTargetDeltaSpeed = targetSpeed * (error / GlobalSettings11691.powerRampdownStartAngle);
+                rampedTargetDeltaSpeed = Range.clip(rampedTargetDeltaSpeed,GlobalSettings11691.RotationRampDownMinimumPower,targetDeltaSpeed);
             }
             else if(rampTimer.seconds() <= GlobalSettings11691.rotationRampTimeInSec) {
                 rampedTargetSpeed = targetSpeed * (rampTimer.seconds() / GlobalSettings11691.rotationRampTimeInSec);
@@ -218,6 +218,12 @@ public class AutonTurn11691 extends BaseAutonIMU{
     }
 
     void rotate(double motorSetPoint, double deltaPower){
+
+        theHardwareMap11691.LF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        theHardwareMap11691.RF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        theHardwareMap11691.RR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        theHardwareMap11691.LR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
         if(Math.abs(deltaPower) < 0.0001) {
             theHardwareMap11691.LF.setPower(motorSetPoint);
             theHardwareMap11691.LR.setPower(motorSetPoint);

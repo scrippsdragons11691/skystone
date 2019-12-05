@@ -13,7 +13,19 @@ public class Auton11691 extends BaseAuton {
         initialize();
         waitForStart();
 
-       // turn_HighPowerAtEnd(-90, 0.5,  5.0);
+        this.SK_Grab_Left.goToClawOpenPosition();
+        waitStep(5);
+        this.SK_Grab_Left.goToClawGrabPosition();
+        waitStep(3);
+        this.SK_Grab_Right.goToClawOpenPosition();
+        waitStep(3);
+        this.SK_Grab_Right.goToClawGrabPosition();
+        waitStep(3);
+        this.SK_Grab_Left.carryStone();
+        this.SK_Grab_Right.carryStone();
+
+
+        //turn_HighPowerAtEnd(-90, 0.5,  5.0);
         /*driveForward(GlobalSettings11691.OneTileLength_inch * 2, 1, 10);
         DriveByDistanceSensors( 0.25, 2.5, 20);
 
@@ -24,7 +36,7 @@ public class Auton11691 extends BaseAuton {
             waitStep(0.1);
         }*/
 
-        for(int i=0; i<2; i++) {
+        for(int i=0; i<0; i++) {
             driveForward(GlobalSettings11691.OneTileLength_inch * 1, 1, 10);
             waitStep(0.1);
 

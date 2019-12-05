@@ -13,8 +13,9 @@ public class Auton_Selftest_Drive11691 extends BaseAuton {
         initialize();
         waitForStart();
 
-        driveForward  (60,1,5);
-        driveBackward  (60,1,5);
+        driveForward  (GlobalSettings11691.OneTileLength_inch *4,1,5);
+        waitStep(5);
+        driveBackward  (GlobalSettings11691.OneTileLength_inch *4,1,5);
 
         uninitialize();
         sleep(5000);

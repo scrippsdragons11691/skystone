@@ -34,6 +34,8 @@ public class HardwareMap11691 {
     public Servo Foundation = null;
     public Servo SK_BlockLeft = null;
     public Servo SK_BlockRight = null;
+    public Servo Claw_Right = null;
+    public Servo Claw_Left = null;
     public AnalogInput pot;
     public Servo Pusher;
     public TouchSensor Lift_TS;
@@ -80,6 +82,8 @@ public class HardwareMap11691 {
         Lift_TS         = (TouchSensor)hMap.get("Lift_TS");
         RHFoundBumper   = (TouchSensor)hMap.get("LHFoundSW");
         LHFoundBumper   = (TouchSensor)hMap.get("RHFoundSW");
+        Claw_Right = hMap.get(Servo.class,"RightSK");
+        Claw_Left = hMap.get(Servo.class,"LeftSK");
         SK_BlockLeft = hMap.get(Servo.class,"sk_servoL");
         SK_BlockRight    = hMap.get(Servo.class,"sk_servoR");
         imu             = hMap.get(BNO055IMU.class, "imu");
@@ -109,6 +113,9 @@ public class HardwareMap11691 {
 
         SK_BlockLeft.setPosition(GlobalSettings11691.LeftSKGrabber_InitPosition);
         SK_BlockRight.setPosition(GlobalSettings11691.RightSKGrabber_InitPosition);
+
+        Claw_Left.setPosition(GlobalSettings11691.LeftSKGrabberClaw_InitPosition);
+        Claw_Right.setPosition(GlobalSettings11691.RightSKGrabberClaw_InitPosition);
     }
 
 }

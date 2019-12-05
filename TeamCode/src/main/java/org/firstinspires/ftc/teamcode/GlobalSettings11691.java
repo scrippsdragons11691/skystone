@@ -29,12 +29,22 @@ public class GlobalSettings11691 {
 
 
     static double RightSKGrabber_homePosition = 1;
-    static double RightSKGrabber_GrabPosition = 0.65;
+    static double RightSKGrabber_CarryPosition = 0.8;
+    static double RightSKGrabber_GrabPosition = 0.59;
     static double RightSKGrabber_InitPosition = RightSKGrabber_homePosition;
 
+    static double RightSKGrabberClaw_OpenPosition = 0.75;
+    static double RightSKGrabberClaw_GrabPosition = 1;
+    static double RightSKGrabberClaw_InitPosition = 1;
+
     static double LeftSKGrabber_homePosition = 0;
+    static double LeftSKGrabber_CarryPosition = 0.5;
     static double LeftSKGrabber_GrabPosition = 0.77;
     static double LeftSKGrabber_InitPosition = LeftSKGrabber_homePosition;
+
+    static double LeftSKGrabberClaw_OpenPosition = 0.25;
+    static double LeftSKGrabberClaw_GrabPosition = 0.05;
+    static double LeftSKGrabberClaw_InitPosition = 0;
 
     // The gain value determines how sensitive the correction is to direction changes.
     // You will have to experiment with your robot to get small smooth direction changes

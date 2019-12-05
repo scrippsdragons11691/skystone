@@ -7,6 +7,7 @@ public class SK_Block11691{
 
         private double homePosition;
         private double skystoneGrabPosition;
+        private double approachPosition;
         private double carryPosition;
         private double openClawPosition;
         private double grabClawPosition;
@@ -22,6 +23,7 @@ public class SK_Block11691{
                         homePosition = GlobalSettings11691.RightSKGrabber_homePosition;
                         skystoneGrabPosition = GlobalSettings11691.RightSKGrabber_GrabPosition;
                         carryPosition = GlobalSettings11691.RightSKGrabber_CarryPosition;
+                        approachPosition = GlobalSettings11691.RightSKGrabber_ApproachPosition;
                         openClawPosition = GlobalSettings11691.RightSKGrabberClaw_OpenPosition;
                         grabClawPosition = GlobalSettings11691.RightSKGrabberClaw_GrabPosition;
                         theServo = HMap.SK_BlockRight;
@@ -32,6 +34,7 @@ public class SK_Block11691{
                         homePosition = GlobalSettings11691.LeftSKGrabber_homePosition;
                         skystoneGrabPosition = GlobalSettings11691.LeftSKGrabber_GrabPosition;
                         carryPosition = GlobalSettings11691.LeftSKGrabber_CarryPosition;
+                        approachPosition = GlobalSettings11691.LeftSKGrabber_ApproachPosition;
                         openClawPosition = GlobalSettings11691.LeftSKGrabberClaw_OpenPosition;
                         grabClawPosition = GlobalSettings11691.LeftSKGrabberClaw_GrabPosition;
                         theServo = HMap.SK_BlockLeft;
@@ -44,10 +47,12 @@ public class SK_Block11691{
                 theServo.setPosition(homePosition);
         }
 
-        public void GrabSkystone()
+        public void goToApproachPosition()
         {
-                theServo.setPosition(skystoneGrabPosition);
+                theServo.setPosition(approachPosition);
         }
+
+        public void GrabSkystone()     { theServo.setPosition(skystoneGrabPosition);  }
 
         public void carryStone() {theServo.setPosition((carryPosition));}
 

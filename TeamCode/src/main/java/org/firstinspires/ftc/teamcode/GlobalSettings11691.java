@@ -30,6 +30,7 @@ public class GlobalSettings11691 {
 
     static double RightSKGrabber_homePosition = 1;
     static double RightSKGrabber_CarryPosition = 0.8;
+    static double RightSKGrabber_ApproachPosition = 0.7;
     static double RightSKGrabber_GrabPosition = 0.59;
     static double RightSKGrabber_InitPosition = RightSKGrabber_homePosition;
 
@@ -39,6 +40,7 @@ public class GlobalSettings11691 {
 
     static double LeftSKGrabber_homePosition = 0;
     static double LeftSKGrabber_CarryPosition = 0.5;
+    static double LeftSKGrabber_ApproachPosition = 0.6;
     static double LeftSKGrabber_GrabPosition = 0.77;
     static double LeftSKGrabber_InitPosition = LeftSKGrabber_homePosition;
 

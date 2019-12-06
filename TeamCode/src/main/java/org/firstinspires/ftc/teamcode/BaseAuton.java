@@ -170,9 +170,9 @@ public class BaseAuton extends LinearOpMode{
         if (leftColorSensor.StoneCheck()){
             SK_Grab_Left.GrabSkystone();
             usedSkystoneArm = SK_Block11691.SKYSTONE_ARM_LOCATION.Left;
-            waitStep(0.8);
+            waitStep(0.5);
             SK_Grab_Left.goToClawGrabPosition();
-            waitStep(0.8);
+            waitStep(0.3);
             SK_Grab_Left.carryStone();
             SK_Grab_Right.goToHomePosition();
         }
@@ -181,14 +181,14 @@ public class BaseAuton extends LinearOpMode{
             }
             else {
                 straff(distanceToNextStone,0.5,1);
-                waitStep(0.5);
+                waitStep(0.2);
                 totalDistanceMoved += distanceToNextStone;
             }
 
             SK_Grab_Right.GrabSkystone();
-            waitStep(1.3);
+            waitStep(.5);
             SK_Grab_Right.goToClawGrabPosition();
-            waitStep(1);
+            waitStep(0.3);
             SK_Grab_Right.carryStone();
             SK_Grab_Left.goToHomePosition();
         }
@@ -204,17 +204,17 @@ public class BaseAuton extends LinearOpMode{
         double straffRight;
         if( competitionSide == COMPETITION_SIDE.RED)
         {
-            turnAngle = 90;
+            turnAngle = -90;
             speed = 0.5;
-            straffLeft = -4;
-            straffRight = -8;
+            straffLeft = 2;
+            straffRight = -4;
         }
         else
         {
             turnAngle = 90;
             speed = 0.5;
             straffLeft = -5;
-            straffRight = 4;
+            straffRight = -4;
         }
 
         this.SK_Grab_Left.goToClawOpenPosition();
@@ -223,16 +223,16 @@ public class BaseAuton extends LinearOpMode{
         SK_Grab_Right.goToApproachPosition();
         waitStep(1);
 
-        driveBackward(22, 1, 3);
+        driveBackward(21.5, 0.75, 3);
        // waitStep(2);
         DriveByDistanceSensors( 0.25, 3.5, 5);
-        waitStep(1);
+        waitStep(.5);
         double totalDistanceMoved = get_SkyStone(20, telemetry);
         if(usedSkystoneArm == SK_Block11691.SKYSTONE_ARM_LOCATION.Left) {
-            waitStep(1.4);
+            waitStep(.5);
         }
         else {
-            waitStep(0.8);
+            waitStep(0.4);
         }
 
         driveForward(5, 1, 2);
@@ -242,11 +242,11 @@ public class BaseAuton extends LinearOpMode{
         waitStep(0.2);
 
         if(usedSkystoneArm == SK_Block11691.SKYSTONE_ARM_LOCATION.Right) {
-            straff(straffLeft, 0.65, 2);
+            //straff(straffLeft, 0.75, 2);
         }
         else
         {
-            straff(straffRight, 0.65, 2);
+            straff(straffRight, 0.75, 2);
         }
 
         if( competitionSide == COMPETITION_SIDE.BLUE)
@@ -310,11 +310,12 @@ public class BaseAuton extends LinearOpMode{
         straff(initialStraff, 0.75, 2);
         waitStep(0.2);
 
-       // turn_HighPowerAtEnd(0,0.25,0.5);
-       // waitStep(0.2);
+        turn_HighPowerAtEnd(0,0.25,0.5);
+        waitStep(0.2);
 
-        driveBackward  (24,1,2.5);
-        DriveByBumperSwitches(0.25, 1);
+        
+        driveBackward  (28.1,0.8,3.0);
+        DriveByBumperSwitches(0.25, 2);
 
         foundationDN();
         driveBackward  (4,1,0.5);

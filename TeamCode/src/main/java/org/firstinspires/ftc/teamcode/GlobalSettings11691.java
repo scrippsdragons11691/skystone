@@ -57,7 +57,7 @@ public class GlobalSettings11691 {
     static double RampUpTime = 0.8;
 
     // Robot linear speed ramp down settings
-    static int EncoderCountRampDownThreshold = (int)(40*COUNTS_PER_INCH);
+    static int EncoderCountRampDownThreshold = (int)(10*COUNTS_PER_INCH);
     static double topWheelAngularVelocity_radPerSec = 15; // the highest wheel ang velocity that the robot reaches at full power
     static double LinearRampDownMinimumPower = 0.2; // Do not ramp down speed to a smaller value so as to not get stuck due to friction
 

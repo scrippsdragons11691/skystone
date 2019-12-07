@@ -17,7 +17,7 @@ public class AUTON_Two_Red_Skystone11691 extends BaseAuton {
 
         while (opModeIsActive()) {
 
-            runFirstPartOfSkystone(COMPETITION_SIDE.RED, SKYSTONE_FULL.NO);
+            runFirstPartOfSkystone(COMPETITION_SIDE.RED, SKYSTONE_FULL.NO,true);
 
             waitStep(0.5);
             turn_HighPowerAtEnd(-90,0.75,0,1.5);

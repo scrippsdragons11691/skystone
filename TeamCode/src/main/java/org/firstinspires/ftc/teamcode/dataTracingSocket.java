@@ -17,11 +17,11 @@ public class dataTracingSocket extends baseTracingSocket {
     public void sendAllData()
     {
         if(socketIsOpen) {
-            //sendWheelEncoders();
-            //sendWheelAngularVelocity();
-            //sendWheelPower();
+            sendWheelEncoders();
+            sendWheelAngularVelocity();
+            sendWheelPower();
             //sendAngularData();
-            sendDistanceSensorData();
+            //sendDistanceSensorData();
         }
     }
     public void sendWheelEncoders()

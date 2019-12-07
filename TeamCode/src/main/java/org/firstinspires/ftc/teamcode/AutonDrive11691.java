@@ -99,123 +99,10 @@ public class AutonDrive11691 extends BaseAutonIMU {
         theHardwareMap11691.LR.setPower(0);
         theHardwareMap11691.RR.setPower(0);
 
-        theHardwareMap11691.LF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        theHardwareMap11691.RF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        theHardwareMap11691.LR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    }
-
-    // Drive Auton
-    public void encoderDriveAuton(double distanceInches, double power, double timeoutT, LinearOpMode theOpMode){
-
-        double rampTimeInSec = GlobalSettings11691.RampUpTime;
-
-        double leftInches   = distanceInches;
-        double rightInches  = distanceInches;
-
-        int newLeftFTarget;
-        int newRightFTarget;
-        int newLeftBTarget;
-        int newRightBTarget;
-
-        theHardwareMap11691.LF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        theHardwareMap11691.RF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-       // theHardwareMap11691.RR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-       // theHardwareMap11691.LR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        //Set the motors to run to encoder mode
-        theHardwareMap11691.LF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        theHardwareMap11691.RF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        theHardwareMap11691.LR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        // Reset the encoders
-        theHardwareMap11691.LF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        theHardwareMap11691.LR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        theHardwareMap11691.RR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        theHardwareMap11691.RF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        //Determine new target postition, and pass to motor controller
-        newLeftFTarget  = (int)(leftInches * GlobalSettings11691.COUNTS_PER_INCH);
-        newRightFTarget = (int)(rightInches * GlobalSettings11691.COUNTS_PER_INCH);
-        newLeftBTarget  = (int)(leftInches * GlobalSettings11691.COUNTS_PER_INCH);
-        newRightBTarget = (int)(rightInches * GlobalSettings11691.COUNTS_PER_INCH);
-
-        //Set the motors to run to encoder mode
-        theHardwareMap11691.LF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        theHardwareMap11691.RF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        theHardwareMap11691.LR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        //Send the target position to the REV module
-        theHardwareMap11691.LF.setTargetPosition(newLeftFTarget);
-        theHardwareMap11691.RF.setTargetPosition(newRightFTarget);
-        theHardwareMap11691.LR.setTargetPosition(newLeftBTarget);
-        theHardwareMap11691.RR.setTargetPosition(newRightBTarget);
-
-        ElapsedTime rampTimer = new ElapsedTime();
-        rampTimer.reset();
-        runtime.reset();
-
-        // DrivingAngle is the angle at which we want to drive
-        // In all the autons, we only rotate to 90, 0 or -90.
-        // Therefore set the DrivingAngle to one of the above values which is closest to globalAngle
-        double DrivingAngle = Math.round(globalAngle/90) *90;
-
-        while ((runtime.seconds() < timeoutT)
-                && (theHardwareMap11691.LR.isBusy())
-                && !theOpMode.isStopRequested() && theOpMode.opModeIsActive()) {
-
-            double rampedPower = power;
-            int remainingEncoderCounts = Math.abs(newLeftFTarget - theHardwareMap11691.LF.getCurrentPosition());
-
-            if(rampTimer.seconds() <= rampTimeInSec) {
-                // Spinning the wheels introduces an error when driving using encoders. Therefore ramp the wheel power up so that the wheels do not spin.
-                rampedPower = Range.clip(power * (rampTimer.seconds() / rampTimeInSec), minimumMotorPower, power);
-            }
-            else if(remainingEncoderCounts < GlobalSettings11691.EncoderCountRampDownThreshold)
-            {
-                // If we shut down motor power suddenly, the robot will slide. Therefore ramp power down
-                rampedPower = Range.clip(power * (remainingEncoderCounts / GlobalSettings11691.EncoderCountRampDownThreshold), GlobalSettings11691.LinearRampDownMinimumPower, power);
-            }
-
-            // Use gyro to drive in a straight line.
-            double correction = checkDirection(DrivingAngle);
-
-            //Set the motor speed
-            if (distanceInches < 0){
-                correction *= -1;
-            }
-            theHardwareMap11691.LF.setPower(rampedPower - correction);
-            theHardwareMap11691.LR.setPower(rampedPower - correction);
-            theHardwareMap11691.RF.setPower(rampedPower + correction);
-            theHardwareMap11691.RR.setPower(rampedPower + correction);
-
-            BaseAuton.dataTracing.sendAllData();
-
-            theOpMode.telemetry.addData("1 imu heading", lastAngles.firstAngle);
-            theOpMode.telemetry.addData("2 global heading", globalAngle);
-            theOpMode.telemetry.addData("3 correction", correction);
-            theOpMode.telemetry.addData("is_moving drive", is_moving);
-            theOpMode.telemetry.addData("LF encoder","position= %d", theHardwareMap11691.LF.getCurrentPosition());
-            theOpMode.telemetry.addData("RF encoder","position= %d", theHardwareMap11691.RF.getCurrentPosition());
-            theOpMode.telemetry.addData("LR encoder","position= %d", theHardwareMap11691.LR.getCurrentPosition());
-            theOpMode.telemetry.addData("RR encoder","position= %d", theHardwareMap11691.RR.getCurrentPosition());
-            theOpMode.telemetry.addData("Runtime",runtime.time());
-            theOpMode.telemetry.addData("Timeout", timeoutT);
-            theOpMode.telemetry.update();
-
-        }
-
-        theHardwareMap11691.LF.setPower(0);
-        theHardwareMap11691.RF.setPower(0);
-        theHardwareMap11691.LR.setPower(0);
-        theHardwareMap11691.RR.setPower(0);
-
         theHardwareMap11691.LF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         theHardwareMap11691.RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        theHardwareMap11691.LR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        theHardwareMap11691.LR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public double correction=0;
@@ -232,8 +119,8 @@ public class AutonDrive11691 extends BaseAutonIMU {
 
         theHardwareMap11691.LF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         theHardwareMap11691.RF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        theHardwareMap11691.RR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        theHardwareMap11691.LR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        theHardwareMap11691.RR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        theHardwareMap11691.LR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Reset the encoders
         theHardwareMap11691.LF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

@@ -29,7 +29,7 @@ public class GlobalSettings11691 {
 
 
     static double RightSKGrabber_homePosition = 1;
-    static double RightSKGrabber_CarryPosition = 0.8;
+    static double RightSKGrabber_CarryPosition = 0.85;
     static double RightSKGrabber_ApproachPosition = 0.7;
     static double RightSKGrabber_GrabPosition = 0.59;
     static double RightSKGrabber_InitPosition = RightSKGrabber_homePosition;
@@ -39,7 +39,7 @@ public class GlobalSettings11691 {
     static double RightSKGrabberClaw_InitPosition = 1;
 
     static double LeftSKGrabber_homePosition = 0;
-    static double LeftSKGrabber_CarryPosition = 0.5;
+    static double LeftSKGrabber_CarryPosition = 0.4;
     static double LeftSKGrabber_ApproachPosition = 0.6;
     static double LeftSKGrabber_GrabPosition = 0.77;
     static double LeftSKGrabber_InitPosition = LeftSKGrabber_homePosition;
@@ -54,10 +54,10 @@ public class GlobalSettings11691 {
     static double ImuCorrectionFactor = 0.075;
 
     // Robot linear speed ramp up settings
-    static double RampUpTime = 0.8;
+    static double RampUpTime = 0.5;
 
     // Robot linear speed ramp down settings
-    static int EncoderCountRampDownThreshold = (int)(10*COUNTS_PER_INCH);
+    static int EncoderCountRampDownThreshold = (int)(4*COUNTS_PER_INCH);
     static double topWheelAngularVelocity_radPerSec = 15; // the highest wheel ang velocity that the robot reaches at full power
     static double LinearRampDownMinimumPower = 0.2; // Do not ramp down speed to a smaller value so as to not get stuck due to friction
 
@@ -67,6 +67,8 @@ public class GlobalSettings11691 {
     static double RotationRampDownMinimumPower = 0.2; // Do not ramp down speed to a smaller value so as to not get stuck due to friction
 
     static double OneTileLength_inch = 23 + (3.0/8.0);
+
+    static double stoneLength = 8;
 }
 
 /* ============================================ */

@@ -46,7 +46,7 @@ public class BaseAuton extends LinearOpMode{
         telemetry.addData("Data server", "Stopping");
         telemetry.update();
         try {
-            dataTracing.stop();
+           // dataTracing.stop();
             telemetry.addData("Data server", "Stop completed");
             telemetry.update();
         }
@@ -62,7 +62,7 @@ public class BaseAuton extends LinearOpMode{
         dataTracing.theAuton = this;
 
         try {
-            dataTracing.Start();
+           // dataTracing.Start();
             telemetry.addData("Data server", "... Connected");
             telemetry.update();
         }
@@ -196,8 +196,7 @@ public class BaseAuton extends LinearOpMode{
         return totalDistanceMoved * -1;
     }
 
-
-    protected void runFirstPartOfSkystone(COMPETITION_SIDE competitionSide, SKYSTONE_FULL isFull) {
+    protected double run2ndPartOfSkystone(COMPETITION_SIDE competitionSide, SKYSTONE_FULL isFull, boolean dropStoneAtEnd) {
         double turnAngle;
         double speed;
         double straffLeft;
@@ -221,7 +220,79 @@ public class BaseAuton extends LinearOpMode{
         this.SK_Grab_Right.goToClawOpenPosition();
         SK_Grab_Left.goToApproachPosition();
         SK_Grab_Right.goToApproachPosition();
-        waitStep(1);
+        waitStep(0.5);
+
+        //driveBackward(5, 1, 2);
+       // waitStep(0.2);
+
+        DriveByDistanceSensors( 0.25, 3.5, 5);
+        waitStep(.5);
+        double totalDistanceMoved = get_SkyStone(20, telemetry);
+        if(usedSkystoneArm == SK_Block11691.SKYSTONE_ARM_LOCATION.Left) {
+            waitStep(.5);
+        }
+        else {
+            waitStep(0.4);
+        }
+
+        driveForward(5, 1, 2);
+        waitStep(0.2);
+
+        turn_HighPowerAtEnd(turnAngle, speed,  5.0);
+        waitStep(0.2);
+
+        if(usedSkystoneArm == SK_Block11691.SKYSTONE_ARM_LOCATION.Right) {
+            //straff(straffLeft, 0.75, 2);
+        }
+        else
+        {
+           // straff(straffRight, 0.75, 2);
+        }
+
+        if( competitionSide == COMPETITION_SIDE.BLUE)
+            totalDistanceMoved *= -1;
+
+        if( isFull == SKYSTONE_FULL.YES) {
+            driveBackward(73 + totalDistanceMoved+ GlobalSettings11691.stoneLength*3, 1, 5.5);
+        }
+        else {
+            driveBackward(73 + totalDistanceMoved+ GlobalSettings11691.stoneLength*3, 1, 5.5);
+        }
+        if(dropStoneAtEnd) {
+            this.SK_Grab_Right.goToClawOpenPosition();
+            this.SK_Grab_Left.goToClawOpenPosition();
+            SK_Grab_Left.goToHomePosition();
+            SK_Grab_Right.goToHomePosition();
+        }
+
+        return 73 + totalDistanceMoved + GlobalSettings11691.stoneLength*3;
+    }
+
+    protected double runFirstPartOfSkystone(COMPETITION_SIDE competitionSide, SKYSTONE_FULL isFull, boolean dropStoneAtEnd) {
+        double turnAngle;
+        double speed;
+        double straffLeft;
+        double straffRight;
+        if( competitionSide == COMPETITION_SIDE.RED)
+        {
+            turnAngle = -90;
+            speed = 0.5;
+            straffLeft = 2;
+            straffRight = -4;
+        }
+        else
+        {
+            turnAngle = 90;
+            speed = 0.5;
+            straffLeft = -5;
+            straffRight = -4;
+        }
+
+        this.SK_Grab_Left.goToClawOpenPosition();
+        this.SK_Grab_Right.goToClawOpenPosition();
+        SK_Grab_Left.goToApproachPosition();
+        SK_Grab_Right.goToApproachPosition();
+        //waitStep(1);
 
         driveBackward(21.5, 0.75, 3);
        // waitStep(2);
@@ -246,22 +317,26 @@ public class BaseAuton extends LinearOpMode{
         }
         else
         {
-            straff(straffRight, 0.75, 2);
+           // straff(straffRight, 0.75, 2);
         }
 
         if( competitionSide == COMPETITION_SIDE.BLUE)
             totalDistanceMoved *= -1;
                 
         if( isFull == SKYSTONE_FULL.YES) {
-            driveBackward(70 + totalDistanceMoved, 1, 5.5);
+            driveBackward(73 + totalDistanceMoved, 1, 5.5);
         }
         else {
-            driveBackward(70 + totalDistanceMoved, 1, 5.5);
+            driveBackward(73 + totalDistanceMoved, 1, 5.5);
         }
-        this.SK_Grab_Right.goToClawOpenPosition();
-        this.SK_Grab_Left.goToClawOpenPosition();
-        SK_Grab_Left.goToHomePosition();
-        SK_Grab_Right.goToHomePosition();
+        if(dropStoneAtEnd) {
+            this.SK_Grab_Right.goToClawOpenPosition();
+            this.SK_Grab_Left.goToClawOpenPosition();
+            SK_Grab_Left.goToHomePosition();
+            SK_Grab_Right.goToHomePosition();
+        }
+
+        return 73 + totalDistanceMoved;
     }
 
     protected void runFoundationRoutine(COMPETITION_SIDE competitionSide, PARK_POSITION parkPosition)
@@ -282,7 +357,7 @@ public class BaseAuton extends LinearOpMode{
             initialStraffDirection = -1;
             foundationPullEndAngle = 90;
             foundationPullSPeed = -0.5;
-            beforeParkingStraff = 20;
+            beforeParkingStraff = 5;
         }
 
         if(competitionSide == COMPETITION_SIDE.RED) {
@@ -307,30 +382,30 @@ public class BaseAuton extends LinearOpMode{
         driveBackward  (1,1,0.5);
         waitStep(0.2);
 
-        straff(initialStraff, 0.75, 2);
+        straff(initialStraff, 0.5, 2);
         waitStep(0.2);
 
-        turn_HighPowerAtEnd(0,0.25,0.5);
-        waitStep(0.2);
+       // turn_HighPowerAtEnd(0,0.25,0.5);
+       // waitStep(0.2);
 
         
-        driveBackward  (28.1,0.8,3.0);
-        DriveByBumperSwitches(0.25, 2);
+        driveBackward  (22/*28.1*/,0.8,3.0);
+        DriveByBumperSwitches(0.25, 3);
 
         foundationDN();
-        driveBackward  (4,1,0.5);
-        //waitStep(0.8);
+      //  driveBackward  (4,1,0.5);
+        waitStep(0.8);
         turn_HighPowerAtEnd(foundationPullEndAngle, foundationPullSPeed, 0.25, 3);
         driveBackward  (18,1,2);
 
         foundationUP();
-        waitStep(0.8);
+        waitStep(1.4);
 
         straff(beforeParkingStraff,0.75,2);
 
         waitStep(0.8);
-        turn_HighPowerAtEnd(foundationPullEndAngle, 0.5, 0, 3);
-        waitStep(0.8);
+        //turn_HighPowerAtEnd(foundationPullEndAngle, 0.5, 0, 3);
+        //waitStep(0.8);
 
         driveForward(45,0.8,4);
     }

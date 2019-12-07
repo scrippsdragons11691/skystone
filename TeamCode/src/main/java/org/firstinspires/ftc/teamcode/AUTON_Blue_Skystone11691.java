@@ -14,7 +14,7 @@ public class AUTON_Blue_Skystone11691 extends BaseAuton {
 
         while (opModeIsActive()) {
 
-            runFirstPartOfSkystone(COMPETITION_SIDE.BLUE, SKYSTONE_FULL.NO);
+            runFirstPartOfSkystone(COMPETITION_SIDE.BLUE, SKYSTONE_FULL.NO, true);
 
             waitStep(0.8);
             turn_HighPowerAtEnd(90,0.25,0,3);

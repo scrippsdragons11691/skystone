@@ -143,6 +143,11 @@ public class AutonTurn11691 extends BaseAutonIMU{
 
         error = targetAngle - actualangle;
 
+        theHardwareMap11691.LF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        theHardwareMap11691.RF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        theHardwareMap11691.RR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        theHardwareMap11691.LR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
         ElapsedTime rampTimer = new ElapsedTime();
         rampTimer.reset();
         double time = runtime.time();
@@ -187,6 +192,11 @@ public class AutonTurn11691 extends BaseAutonIMU{
         BaseAuton.dataTracing.sendAllData();
         rotate(0,0);
 
+        theHardwareMap11691.LF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        theHardwareMap11691.RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        theHardwareMap11691.LR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
     }
 
 
@@ -218,11 +228,6 @@ public class AutonTurn11691 extends BaseAutonIMU{
     }
 
     void rotate(double motorSetPoint, double deltaPower){
-
-        theHardwareMap11691.LF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        theHardwareMap11691.RF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        theHardwareMap11691.RR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        theHardwareMap11691.LR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         if(Math.abs(deltaPower) < 0.0001) {
             theHardwareMap11691.LF.setPower(motorSetPoint);

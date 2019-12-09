@@ -177,6 +177,7 @@ public class BaseAuton extends LinearOpMode{
 
         usedSkystoneArm = SK_Block11691.SKYSTONE_ARM_LOCATION.Right;
 
+        //todo how can we grab the 2 blocks with different arms so that we we deliver on to the foundation, the stones do not fall off or try to stack the blocks
         leftColorSensor.StoneCheck();
         if (leftColorSensor.StoneCheck()){
             SK_Grab_Left.GrabSkystone();
@@ -252,7 +253,7 @@ public class BaseAuton extends LinearOpMode{
             driveBackward(totalDistanceMoved+ GlobalSettings11691.OneTileLength_inch *4.6, 1, 5.5);
         }
         else {
-            driveBackward(73 + totalDistanceMoved+ GlobalSettings11691.StoneLength *3, 1, 5.5);
+            driveBackward(73 + totalDistanceMoved+ GlobalSettings11691.StoneLength_inch *3, 1, 5.5);
         }
         if(dropStoneAtEnd) {
             this.SK_Grab_Right.goToClawOpenPosition();
@@ -261,7 +262,7 @@ public class BaseAuton extends LinearOpMode{
             SK_Grab_Right.goToHomePosition();
         }
 
-        return 73 + totalDistanceMoved + GlobalSettings11691.StoneLength *3;
+        return 73 + totalDistanceMoved + GlobalSettings11691.StoneLength_inch *3;
     }
 
     protected double runFirstPartOfSkystone(COMPETITION_SIDE competitionSide, SKYSTONE_FULL isFull, boolean dropStoneAtEnd) {
@@ -293,16 +294,16 @@ public class BaseAuton extends LinearOpMode{
         waitStep(0.5);
         double totalDistanceMoved = get_SkyStone(20, telemetry);
         if(usedSkystoneArm == SK_Block11691.SKYSTONE_ARM_LOCATION.Left) {
-            waitStep(.5);
+            waitStep(.5); //todo check if this can be shortened
         }
         else {
-            waitStep(0.4);
+            waitStep(0.4); //todo check if this can be shortened
         }
 
-        driveForward(backupDistance, 1, 2);
+        driveForward(backupDistance, 1, 2); //todo Remove rampdown and perhaps decrease the backupdistance in order to compensate
         waitStep(0.2);
 
-        turn_HighPowerAtEnd(turnAngle, 0.75,  5.0);
+        turn_HighPowerAtEnd(turnAngle, 0.75,  5.0); //todo turn at power = 1. Compensate for overshoot by decreasing the turnAngle
         waitStep(0.2);
 
         if( competitionSide == COMPETITION_SIDE.BLUE)
@@ -408,17 +409,23 @@ public class BaseAuton extends LinearOpMode{
 
         foundationDN();
 
-        this.SK_Grab_Right.goToClawOpenPosition();
-        this.SK_Grab_Left.goToClawOpenPosition();
-        SK_Grab_Left.goToHomePosition();
-        SK_Grab_Right.goToHomePosition();
+        SK_Grab_Right.GrabSkystone();
+        SK_Grab_Left.GrabSkystone();
 
         double headingSign = (competition_side == COMPETITION_SIDE.RED) ? -1 : 1;
 
         waitStep(0.4);
         turn_aroundRearRightWheel(headingSign * 13, 1,  5.0);
         driveForward(5, 1, 10,false,false,false, false);
+
+        SK_Grab_Right.goToClawOpenPosition();
+        SK_Grab_Left.goToClawOpenPosition();
+
         turn_aroundRearRightWheel(headingSign * 90, 1,  5.0);
+
+        SK_Grab_Left.goToHomePosition();
+        SK_Grab_Right.goToHomePosition();
+
         driveForward(25, 1, 10,false,false,false, true);
         foundationUP();
 

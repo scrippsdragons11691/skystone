@@ -396,4 +396,41 @@ public class BaseAuton extends LinearOpMode{
         driveForward(45,0.8,4);
     }
 
+    protected void runTwoSkystonesFull(COMPETITION_SIDE competition_side)
+    {
+        runFirstPartOfSkystone(competition_side, SKYSTONE_FULL.YES,false);
+
+        waitStep(0.05);
+        turn_HighPowerAtEnd(0,0.65,4);
+
+        driveBackward(2, 1, 10, false, true, false,true);
+        DriveByBumperSwitches(0.25, 2);
+
+        foundationDN();
+
+        this.SK_Grab_Right.goToClawOpenPosition();
+        this.SK_Grab_Left.goToClawOpenPosition();
+        SK_Grab_Left.goToHomePosition();
+        SK_Grab_Right.goToHomePosition();
+
+        double headingSign = (competition_side == COMPETITION_SIDE.RED) ? -1 : 1;
+
+        waitStep(0.4);
+        turn_aroundRearRightWheel(headingSign * 13, 1,  5.0);
+        driveForward(5, 1, 10,false,false,false, false);
+        turn_aroundRearRightWheel(headingSign * 90, 1,  5.0);
+        driveForward(25, 1, 10,false,false,false, true);
+        foundationUP();
+
+        double driveMultiplier = (competition_side == COMPETITION_SIDE.RED) ? 3.2 : 3.4;
+        driveForward(GlobalSettings11691.OneTileLength_inch * driveMultiplier, 1, 10,true,true,true,true);
+
+        driveBackward  (2,1,1.0);
+        turn_HighPowerAtEnd(0,0.75,3);
+
+        foundationDN();
+        run2ndPartOfSkystone(competition_side, SKYSTONE_FULL.YES,true);
+
+        driveForward(GlobalSettings11691.OneTileLength_inch *1.8, 1, 10);
+    }
 }

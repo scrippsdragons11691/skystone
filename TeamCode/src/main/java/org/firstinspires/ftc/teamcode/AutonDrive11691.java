@@ -114,12 +114,15 @@ public class AutonDrive11691 extends BaseAutonIMU {
 
     /**
      *
-     * @param distanceInches - The distance to move. Positive means move forward, negative means move backward.
+     * @param distanceInches - The distance to move. Positive means move forward, negative means move backward
      * @param power - Maximum power to apply to all motors. Power ramp up and ramp down is handled within this function
      * @param timeoutT - If this time is exceeded, control will exit this function
      * @param theOpMode - Provides access to the LinearOpMode parameters
-     * @param brakeAtEnd - If true, the motors will brake at the end. If false they will be free wheeling
-     * @param incremental - If true, the encoders will not be reset. The target encoder count is simply incremented according by distanceInches. This is not guaranteed to work if the direction is the opposite from the previous linear movement.
+     * @param rampDown - If true, power will be ramped down at the end of travel. Otherwise, power will remain at "power" until the very end
+     * @param brakeAtEnd - If true, the motors will brake at the end. If false they will be set to float
+     * @param incremental - If true, the encoders will not be reset. The target encoder count is simply incremented according by distanceInches.
+     *                    This is not guaranteed to work if the direction is the opposite from the previous linear movement.
+     * @param nearest90 - Set the DrivingAngle to one of -90, 0 or 90 depending which is closest to the current heading
      */
     public void encoderDriveAutonNew(double distanceInches, double power, double timeoutT, LinearOpMode theOpMode, boolean rampDown, boolean brakeAtEnd, boolean incremental, boolean nearest90){
 
@@ -144,15 +147,8 @@ public class AutonDrive11691 extends BaseAutonIMU {
 
         SetMotorsToRunWithoutEncoders();
 
-        // DrivingAngle is the angle at which we want to drive
-        // In all the autons, we only rotate to 90, 0 or -90.
-        // Therefore set the DrivingAngle to one of the above values which is closest to globalAngle
-        if(nearest90) {
-            DrivingAngle = Math.round(globalAngle / 90) * 90;
-        }
-        else {
-            DrivingAngle = globalAngle;
-        }
+        // DrivingAngle is the heading at which we want to drive
+        DrivingAngle = nearest90 ? Math.round(globalAngle / 90) * 90 : globalAngle;
 
         double effectiveEncoderCountRampDownThreshold = GlobalSettings11691.EncoderCountRampDownThreshold;
 

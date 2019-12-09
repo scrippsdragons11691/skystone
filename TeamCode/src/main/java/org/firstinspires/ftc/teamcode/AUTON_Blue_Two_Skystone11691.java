@@ -19,7 +19,7 @@ public class AUTON_Blue_Two_Skystone11691 extends BaseAuton {
             waitStep(0.8);
             turn_HighPowerAtEnd(90,0.25,0,3);
 
-            driveForward(3 + distance + GlobalSettings11691.stoneLength * 3,1,10);
+            driveForward(3 + distance + GlobalSettings11691.StoneLength * 3,1,10);
 
             waitStep(0.8);
             turn_HighPowerAtEnd(0,0.5,3);

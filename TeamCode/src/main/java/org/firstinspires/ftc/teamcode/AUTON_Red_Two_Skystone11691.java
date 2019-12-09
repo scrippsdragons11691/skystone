@@ -19,10 +19,7 @@ public class AUTON_Red_Two_Skystone11691 extends BaseAuton {
 
             double distance = runFirstPartOfSkystone(COMPETITION_SIDE.RED, SKYSTONE_FULL.NO,true);
 
-           // waitStep(0.8);
-           // turn_HighPowerAtEnd(-90,0.75,0,1.5);
-
-            driveForward(3 + distance + GlobalSettings11691.stoneLength * 3,1,10);
+            driveForward(distance + (GlobalSettings11691.StoneLength * 3),1,10);
 
             waitStep(0.8);
             turn_HighPowerAtEnd(0,0.5,3);

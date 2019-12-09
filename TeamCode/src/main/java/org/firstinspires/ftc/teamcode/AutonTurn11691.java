@@ -57,6 +57,21 @@ public class AutonTurn11691 extends BaseAutonIMU{
         AutonTurn_HighPowerAtEnd (Angle,  speed, 0,  timeoute,  theOpMode);
     }
 
+    public void AutonTurn_aroundRearRightWheel (double Angle, double speed, double timeoute, LinearOpMode theOpMode) {
+        AutonTurn_aroundRearRightWheel (Angle,  speed, 0,  timeoute,  theOpMode);
+    }
+    public void AutonTurn_aroundRearRightWheel (double Angle, double speed, double deltaSpeed, double timeoute, LinearOpMode theOpMode) {
+        is_moving=true;
+        targetAngle = Angle;
+        targetSpeed = speed;
+        targetDeltaSpeed = deltaSpeed;
+        timeout = timeoute;
+        telemetry = theOpMode.telemetry;
+        telemetry.addData("T_angle;",targetAngle);
+        telemetry.update();
+        gotoPosition_aroundRearRightWheel (0.25,theOpMode);
+    }
+
     public void AutonTurn_HighPowerAtEnd (double Angle, double speed, double deltaSpeed, double timeoute, LinearOpMode theOpMode) {
         is_moving=true;
         targetAngle = Angle;
@@ -143,10 +158,8 @@ public class AutonTurn11691 extends BaseAutonIMU{
 
         error = targetAngle - actualangle;
 
-        theHardwareMap11691.LF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        theHardwareMap11691.RF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        theHardwareMap11691.RR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        theHardwareMap11691.LR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        SetZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        SetMotorsToRunWithoutEncoders();
 
         ElapsedTime rampTimer = new ElapsedTime();
         rampTimer.reset();
@@ -172,15 +185,19 @@ public class AutonTurn11691 extends BaseAutonIMU{
                 rampedTargetSpeed = targetSpeed * (error / GlobalSettings11691.powerRampdownStartAngle);
                 rampedTargetSpeed = Range.clip(rampedTargetSpeed,GlobalSettings11691.RotationRampDownMinimumPower,targetSpeed);
 
-                rampedTargetDeltaSpeed = targetSpeed * (error / GlobalSettings11691.powerRampdownStartAngle);
-                rampedTargetDeltaSpeed = Range.clip(rampedTargetDeltaSpeed,GlobalSettings11691.RotationRampDownMinimumPower,targetDeltaSpeed);
+                if(Math.abs(targetDeltaSpeed) > 0.0001) {
+                    rampedTargetDeltaSpeed = targetDeltaSpeed * (error / GlobalSettings11691.powerRampdownStartAngle);
+                    rampedTargetDeltaSpeed = Range.clip(rampedTargetDeltaSpeed, GlobalSettings11691.RotationRampDownMinimumPower, targetDeltaSpeed);
+                }
             }
             else if(rampTimer.seconds() <= GlobalSettings11691.rotationRampTimeInSec) {
                 rampedTargetSpeed = targetSpeed * (rampTimer.seconds() / GlobalSettings11691.rotationRampTimeInSec);
                 rampedTargetSpeed = Range.clip(rampedTargetSpeed,rampedTargetSpeed,targetSpeed);
 
-                rampedTargetDeltaSpeed = targetDeltaSpeed * (rampTimer.seconds() / GlobalSettings11691.rotationRampTimeInSec);
-                rampedTargetDeltaSpeed = Range.clip(rampedTargetDeltaSpeed,rampedTargetDeltaSpeed,targetDeltaSpeed);
+                if(Math.abs(targetDeltaSpeed)> 0.0001) {
+                    rampedTargetDeltaSpeed = targetDeltaSpeed * (rampTimer.seconds() / GlobalSettings11691.rotationRampTimeInSec);
+                    rampedTargetDeltaSpeed = Range.clip(rampedTargetDeltaSpeed, rampedTargetDeltaSpeed, targetDeltaSpeed);
+                }
             }
 
             if (error < 0) {
@@ -192,13 +209,68 @@ public class AutonTurn11691 extends BaseAutonIMU{
         BaseAuton.dataTracing.sendAllData();
         rotate(0,0);
 
-        theHardwareMap11691.LF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        theHardwareMap11691.RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        theHardwareMap11691.LR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
     }
 
+    public void gotoPosition_aroundRearRightWheel(double powerForFinalAdjust, LinearOpMode theOpMode) {
+        actualangle     = getAbsoluteHeading();
+        BaseAuton.dataTracing.sendAllData();
+
+        error = targetAngle - actualangle;
+
+        SetZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //theHardwareMap11691.RF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
+        SetMotorsToRunWithoutEncoders();
+
+        ElapsedTime rampTimer = new ElapsedTime();
+        rampTimer.reset();
+        double time = runtime.time();
+        while((Math.abs(error) > ANGLE_TOL) && (runtime.time() - time < timeout)
+                && !theOpMode.isStopRequested() && theOpMode.opModeIsActive())
+        {
+            actualangle = getAbsoluteHeading();
+            error = targetAngle - actualangle;
+
+            BaseAuton.dataTracing.sendAllData();
+
+            telemetry.addData("Target Angle","error= %.2f", error);
+            telemetry.addData("Target Angle","value= %.2f", targetAngle);
+            telemetry.addData("Actual Angle","value= %.2f", actualangle);
+            telemetry.update();
+
+            double rampedTargetSpeed = targetSpeed;
+            double rampedTargetDeltaSpeed = targetDeltaSpeed;
+
+            if(Math.abs(error) < GlobalSettings11691.powerRampdownStartAngle )
+            {
+                rampedTargetSpeed = targetSpeed * (error / GlobalSettings11691.powerRampdownStartAngle);
+                rampedTargetSpeed = Range.clip(rampedTargetSpeed,0.2+GlobalSettings11691.RotationRampDownMinimumPower,targetSpeed);
+
+                if(Math.abs(targetDeltaSpeed) > 0.0001) {
+                    rampedTargetDeltaSpeed = targetDeltaSpeed * (error / GlobalSettings11691.powerRampdownStartAngle);
+                    rampedTargetDeltaSpeed = Range.clip(rampedTargetDeltaSpeed, 0.2+GlobalSettings11691.RotationRampDownMinimumPower, targetDeltaSpeed);
+                }
+            }
+            else if(rampTimer.seconds() <= GlobalSettings11691.rotationRampTimeInSec) {
+                rampedTargetSpeed = targetSpeed * (rampTimer.seconds() / GlobalSettings11691.rotationRampTimeInSec);
+                rampedTargetSpeed = Range.clip(rampedTargetSpeed,rampedTargetSpeed,targetSpeed);
+
+                if(Math.abs(targetDeltaSpeed)> 0.0001) {
+                    rampedTargetDeltaSpeed = targetDeltaSpeed * (rampTimer.seconds() / GlobalSettings11691.rotationRampTimeInSec);
+                    rampedTargetDeltaSpeed = Range.clip(rampedTargetDeltaSpeed, rampedTargetDeltaSpeed, targetDeltaSpeed);
+                }
+            }
+
+            if (error < 0) {
+                rotate_aroundRearRightWheel(rampedTargetSpeed, rampedTargetDeltaSpeed); //clockwise
+            } else if (error > 0) {
+                rotate_aroundRearRightWheel(-rampedTargetSpeed, -rampedTargetDeltaSpeed); //counterclockwise
+            }
+        }
+        BaseAuton.dataTracing.sendAllData();
+        rotate_aroundRearRightWheel(0,0);
+
+    }
 
     private void waitStep(double wait_in_sec, LinearOpMode theOpMode)
     {
@@ -241,5 +313,21 @@ public class AutonTurn11691 extends BaseAutonIMU{
             theHardwareMap11691.RF.setPower(motorSetPoint - deltaPower);
             theHardwareMap11691.RR.setPower(motorSetPoint - deltaPower);
         }
+    }
+
+    void rotate_aroundRearRightWheel(double motorSetPoint, double deltaPower){
+
+        //if(Math.abs(deltaPower) < 0.0001) {
+            theHardwareMap11691.LF.setPower(motorSetPoint);
+            theHardwareMap11691.LR.setPower(motorSetPoint);
+            theHardwareMap11691.RF.setPower(-motorSetPoint*0.6);
+            theHardwareMap11691.RR.setPower(-motorSetPoint*0.6);
+        /*}
+        else {
+            theHardwareMap11691.LF.setPower(motorSetPoint + deltaPower);
+            theHardwareMap11691.LR.setPower(motorSetPoint + deltaPower);
+            //theHardwareMap11691.RF.setPower(motorSetPoint - deltaPower);
+            theHardwareMap11691.RR.setPower(0);
+        }*/
     }
 }

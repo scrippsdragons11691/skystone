@@ -13,7 +13,36 @@ public class Auton11691 extends BaseAuton {
         initialize();
         waitForStart();
 
-        this.SK_Grab_Left.goToClawOpenPosition();
+        foundationDN();
+        waitStep(1);
+        turn_aroundRearRightWheel(-13, 1,  5.0);
+        driveForward(2.5, 1, 10,false,false,false, false);
+     //   turn_aroundRearRightWheel(-30, 1,  5.0);
+     //   driveForward(2.5, 1, 10,false,false,false, false);
+        turn_aroundRearRightWheel(-90, 1,  5.0);
+        driveForward(30, 1, 10,false,false,false, true);
+        foundationUP();
+        driveForward(15, 1, 10,true,true,true,true);
+        driveBackward(GlobalSettings11691.OneTileLength_inch *2.5, 1, 10,true,true,true,true);
+
+
+        /*double distanceSensorRH;
+        double distanceSensorLH;
+        do{
+            distanceSensorRH = hMap.autonSensorDRH.getDistance(DistanceUnit.INCH);
+            distanceSensorLH = hMap.autonSensorDLH.getDistance(DistanceUnit.INCH);
+
+            if( GlobalSettings11691.SendTelemetry) {
+                telemetry.addData("RH distance", "%.3f", distanceSensorRH);
+                telemetry.addData("LH distance", "%.3f", distanceSensorLH);
+
+                telemetry.update();
+            }
+        }while( !isStopRequested() && opModeIsActive());
+        */
+        //DriveByDistanceSensors (0.25, 3.5, 10);
+
+        /*this.SK_Grab_Left.goToClawOpenPosition();
         waitStep(5);
         this.SK_Grab_Left.goToClawGrabPosition();
         waitStep(3);
@@ -23,7 +52,7 @@ public class Auton11691 extends BaseAuton {
         waitStep(3);
         this.SK_Grab_Left.carryStone();
         this.SK_Grab_Right.carryStone();
-
+*/
 
         //turn_HighPowerAtEnd(-90, 0.5,  5.0);
         /*driveForward(GlobalSettings11691.OneTileLength_inch * 2, 1, 10);

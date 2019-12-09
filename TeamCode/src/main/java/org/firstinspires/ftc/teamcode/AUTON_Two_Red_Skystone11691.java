@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 @Autonomous(name="Two Red Skystone", group="Autons")
-
+@Disabled
 public class AUTON_Two_Red_Skystone11691 extends BaseAuton {
 
 

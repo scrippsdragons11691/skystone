@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -64,5 +65,29 @@ public class BaseAutonIMU {
         lastAngles = angles;
 
         return globalAngle;
+    }
+
+    protected void SetZeroPowerBehavior(DcMotor.ZeroPowerBehavior behavior)
+    {
+        theHardwareMap11691.LF.setZeroPowerBehavior(behavior);
+        theHardwareMap11691.RF.setZeroPowerBehavior(behavior);
+        theHardwareMap11691.RR.setZeroPowerBehavior(behavior);
+        theHardwareMap11691.LR.setZeroPowerBehavior(behavior);
+    }
+
+    protected void StopAndResetEncoders()
+    {
+        theHardwareMap11691.LF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        theHardwareMap11691.LR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        theHardwareMap11691.RR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        theHardwareMap11691.RF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    protected void SetMotorsToRunWithoutEncoders()
+    {
+        theHardwareMap11691.LF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        theHardwareMap11691.LR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        theHardwareMap11691.RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 }

@@ -19,10 +19,7 @@ public class AUTON_Red_Skystone11691 extends BaseAuton {
 
             runFirstPartOfSkystone(COMPETITION_SIDE.RED, SKYSTONE_FULL.NO,true);
 
-            waitStep(0.8);
-            turn_HighPowerAtEnd(-90,0.75,0,1.5);
-
-            driveForward(17,0.75,1.5);
+            driveForward(30,1,2);
 
             uninitialize();
             sleep(200000);

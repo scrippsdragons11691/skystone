@@ -5,12 +5,16 @@ public class GlobalSettings11691 {
 
     static String dataServerHostIP = "192.168.49.117";
     static int dataServerHostPort = 9876;
+    static boolean SendTelemetry = true;
 
     //Rev Hex HD Motor 2240 counts per rotation
     static double COUNTS_PER_MOTOR_REV =      1120; //20 - 537.6, 40 - 1120, 60- 1680 (cpr) Gear Neverest Motor Encoder
     static double DRIVE_GEAR_REDUTION =       2.2; // This is < 1.0 if geared UP
     static double WHEEL_DIAMETER_INCHES =     3.0; // For figuring circumference
     static double COUNTS_PER_INCH =(COUNTS_PER_MOTOR_REV / DRIVE_GEAR_REDUTION)/(WHEEL_DIAMETER_INCHES*3.1415);
+
+    static double RobotLength_inch = 18;
+    static double RobotWidth_inch = 18;
 
     static double pushHome = 1;
     static double pushBlock = 0.55;
@@ -40,7 +44,7 @@ public class GlobalSettings11691 {
 
     static double LeftSKGrabber_homePosition = 0;
     static double LeftSKGrabber_CarryPosition = 0.4;
-    static double LeftSKGrabber_ApproachPosition = 0.6;
+    static double LeftSKGrabber_ApproachPosition = 0.55;
     static double LeftSKGrabber_GrabPosition = 0.77;
     static double LeftSKGrabber_InitPosition = LeftSKGrabber_homePosition;
 
@@ -54,21 +58,22 @@ public class GlobalSettings11691 {
     static double ImuCorrectionFactor = 0.075;
 
     // Robot linear speed ramp up settings
-    static double RampUpTime = 0.5;
+    static double RampUpTime = 0.35;
 
     // Robot linear speed ramp down settings
-    static int EncoderCountRampDownThreshold = (int)(4*COUNTS_PER_INCH);
+    static int EncoderCountRampDownThreshold = (int)(20*COUNTS_PER_INCH);
     static double topWheelAngularVelocity_radPerSec = 15; // the highest wheel ang velocity that the robot reaches at full power
     static double LinearRampDownMinimumPower = 0.2; // Do not ramp down speed to a smaller value so as to not get stuck due to friction
 
     // Settings for rotating
-    static double rotationRampTimeInSec = 0.8;
-    static double powerRampdownStartAngle = 30;
+    static double rotationRampTimeInSec = 0.35;
+    static double powerRampdownStartAngle = 45;
     static double RotationRampDownMinimumPower = 0.2; // Do not ramp down speed to a smaller value so as to not get stuck due to friction
 
     static double OneTileLength_inch = 23 + (3.0/8.0);
 
-    static double stoneLength = 8;
+    static double StoneLength = 8;
+    static double StoneWidth = 4;
 }
 
 /* ============================================ */

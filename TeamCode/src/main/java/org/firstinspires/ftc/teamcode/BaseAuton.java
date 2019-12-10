@@ -171,15 +171,15 @@ public class BaseAuton extends LinearOpMode{
     protected void pusherPUSH()       { pusher.Pusher     (GlobalSettings11691.pushBlock);}
 
 
-    double get_SkyStone (double timeout,Telemetry tele){
-        double distanceToNextStone = 7;
+    double get_SkyStone (double timeout, Telemetry tele, boolean forceSKarm, SK_Block11691.SKYSTONE_ARM_LOCATION whichArm){
+        double distanceToNextStone = GlobalSettings11691.StoneLength_inch;
         double totalDistanceMoved = 0;
 
         usedSkystoneArm = SK_Block11691.SKYSTONE_ARM_LOCATION.Right;
 
         //todo how can we grab the 2 blocks with different arms so that we we deliver on to the foundation, the stones do not fall off or try to stack the blocks
         leftColorSensor.StoneCheck();
-        if (leftColorSensor.StoneCheck()){
+        if ((leftColorSensor.StoneCheck() && (forceSKarm == false)) || ((forceSKarm) && (whichArm == SK_Block11691.SKYSTONE_ARM_LOCATION.Left))){
             SK_Grab_Left.GrabSkystone();
             usedSkystoneArm = SK_Block11691.SKYSTONE_ARM_LOCATION.Left;
             waitStep(0.5);
@@ -189,7 +189,7 @@ public class BaseAuton extends LinearOpMode{
             SK_Grab_Right.goToHomePosition();
         }
         else {
-            if(rightColorSensor.StoneCheck()){
+            if((rightColorSensor.StoneCheck() && (forceSKarm == false)) || ((forceSKarm) && (whichArm == SK_Block11691.SKYSTONE_ARM_LOCATION.Left))){
             }
             else {
                 straff(distanceToNextStone,0.5,1);
@@ -211,16 +211,15 @@ public class BaseAuton extends LinearOpMode{
     protected double run2ndPartOfSkystone(COMPETITION_SIDE competitionSide, SKYSTONE_FULL isFull, boolean dropStoneAtEnd) {
         double turnAngle;
         double backupDistance;
-        double straffLeft;
-        double straffRight;
+
         if( competitionSide == COMPETITION_SIDE.RED)
         {
-            turnAngle = -90;
+            turnAngle = -85;
             backupDistance = 5;
         }
         else
         {
-            turnAngle = 90;
+            turnAngle = 85;
             backupDistance = 8;
         }
 
@@ -228,55 +227,62 @@ public class BaseAuton extends LinearOpMode{
         this.SK_Grab_Right.goToClawOpenPosition();
         SK_Grab_Left.goToApproachPosition();
         SK_Grab_Right.goToApproachPosition();
-        waitStep(0.5);
+        waitStep(0.4); //todo can this be reduced?
 
         DriveByDistanceSensors( 0.25, 3.5, 10);
-        waitStep(.5);
-        double totalDistanceMoved = get_SkyStone(20, telemetry);
+        waitStep(0.2); //todo can this be reduced?
+        double totalDistanceMoved = get_SkyStone(20, telemetry, false, SK_Block11691.SKYSTONE_ARM_LOCATION.Left);
         if(usedSkystoneArm == SK_Block11691.SKYSTONE_ARM_LOCATION.Left) {
-            waitStep(.5);
+            waitStep(.3); //todo can this be reduced?
         }
         else {
-            waitStep(0.4);
+            waitStep(0.3); //todo can this be reduced?
         }
 
         driveForward(backupDistance, 1, 2);
 //        waitStep(0.2);
 
-        turn_HighPowerAtEnd(turnAngle, 0.75,  5.0);
+        turn_HighPowerAtEnd(turnAngle, 1,  5.0);
 //        waitStep(0.2);
 
         if( competitionSide == COMPETITION_SIDE.BLUE)
             totalDistanceMoved *= -1;
 
+        double returnDistance;
         if( isFull == SKYSTONE_FULL.YES) {
-            driveBackward(totalDistanceMoved+ GlobalSettings11691.OneTileLength_inch *4.6, 1, 5.5);
+            returnDistance = totalDistanceMoved+ GlobalSettings11691.OneTileLength_inch *4.6;
+            driveBackward(returnDistance, 1, 5.5);
         }
         else {
-            driveBackward(73 + totalDistanceMoved+ GlobalSettings11691.StoneLength_inch *3, 1, 5.5);
+            returnDistance = totalDistanceMoved+ GlobalSettings11691.OneTileLength_inch *4.5;
+            driveBackward(returnDistance, 1, 5.5);
         }
         if(dropStoneAtEnd) {
+            SK_Grab_Right.GrabSkystone();
+            SK_Grab_Left.GrabSkystone();
+            waitStep(0.2);
             this.SK_Grab_Right.goToClawOpenPosition();
             this.SK_Grab_Left.goToClawOpenPosition();
             SK_Grab_Left.goToHomePosition();
             SK_Grab_Right.goToHomePosition();
+            waitStep(0.2);
         }
 
-        return 73 + totalDistanceMoved + GlobalSettings11691.StoneLength_inch *3;
+        return returnDistance;
     }
 
-    protected double runFirstPartOfSkystone(COMPETITION_SIDE competitionSide, SKYSTONE_FULL isFull, boolean dropStoneAtEnd) {
+    protected double runFirstPartOfSkystone(COMPETITION_SIDE competitionSide, SKYSTONE_FULL isFull, boolean dropStoneAtEnd, boolean includeApproach, boolean forceSKarm, SK_Block11691.SKYSTONE_ARM_LOCATION useThisArm) {
         double turnAngle;
         double backupDistance;
 
         if( competitionSide == COMPETITION_SIDE.RED)
         {
-            turnAngle = -90;
+            turnAngle = -85;
             backupDistance = 8;
         }
         else
         {
-            turnAngle = 90;
+            turnAngle = 85;
             backupDistance = 8;
         }
 
@@ -287,40 +293,53 @@ public class BaseAuton extends LinearOpMode{
         SK_Grab_Right.goToApproachPosition();
 
         // Deduct 6 inches just for safety. The last inch or two will be driven using the distance sensors
-        double approachDistance = (2* GlobalSettings11691.OneTileLength_inch) - GlobalSettings11691.RobotLength_inch - 6;
-        driveBackward( approachDistance, 1, 3, true, false, false, true );
+        if(includeApproach) {
+            double approachDistance = (2 * GlobalSettings11691.OneTileLength_inch) - GlobalSettings11691.RobotLength_inch - 6;
+            driveBackward(approachDistance, 1, 3, true, false, false, true);
+        }
         DriveByDistanceSensors( 0.25, 3.5, 10);
 
-        waitStep(0.5);
-        double totalDistanceMoved = get_SkyStone(20, telemetry);
+        waitStep(0.0); //todo why is this so long?
+        double totalDistanceMoved = get_SkyStone(20, telemetry, forceSKarm, useThisArm);
+
+        // If the robot straffs, we have to compensate because it does not straff square :-(
+        if(Math.abs(totalDistanceMoved) > 0.0001)
+            backupDistance += 2;
+
         if(usedSkystoneArm == SK_Block11691.SKYSTONE_ARM_LOCATION.Left) {
-            waitStep(.5); //todo check if this can be shortened
+            waitStep(.3); //todo check if this can be shortened
         }
         else {
-            waitStep(0.4); //todo check if this can be shortened
+            waitStep(0.3); //todo check if this can be shortened
         }
 
         driveForward(backupDistance, 1, 2); //todo Remove rampdown and perhaps decrease the backupdistance in order to compensate
-        waitStep(0.2);
+        waitStep(0.0);
 
-        turn_HighPowerAtEnd(turnAngle, 0.75,  5.0); //todo turn at power = 1. Compensate for overshoot by decreasing the turnAngle
-        waitStep(0.2);
+        turn_HighPowerAtEnd(turnAngle, 1,  5.0); //todo turn at power = 1. Compensate for overshoot by decreasing the turnAngle
+        waitStep(0.0);
 
         if( competitionSide == COMPETITION_SIDE.BLUE)
             totalDistanceMoved *= -1;
 
-        double returnDistance = 3.4 *GlobalSettings11691.OneTileLength_inch + totalDistanceMoved;
+        double returnDistance;
         if( isFull == SKYSTONE_FULL.YES) {
+            returnDistance = 3.4 *GlobalSettings11691.OneTileLength_inch + totalDistanceMoved;
             driveBackward(returnDistance, 1, 5.5 );
         }
         else {
+            returnDistance = 3.5 *GlobalSettings11691.OneTileLength_inch + totalDistanceMoved;
             driveBackward(returnDistance, 1, 5.5);
         }
         if(dropStoneAtEnd) {
-            this.SK_Grab_Right.goToClawOpenPosition();
-            this.SK_Grab_Left.goToClawOpenPosition();
+            SK_Grab_Right.GrabSkystone();
+            SK_Grab_Left.GrabSkystone();
+            waitStep(0.2);
+            SK_Grab_Right.goToClawOpenPosition();
+            SK_Grab_Left.goToClawOpenPosition();
             SK_Grab_Left.goToHomePosition();
             SK_Grab_Right.goToHomePosition();
+            waitStep(0.2);
         }
 
         return returnDistance;
@@ -399,7 +418,7 @@ public class BaseAuton extends LinearOpMode{
 
     protected void runTwoSkystonesFull(COMPETITION_SIDE competition_side)
     {
-        runFirstPartOfSkystone(competition_side, SKYSTONE_FULL.YES,false);
+        runFirstPartOfSkystone(competition_side, SKYSTONE_FULL.YES,false, true, false, SK_Block11691.SKYSTONE_ARM_LOCATION.Left);
 
         waitStep(0.05);
         turn_HighPowerAtEnd(0,0.65,4);
@@ -411,20 +430,22 @@ public class BaseAuton extends LinearOpMode{
 
         SK_Grab_Right.GrabSkystone();
         SK_Grab_Left.GrabSkystone();
-
-        double headingSign = (competition_side == COMPETITION_SIDE.RED) ? -1 : 1;
-
-        waitStep(0.4);
-        turn_aroundRearRightWheel(headingSign * 13, 1,  5.0);
-        driveForward(5, 1, 10,false,false,false, false);
-
+        waitStep(0.3);
         SK_Grab_Right.goToClawOpenPosition();
         SK_Grab_Left.goToClawOpenPosition();
+        SK_Grab_Left.goToHomePosition();
+        SK_Grab_Right.goToHomePosition();
+        double headingSign = (competition_side == COMPETITION_SIDE.RED) ? -1 : 1;
+        double backupDistance = (competition_side == COMPETITION_SIDE.RED) ? 5 : 15;
+
+        waitStep(0.2);
+        turn_aroundRearRightWheel(headingSign * 13, 1,  5.0);
+        driveForward(backupDistance, 1, 10,false,false,false, false);
+
+
 
         turn_aroundRearRightWheel(headingSign * 90, 1,  5.0);
 
-        SK_Grab_Left.goToHomePosition();
-        SK_Grab_Right.goToHomePosition();
 
         driveForward(25, 1, 10,false,false,false, true);
         foundationUP();

@@ -17,7 +17,7 @@ public class AUTON_Red_Skystone11691 extends BaseAuton {
 
         while (opModeIsActive()) {
 
-            runFirstPartOfSkystone(COMPETITION_SIDE.RED, SKYSTONE_FULL.NO,true);
+            runFirstPartOfSkystone(COMPETITION_SIDE.RED, SKYSTONE_FULL.NO,true, true, false, SK_Block11691.SKYSTONE_ARM_LOCATION.Left);
 
             driveForward(30,1,2);
 

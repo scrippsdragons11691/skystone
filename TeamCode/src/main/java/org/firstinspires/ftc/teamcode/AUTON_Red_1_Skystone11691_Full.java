@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 @Autonomous(name="Red 1 Skystone Full", group="Autons")
 
-public class AUTON_Red_Skystone11691_Full extends BaseAuton {
+public class AUTON_Red_1_Skystone11691_Full extends BaseAuton {
 
     int blockCount = 0;
 

@@ -2,13 +2,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name="Red 2 Skystones", group="Autons")
+@Autonomous(name="Red Foundation FWD", group="Foundation Autons")
 
-public class AUTON_Red_Two_Skystone11691 extends BaseAuton {
+public class AUTON_Red_Foundation_FWD_11691 extends BaseAuton {
 
-
-    int blockCount = 0;
-    
     @Override
     public void runOpMode() {
 
@@ -17,7 +14,7 @@ public class AUTON_Red_Two_Skystone11691 extends BaseAuton {
 
         while (opModeIsActive()) {
 
-            runSkystones(COMPETITION_SIDE.RED, false);
+            runFoundationRoutine( COMPETITION_SIDE.RED, PARK_POSITION.NEXT_TO_CENTER_BRIDGE);
 
             uninitialize();
             sleep(200000);

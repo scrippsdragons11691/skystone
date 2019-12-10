@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 @Autonomous(name="Test: Playground", group="Tests")
 //@Disabled
-public class Auton11691 extends BaseAuton {
+public class Auton_Playground11691 extends BaseAuton {
 
 
     @Override

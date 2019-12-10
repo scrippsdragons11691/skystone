@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 @Autonomous(name="Blue 1 Skystone", group="Autons")
 
-public class AUTON_Blue_Skystone11691 extends BaseAuton {
+public class AUTON_Blue_1_Skystone11691 extends BaseAuton {
 
     @Override
     public void runOpMode() {

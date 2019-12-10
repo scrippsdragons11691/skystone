@@ -2,11 +2,9 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name="Red 2 Skystones Full", group="Autons")
+@Autonomous(name="Blue 3 Skystones", group="Autons")
 
-public class AUTON_Red_Two_Skystones11691_Full extends BaseAuton {
-
-    int blockCount = 0;
+public class AUTON_Blue_3_Skystone11691 extends BaseAuton {
 
     @Override
     public void runOpMode() {
@@ -14,14 +12,14 @@ public class AUTON_Red_Two_Skystones11691_Full extends BaseAuton {
         initialize();
         waitForStart();
 
-        COMPETITION_SIDE competition_side = COMPETITION_SIDE.RED;
-
         while (opModeIsActive()) {
 
-            runTwoSkystonesFull(COMPETITION_SIDE.RED);
+            runSkystones(COMPETITION_SIDE.BLUE, true);
 
             uninitialize();
             sleep(200000);
         }
     }
-}
+
+
+}    

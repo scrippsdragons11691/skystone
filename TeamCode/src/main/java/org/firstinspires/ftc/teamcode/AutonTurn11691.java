@@ -302,12 +302,14 @@ public class AutonTurn11691 extends BaseAutonIMU{
     void rotate(double motorSetPoint, double deltaPower){
 
         if(Math.abs(deltaPower) < 0.0001) {
+            //todo maybe change the order
             theHardwareMap11691.LF.setPower(motorSetPoint);
             theHardwareMap11691.LR.setPower(motorSetPoint);
             theHardwareMap11691.RF.setPower(-motorSetPoint);
             theHardwareMap11691.RR.setPower(-motorSetPoint);
         }
         else {
+            //todo maybe change the order
             theHardwareMap11691.LF.setPower(motorSetPoint + deltaPower);
             theHardwareMap11691.LR.setPower(motorSetPoint + deltaPower);
             theHardwareMap11691.RF.setPower(motorSetPoint - deltaPower);
@@ -318,6 +320,7 @@ public class AutonTurn11691 extends BaseAutonIMU{
     void rotate_aroundRearRightWheel(double motorSetPoint, double deltaPower){
 
         //if(Math.abs(deltaPower) < 0.0001) {
+        //todo maybe change the order
             theHardwareMap11691.LF.setPower(motorSetPoint);
             theHardwareMap11691.LR.setPower(motorSetPoint);
             theHardwareMap11691.RF.setPower(-motorSetPoint*0.6);

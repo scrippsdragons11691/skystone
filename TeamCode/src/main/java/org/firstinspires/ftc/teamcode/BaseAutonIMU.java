@@ -90,4 +90,15 @@ public class BaseAutonIMU {
         theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         theHardwareMap11691.RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
+
+    protected void setMotorPowerForLinearMove(double LF, double RF, double RR, double LR) {
+        theHardwareMap11691.LF.setPower(LF);
+        theHardwareMap11691.RF.setPower(RF);
+        theHardwareMap11691.RR.setPower(RR);
+        theHardwareMap11691.LR.setPower(LR);
+    }
+
+    protected void setMotorPowerForLinearMove(double power) {
+        setMotorPowerForLinearMove(power, power, power,power);
+    }
 }

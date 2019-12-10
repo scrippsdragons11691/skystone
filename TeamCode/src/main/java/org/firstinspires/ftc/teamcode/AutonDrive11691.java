@@ -74,10 +74,7 @@ public class AutonDrive11691 extends BaseAutonIMU {
 
         //Set the motor speed
         runtime.reset();
-        theHardwareMap11691.LF.setPower(power);
-        theHardwareMap11691.RF.setPower(power);
-        theHardwareMap11691.LR.setPower(power);
-        theHardwareMap11691.RR.setPower(power);
+        setMotorPowerForLinearMove(power);
 
         runtime.reset();
         while ((runtime.seconds() < timeoutS)
@@ -95,10 +92,7 @@ public class AutonDrive11691 extends BaseAutonIMU {
 
         }
 
-        theHardwareMap11691.LF.setPower(0);
-        theHardwareMap11691.RF.setPower(0);
-        theHardwareMap11691.LR.setPower(0);
-        theHardwareMap11691.RR.setPower(0);
+        setMotorPowerForLinearMove(0);
 
         theHardwareMap11691.LF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         theHardwareMap11691.RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -201,10 +195,8 @@ public class AutonDrive11691 extends BaseAutonIMU {
             // Use gyro to drive in a straight line.
             correction = checkDirection(DrivingAngle);
 
-            theHardwareMap11691.LF.setPower(rampedPower - correction);
-            theHardwareMap11691.LR.setPower(rampedPower - correction);
-            theHardwareMap11691.RF.setPower(rampedPower + correction);
-            theHardwareMap11691.RR.setPower(rampedPower + correction);
+            setMotorPowerForLinearMove(rampedPower - correction, rampedPower + correction,
+                                       rampedPower + correction,rampedPower - correction);
 
             BaseAuton.dataTracing.sendAllData();
 
@@ -228,10 +220,7 @@ public class AutonDrive11691 extends BaseAutonIMU {
         }
 
         if( rampDown || theOpMode.isStopRequested() || !theOpMode.opModeIsActive() ) {
-            theHardwareMap11691.LF.setPower(0);
-            theHardwareMap11691.RF.setPower(0);
-            theHardwareMap11691.LR.setPower(0);
-            theHardwareMap11691.RR.setPower(0);
+            setMotorPowerForLinearMove(0);
         }
 
         BaseAuton.dataTracing.sendAllData();
@@ -245,10 +234,7 @@ public class AutonDrive11691 extends BaseAutonIMU {
         theHardwareMap11691.LR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        theHardwareMap11691.LF.setPower(power);
-        theHardwareMap11691.RF.setPower(power);
-        theHardwareMap11691.LR.setPower(power);
-        theHardwareMap11691.RR.setPower(power);
+        setMotorPowerForLinearMove(power);
     }
 
     public void DriveByBumperSwitches (double power, double timeout, LinearOpMode theOpMode)    {
@@ -263,10 +249,7 @@ public class AutonDrive11691 extends BaseAutonIMU {
         theHardwareMap11691.LR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        theHardwareMap11691.LF.setPower(-power);
-        theHardwareMap11691.RF.setPower(-power);
-        theHardwareMap11691.LR.setPower(-power);
-        theHardwareMap11691.RR.setPower(-power);
+        setMotorPowerForLinearMove(-power);
 
         ElapsedTime timeoutTimer = new ElapsedTime();
         timeoutTimer.reset();
@@ -277,10 +260,8 @@ public class AutonDrive11691 extends BaseAutonIMU {
                 && !theOpMode.isStopRequested() && theOpMode.opModeIsActive()) {
 
         }
-        theHardwareMap11691.LF.setPower(0);
-        theHardwareMap11691.RF.setPower(0);
-        theHardwareMap11691.LR.setPower(0);
-        theHardwareMap11691.RR.setPower(0);
+
+        setMotorPowerForLinearMove(0);
     }
 
     double distanceSensorRH = 0;
@@ -300,10 +281,7 @@ public class AutonDrive11691 extends BaseAutonIMU {
         theHardwareMap11691.LR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        theHardwareMap11691.LF.setPower(-power);
-        theHardwareMap11691.RF.setPower(-power);
-        theHardwareMap11691.LR.setPower(-power);
-        theHardwareMap11691.RR.setPower(-power);
+        setMotorPowerForLinearMove(-power);
 
         ElapsedTime timeoutTimer = new ElapsedTime();
         timeoutTimer.reset();
@@ -324,10 +302,7 @@ public class AutonDrive11691 extends BaseAutonIMU {
                 && (distanceSensorLH >= distance)
                 && !theOpMode.isStopRequested() && theOpMode.opModeIsActive());
 
-        theHardwareMap11691.LF.setPower(0);
-        theHardwareMap11691.RF.setPower(0);
-        theHardwareMap11691.LR.setPower(0);
-        theHardwareMap11691.RR.setPower(0);
+        setMotorPowerForLinearMove(0);
     }
     public void displayPositionTolerance(Telemetry tele)
     {

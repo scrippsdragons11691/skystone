@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name="Blue Foundation", group="Autons")
+@Autonomous(name="Blue Foundation", group="Foundation Autons")
 
 public class AUTON_Blue_Foundation11691 extends BaseAuton {
 

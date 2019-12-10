@@ -194,6 +194,8 @@ public class AutonDrive11691 extends BaseAutonIMU {
 
             // Use gyro to drive in a straight line.
             correction = checkDirection(DrivingAngle);
+            if(Math.abs(rampedPower) < 0.35)
+                correction *= 1.15;
 
             setMotorPowerForLinearMove(rampedPower - correction, rampedPower + correction,
                                        rampedPower + correction,rampedPower - correction);
@@ -281,7 +283,9 @@ public class AutonDrive11691 extends BaseAutonIMU {
         theHardwareMap11691.LR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         theHardwareMap11691.RR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        setMotorPowerForLinearMove(-power);
+        DrivingAngle = Math.round(globalAngle / 90) * 90;
+
+        double localPower = -power;
 
         ElapsedTime timeoutTimer = new ElapsedTime();
         timeoutTimer.reset();
@@ -289,6 +293,13 @@ public class AutonDrive11691 extends BaseAutonIMU {
         do{
             distanceSensorRH = getDistanceSensorValue_RH();
             distanceSensorLH = getDistanceSensorValue_LH();
+
+            // Use gyro to drive in a straight line.
+            correction = 0.5 * checkDirection(DrivingAngle);
+
+            setMotorPowerForLinearMove(localPower - correction, localPower + correction,
+                    localPower + correction,localPower - correction);
+
             BaseAuton.dataTracing.sendAllData();
 
             if( GlobalSettings11691.SendTelemetry) {

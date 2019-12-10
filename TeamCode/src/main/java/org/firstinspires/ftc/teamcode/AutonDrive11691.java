@@ -30,7 +30,7 @@ public class AutonDrive11691 extends BaseAutonIMU {
         theHardwareMap11691.RR.setDirection(DcMotor.Direction.FORWARD);
         theHardwareMap11691.RF.setDirection(DcMotor.Direction.FORWARD);
 
-        setPositionTolerance(20); // todo not needed anymore if we do not use RUN_TO_POSITION
+        setPositionTolerance(20);
     }
 
     // Straffing Auton

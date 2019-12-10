@@ -177,7 +177,6 @@ public class BaseAuton extends LinearOpMode{
 
         usedSkystoneArm = SK_Block11691.SKYSTONE_ARM_LOCATION.Right;
 
-        //todo how can we grab the 2 blocks with different arms so that we we deliver on to the foundation, the stones do not fall off or try to stack the blocks
         leftColorSensor.StoneCheck();
         if ((leftColorSensor.StoneCheck() && (forceSKarm == false)) || ((forceSKarm) && (whichArm == SK_Block11691.SKYSTONE_ARM_LOCATION.Left))){
             SK_Grab_Left.GrabSkystone();
@@ -230,7 +229,7 @@ public class BaseAuton extends LinearOpMode{
         waitStep(0.4); //todo can this be reduced?
 
         DriveByDistanceSensors( 0.25, 3.5, 10);
-        waitStep(0.2); //todo can this be reduced?
+        waitStep(0.2); // The color sensor needs some time to sample
         double totalDistanceMoved = get_SkyStone(20, telemetry, false, SK_Block11691.SKYSTONE_ARM_LOCATION.Left);
         if(usedSkystoneArm == SK_Block11691.SKYSTONE_ARM_LOCATION.Left) {
             waitStep(.3); //todo can this be reduced?
@@ -299,10 +298,11 @@ public class BaseAuton extends LinearOpMode{
         }
         DriveByDistanceSensors( 0.25, 3.5, 10);
 
-        waitStep(0.0); //todo why is this so long?
+        waitStep(0.2); // The color sensor needs some time to sample
         double totalDistanceMoved = get_SkyStone(20, telemetry, forceSKarm, useThisArm);
 
         // If the robot straffs, we have to compensate because it does not straff square :-(
+        // todo probably we need to modify this depending on competition side
         if(Math.abs(totalDistanceMoved) > 0.0001)
             backupDistance += 2;
 
@@ -313,10 +313,10 @@ public class BaseAuton extends LinearOpMode{
             waitStep(0.3); //todo check if this can be shortened
         }
 
-        driveForward(backupDistance, 1, 2); //todo Remove rampdown and perhaps decrease the backupdistance in order to compensate
+        driveForward(backupDistance, 1, 2, false,true,false,true);
         waitStep(0.0);
 
-        turn_HighPowerAtEnd(turnAngle, 1,  5.0); //todo turn at power = 1. Compensate for overshoot by decreasing the turnAngle
+        turn_HighPowerAtEnd(turnAngle, 1,  5.0);
         waitStep(0.0);
 
         if( competitionSide == COMPETITION_SIDE.BLUE)

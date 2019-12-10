@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name="Blue Skystone Full", group="Autons")
+@Autonomous(name="Blue 1 Skystone Full", group="Autons")
 
 public class AUTON_Blue_Skystone11691_Full extends BaseAuton {
 

@@ -75,8 +75,15 @@ public class TeleOp11691 extends LinearOpMode{
             if(gamepad2.right_stick_y > 0.5)    { movearm.MoveArm(GlobalSettings11691.armOneEighty); }          //move arm  to 180
             if(gamepad2.right_stick_y < -0.5)   { movearm.MoveArm(GlobalSettings11691.armHome);}                //move arm to home
             if(gamepad2.right_stick_x > 0.5)    { movearm.MoveArm(GlobalSettings11691.armNinety); }             //movearm to 90
-            if(gamepad2.dpad_down)             { TapeMeasure.TapeM(1.0); } else {TapeMeasure.TapeM(0);}//tapemeasure out
-            if(gamepad2.dpad_right)              { TapeMeasure.TapeM(-1.0); } else {TapeMeasure.TapeM(0);} //tapemeasure in
+
+            if(gamepad2.dpad_down)             {
+                TapeMeasure.TapeM( 1.0); //tape measure out
+            } else if(gamepad2.dpad_right)              {
+                TapeMeasure.TapeM(-1.0); //tape measure in
+            } else {
+                TapeMeasure.TapeM(0);
+            }
+
             if(gamepad2.dpad_left)              { Spush.Pusher(GlobalSettings11691.pushEject);}                 //eject position is 0
             if(gamepad2.right_bumper)           { TeleOp_InT.intake(GlobalSettings11691.intakeInpos);  }        //Intake In Position
             if(gamepad2.left_bumper)            { TeleOp_InT.intake(GlobalSettings11691.intakeOutpos); }        //Intake Out Position

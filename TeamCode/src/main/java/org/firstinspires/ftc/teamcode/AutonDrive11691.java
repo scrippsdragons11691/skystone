@@ -53,6 +53,10 @@ public class AutonDrive11691 extends BaseAutonIMU {
         theHardwareMap11691.RR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         theHardwareMap11691.RF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        // When we ask to move one tile length, the robot actually moves 29"
+        // Therefore scale the requested distance
+        dist_Straff_In *= GlobalSettings11691.OneTileLength_inch/29;
+
         //Determine new target postition, and pass to motor controller
         newStraffLeftFTarget  = (int)(-1*dist_Straff_In * GlobalSettings11691.COUNTS_PER_INCH / 0.707);
         newStraffRightFTarget = (int)(dist_Straff_In * GlobalSettings11691.COUNTS_PER_INCH / 0.707);

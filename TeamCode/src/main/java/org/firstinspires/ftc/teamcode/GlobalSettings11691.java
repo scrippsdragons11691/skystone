@@ -16,7 +16,7 @@ public class GlobalSettings11691 {
     static double armNinety = 0.38;
     static double armOneEighty = 0.75;
     static double foundationHome = 0.75;
-    static double foundationHook = 0.2;
+    static double foundationHook = 0.25;
     static double intakeInpos = 1.0;
     static double intakeOutpos = -1.0;
     static double intakeStop = 0;

@@ -195,12 +195,7 @@ public class BaseAuton extends LinearOpMode{
         }
         else {
             if((rightColorSensor.StoneCheck() && (forceSKarm == false)) || ((forceSKarm) && (whichArm == SK_Block11691.SKYSTONE_ARM_LOCATION.Right))){
-                SK_Grab_Right.GrabSkystone();
-                waitStep(.5);
-                SK_Grab_Right.goToClawGrabPosition();
-                waitStep(0.8);
-                SK_Grab_Right.carryStone();
-                SK_Grab_Left.goToHomePosition();
+                grab(SK_Block11691.SKYSTONE_ARM_LOCATION.Right);
             }
             else {
                 straff(distanceToNextStone,0.5,1);
@@ -208,18 +203,37 @@ public class BaseAuton extends LinearOpMode{
                 totalDistanceMoved += distanceToNextStone;
                 theLastStonePosition = STONE_POSITION.CENTER;
 
-                SK_Grab_Left.GrabSkystone();
-                waitStep(.5);
-                SK_Grab_Left.goToClawGrabPosition();
-                waitStep(0.8);
-                SK_Grab_Left.carryStone();
-                SK_Grab_Right.goToHomePosition();
+                if(competitionSide == COMPETITION_SIDE.BLUE) {
+                    grab(SK_Block11691.SKYSTONE_ARM_LOCATION.Left);
+                }
+                else {
+                    grab(SK_Block11691.SKYSTONE_ARM_LOCATION.Right);
+                }
             }
-
-
         }
 
         return totalDistanceMoved * -1;
+    }
+
+    private void grab(SK_Block11691.SKYSTONE_ARM_LOCATION whichArm)
+    {
+        if(whichArm == SK_Block11691.SKYSTONE_ARM_LOCATION.Left)
+        {
+            SK_Grab_Left.GrabSkystone();
+            waitStep(.5);
+            SK_Grab_Left.goToClawGrabPosition();
+            waitStep(0.8);
+            SK_Grab_Left.carryStone();
+            SK_Grab_Right.goToHomePosition();
+        }
+        else {
+            SK_Grab_Right.GrabSkystone();
+            waitStep(.5);
+            SK_Grab_Right.goToClawGrabPosition();
+            waitStep(0.8);
+            SK_Grab_Right.carryStone();
+            SK_Grab_Left.goToHomePosition();
+        }
     }
 
     private double run2ndPartOfSkystone(COMPETITION_SIDE competitionSide, SKYSTONE_FULL isFull, boolean dropStoneAtEnd) {
@@ -269,12 +283,13 @@ public class BaseAuton extends LinearOpMode{
         }
         else {
             returnDistance = totalDistanceMoved+ GlobalSettings11691.OneTileLength_inch *4.5;
-            driveBackward(returnDistance, 1, 5.5);
+            driveBackward(returnDistance, 1, 5.5, false, true,false,true);
         }
         if(dropStoneAtEnd) {
-            SK_Grab_Right.GrabSkystone();
+            /*SK_Grab_Right.GrabSkystone();
             SK_Grab_Left.GrabSkystone();
             waitStep(0.2);
+            */
             this.SK_Grab_Right.goToClawOpenPosition();
             this.SK_Grab_Left.goToClawOpenPosition();
             SK_Grab_Left.goToHomePosition();
@@ -393,9 +408,9 @@ public class BaseAuton extends LinearOpMode{
 
         if (competitionSide == COMPETITION_SIDE.RED) {
             if (parkPosition == PARK_POSITION.NEXT_TO_CENTER_BRIDGE) {
-                beforeParkingStraff = -12;
+                beforeParkingStraff = -5;
             } else {
-                beforeParkingStraff = 10;
+                beforeParkingStraff = 18;
             }
         } else {
             if (parkPosition == PARK_POSITION.NEXT_TO_CENTER_BRIDGE) {

@@ -185,6 +185,8 @@ public class BaseAuton extends LinearOpMode{
 
         leftColorSensor.StoneCheck();
         if ((leftColorSensor.StoneCheck() && (forceSKarm == false)) || ((forceSKarm) && (whichArm == SK_Block11691.SKYSTONE_ARM_LOCATION.Left))){
+            SK_Grab_Left.goToClawPreGrabPosition();
+            waitStep(0.2);
             SK_Grab_Left.GrabSkystone();
             usedSkystoneArm = SK_Block11691.SKYSTONE_ARM_LOCATION.Left;
             waitStep(0.5); // todo optimize delay
@@ -199,6 +201,7 @@ public class BaseAuton extends LinearOpMode{
             }
             else {
                 straff(distanceToNextStone,0.5,1);
+               // DriveByDistanceSensors( 0.25, 3.5, 2);
                 waitStep(0.2);
                 totalDistanceMoved += distanceToNextStone;
                 theLastStonePosition = STONE_POSITION.CENTER;
@@ -219,6 +222,8 @@ public class BaseAuton extends LinearOpMode{
     {
         if(whichArm == SK_Block11691.SKYSTONE_ARM_LOCATION.Left)
         {
+            SK_Grab_Left.goToClawPreGrabPosition();
+            waitStep(0.2);
             SK_Grab_Left.GrabSkystone();
             waitStep(.5);
             SK_Grab_Left.goToClawGrabPosition();
@@ -262,9 +267,13 @@ public class BaseAuton extends LinearOpMode{
         double totalDistanceMoved = get_SkyStone(competitionSide, 20, telemetry, false, SK_Block11691.SKYSTONE_ARM_LOCATION.Left);
         if(usedSkystoneArm == SK_Block11691.SKYSTONE_ARM_LOCATION.Left) {
             waitStep(.3); //todo can this be reduced?
+            if(competitionSide == COMPETITION_SIDE.BLUE)
+                backupDistance += 2; // so that we offset the blocks on the foundation
         }
         else {
             waitStep(0.3); //todo can this be reduced?
+            if(competitionSide == COMPETITION_SIDE.RED)
+                backupDistance += 2; // so that we offset the blocks on the foundation
         }
 
         driveForward(backupDistance, 1, 2);
@@ -334,7 +343,7 @@ public class BaseAuton extends LinearOpMode{
 
         // If the robot straffs, we have to compensate because it does not straff square :-(
         // todo probably we need to modify this depending on competition side
-        if( competitionSide == COMPETITION_SIDE.BLUE)
+        //if( competitionSide == COMPETITION_SIDE.BLUE)
         {
             if(Math.abs(totalDistanceMoved) > 0.0001)
                 backupDistance += 2;
@@ -475,7 +484,7 @@ public class BaseAuton extends LinearOpMode{
         SK_Grab_Left.goToHomePosition();
         SK_Grab_Right.goToHomePosition();
         double headingSign = (competition_side == COMPETITION_SIDE.RED) ? -1 : 1;
-        double backupDistance = (competition_side == COMPETITION_SIDE.RED) ? 5 : 15;
+        double backupDistance = (competition_side == COMPETITION_SIDE.RED) ? 7 : 15;
 
         waitStep(0.2);
         turn_aroundRearRightWheel(headingSign * 13, 1,  5.0);
@@ -483,18 +492,18 @@ public class BaseAuton extends LinearOpMode{
 
         turn_aroundRearRightWheel(headingSign * 90, 1,  5.0);
 
-        driveForward(25, 1, 10,false,false,false, true);
+        driveForward(10, 1, 10,false,false,false, true);
         foundationUP();
 
         double driveMultiplier = (competition_side == COMPETITION_SIDE.RED) ? 3.2 : 3.4;
-        driveForward(GlobalSettings11691.OneTileLength_inch * driveMultiplier, 1, 10,true,true,true,true);
+        driveForward(15 + (GlobalSettings11691.OneTileLength_inch * driveMultiplier), 1, 10,true,true,true,true);
 
         driveBackward  (2,1,1.0);
         turn_HighPowerAtEnd(0,0.75,3);
 
-        foundationDN();
         run2ndPartOfSkystone(competition_side, SKYSTONE_FULL.YES,true);
 
+        foundationDN();
         driveForward(GlobalSettings11691.OneTileLength_inch *1.8, 1, 10);
     }
 
@@ -520,7 +529,7 @@ public class BaseAuton extends LinearOpMode{
         distance = run2ndPartOfSkystone(competitionSide, SKYSTONE_FULL.NO,true);
 
         if(threeStones && (theLastStonePosition == STONE_POSITION.SIDE)) {
-            driveForward(distance - (GlobalSettings11691.OneTileLength_inch*0.8)-GlobalSettings11691.StoneLength_inch, 1, 5.5);
+            driveForward(distance - (GlobalSettings11691.OneTileLength_inch*0.9)-GlobalSettings11691.StoneLength_inch, 1, 5.5);
 
             waitStep(0.0);
             turn_HighPowerAtEnd(turnAngle,1,3);

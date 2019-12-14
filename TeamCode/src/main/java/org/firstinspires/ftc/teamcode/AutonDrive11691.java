@@ -55,7 +55,7 @@ public class AutonDrive11691 extends BaseAutonIMU {
 
         // When we ask to move one tile length, the robot actually moves 29"
         // Therefore scale the requested distance
-        dist_Straff_In *= GlobalSettings11691.OneTileLength_inch/29;
+        dist_Straff_In *= GlobalSettings11691.OneTileLength_inch/27;
 
         //Determine new target postition, and pass to motor controller
         newStraffLeftFTarget  = (int)(-1*dist_Straff_In * GlobalSettings11691.COUNTS_PER_INCH / 0.707);

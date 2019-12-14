@@ -10,6 +10,7 @@ public class SK_Block11691{
         private double approachPosition;
         private double carryPosition;
         private double openClawPosition;
+        private double preGrabClawPosition;
         private double grabClawPosition;
         private Servo theServo;
         private Servo clawServo;
@@ -25,6 +26,7 @@ public class SK_Block11691{
                         carryPosition = GlobalSettings11691.RightSKGrabber_CarryPosition;
                         approachPosition = GlobalSettings11691.RightSKGrabber_ApproachPosition;
                         openClawPosition = GlobalSettings11691.RightSKGrabberClaw_OpenPosition;
+                        preGrabClawPosition = GlobalSettings11691.RightSKGrabberClaw_PreGrabPosition;
                         grabClawPosition = GlobalSettings11691.RightSKGrabberClaw_GrabPosition;
                         theServo = HMap.SK_BlockRight;
                         clawServo = HMap.Claw_Right;
@@ -36,6 +38,7 @@ public class SK_Block11691{
                         carryPosition = GlobalSettings11691.LeftSKGrabber_CarryPosition;
                         approachPosition = GlobalSettings11691.LeftSKGrabber_ApproachPosition;
                         openClawPosition = GlobalSettings11691.LeftSKGrabberClaw_OpenPosition;
+                        preGrabClawPosition = GlobalSettings11691.LeftSKGrabberClaw_PreGrabPosition;
                         grabClawPosition = GlobalSettings11691.LeftSKGrabberClaw_GrabPosition;
                         theServo = HMap.SK_BlockLeft;
                         clawServo = HMap.Claw_Left;
@@ -50,6 +53,7 @@ public class SK_Block11691{
         public void goToApproachPosition()
         {
                 theServo.setPosition(approachPosition);
+                goToClawOpenPosition();
         }
 
         public void GrabSkystone()     { theServo.setPosition(skystoneGrabPosition);  }
@@ -59,4 +63,6 @@ public class SK_Block11691{
         public void goToClawOpenPosition() {clawServo.setPosition(openClawPosition);}
 
         public void goToClawGrabPosition() {clawServo.setPosition(grabClawPosition);}
+
+        public void goToClawPreGrabPosition() {clawServo.setPosition(preGrabClawPosition);}
 }

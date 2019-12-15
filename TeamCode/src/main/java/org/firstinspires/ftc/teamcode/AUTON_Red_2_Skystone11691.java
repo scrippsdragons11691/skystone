@@ -17,6 +17,7 @@ public class AUTON_Red_2_Skystone11691 extends BaseAuton {
 
         while (opModeIsActive()) {
 
+            waitStep(4);
             runSkystones(COMPETITION_SIDE.RED, false);
 
             uninitialize();

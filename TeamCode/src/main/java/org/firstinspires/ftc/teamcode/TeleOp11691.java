@@ -19,7 +19,11 @@ public class TeleOp11691 extends LinearOpMode{
     Foundation11691 TeleOpfou;
     LIFT11691 lift;
     Pusher11691 Spush;
-    SK_Block11691 SK;
+    //SK_Block11691 SK;
+
+    public SK_Block11691           SK_Grab_Right;
+    public SK_Block11691           SK_Grab_Left;
+
     //AutonColorSensor11691 ColorSensor;
     TapeMeasure11691 TapeMeasure;
     Block_Check11691 BC;
@@ -39,10 +43,14 @@ public class TeleOp11691 extends LinearOpMode{
         TeleOp_InT              = new Intake_11691(TeleOp_HM);
         Spush                   = new Pusher11691(TeleOp_HM);
         grabpos                 = new GrabBlock11691(TeleOp_HM);
-        SK                      = new SK_Block11691(TeleOp_HM, SK_Block11691.SKYSTONE_ARM_LOCATION.Right);
+        //SK                      = new SK_Block11691(TeleOp_HM, SK_Block11691.SKYSTONE_ARM_LOCATION.Right);
         //ColorSensor             = new AutonColorSensor11691(TeleOp_HM);
         TapeMeasure             = new TapeMeasure11691(TeleOp_HM);
         BC                      = new Block_Check11691(TeleOp_HM);
+
+        SK_Grab_Right   = new SK_Block11691(TeleOp_HM, SK_Block11691.SKYSTONE_ARM_LOCATION.Right);
+        SK_Grab_Left    = new SK_Block11691(TeleOp_HM, SK_Block11691.SKYSTONE_ARM_LOCATION.Left);
+
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -64,8 +72,11 @@ public class TeleOp11691 extends LinearOpMode{
         boolean Color = false;
         double slow = 1;
 
-        // Wait for the game to start (driver presses PLAY)
+        // Initializing the Claw Servos
+        SK_Grab_Right.goToClawOpenPosition();
+        SK_Grab_Left.goToClawOpenPosition();
 
+        // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
@@ -145,12 +156,12 @@ public class TeleOp11691 extends LinearOpMode{
                 {
                     if(SKgrab){
                         SKgrab = false;
-                        SK.GrabSkystone();
+                        SK_Grab_Right.GrabSkystone();
                         aLastTime = runtime.time();
                     }
                     else {
                         SKgrab = true;
-                        SK.goToHomePosition();
+                        SK_Grab_Right.goToHomePosition();
                         aLastTime = runtime.time();
                     }
                 }

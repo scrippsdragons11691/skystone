@@ -83,6 +83,9 @@ public class TeleOp11691 extends LinearOpMode{
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
+
+
+
             if(gamepad2.right_stick_y > 0.5)    { movearm.MoveArm(GlobalSettings11691.armOneEighty); }          //move arm  to 180
             if(gamepad2.right_stick_y < -0.5)   { movearm.MoveArm(GlobalSettings11691.armHome);}                //move arm to home
             if(gamepad2.right_stick_x > 0.5)    { movearm.MoveArm(GlobalSettings11691.armNinety); }             //movearm to 90

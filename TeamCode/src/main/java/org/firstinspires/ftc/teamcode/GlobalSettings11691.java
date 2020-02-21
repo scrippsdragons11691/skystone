@@ -32,18 +32,18 @@ public class GlobalSettings11691 {
     static double RightSKGrabber_InitPosition = RightSKGrabber_homePosition;
 
     static double RightSKGrabberClaw_OpenPosition = 0.74;
-    static double RightSKGrabberClaw_PreGrabPosition = 0.8;
+    static double RightSKGrabberClaw_PreGrabPosition = 0.82;
     static double RightSKGrabberClaw_GrabPosition = 1;
     static double RightSKGrabberClaw_InitPosition = 1;
 
     static double LeftSKGrabber_homePosition = 0;
     static double LeftSKGrabber_CarryPosition = 0.4; //todo lift as high as possible so that the 2nd stone clears the first stone when we throw it onto the foundation
     static double LeftSKGrabber_ApproachPosition = 0.5;
-    static double LeftSKGrabber_GrabPosition = 0.77;
+    static double LeftSKGrabber_GrabPosition = 0.59;
     static double LeftSKGrabber_InitPosition = LeftSKGrabber_homePosition;
 
     static double LeftSKGrabberClaw_OpenPosition = 0.3;
-    static double LeftSKGrabberClaw_PreGrabPosition = 0.19;
+    static double LeftSKGrabberClaw_PreGrabPosition = 0.25;
     static double LeftSKGrabberClaw_GrabPosition = 0.05;
     static double LeftSKGrabberClaw_InitPosition = 0;
 

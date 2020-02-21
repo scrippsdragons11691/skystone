@@ -88,7 +88,7 @@ public class TeleOpTesting11691 extends LinearOpMode{
             if(gamepad1.a)                      {SK_Grab_Right.GrabSkystone(); }
             if(gamepad1.x)                      {SK_Grab_Left.GrabSkystone(); }
             if(gamepad1.b)                      {SK_Grab_Right.goToHomePosition(); }
-            if(gamepad1.y)                      {SK_Grab_Right.goToHomePosition(); }
+            if(gamepad1.y)                      {SK_Grab_Left.goToHomePosition(); }
             if(gamepad1.left_trigger > 0.5)     {SK_Grab_Left.goToClawGrabPosition(); }
             if(gamepad1.right_trigger > 0.5)    {SK_Grab_Right.goToClawGrabPosition(); }
             if(gamepad1.left_bumper)            {SK_Grab_Left.goToClawPreGrabPosition(); }
